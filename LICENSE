@@ -1,0 +1,15 @@
+CALM Academy — Licensing TBD
+
+This repository is currently in private MVP phase. Final licensing will be
+determined upon adoption by FINOS / Linux Foundation as an official
+educational program.
+
+Target dual-license:
+  - Code, scripts, lab infrastructure: Apache License 2.0
+  - Course content (text lessons, slides, illustrations, exercises):
+    Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+
+Until formal licensing is established, all rights reserved by the repository
+maintainer.
+
+For licensing questions: contact repository maintainer.

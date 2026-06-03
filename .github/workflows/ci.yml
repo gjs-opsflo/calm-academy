@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint-markdown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli2
+      - name: Lint markdown
+        run: markdownlint-cli2 "content/**/*.{md,mdx}" "docs-meta/**/*.md" "*.md" || true
+
+  validate-calm-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install CALM CLI
+        run: npm install -g @finos/calm-cli
+      - name: Validate every CALM JSON example
+        run: |
+          find code-examples -name "*.calm.json" -type f | while read f; do
+            echo "Validating $f"
+            calm validate -a "$f" || exit 1
+          done
+
+  check-excalidraw-freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Warn if .excalidraw newer than .svg
+        run: |
+          shopt -s nullglob
+          for src in illustrations/source/*.excalidraw; do
+            name=$(basename "$src" .excalidraw)
+            svg="illustrations/exported/$name.svg"
+            if [ ! -f "$svg" ]; then
+              echo "::warning::Missing export for $src"
+            elif [ "$src" -nt "$svg" ]; then
+              echo "::warning::$src is newer than $svg — re-export"
+            fi
+          done
+
+  lint-quizzes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: Validate quiz YAML files
+        run: |
+          shopt -s nullglob
+          for q in quizzes/*.yaml; do
+            echo "Checking $q"
+            yq eval '.' "$q" > /dev/null || exit 1
+          done
+
+  build-site:
+    runs-on: ubuntu-latest
+    if: hashFiles('site/package.json') != ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: site/package-lock.json
+      - name: Install site deps
+        run: cd site && npm ci
+      - name: Build site
+        run: cd site && npm run build
