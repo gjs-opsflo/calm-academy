@@ -8,8 +8,9 @@ Internal contributors: see [`CLAUDE.md`](CLAUDE.md) for full project context and
 
 ## Quick links
 
-- Canonical curriculum: [`.planning/CURRICULUM.md`](.planning/CURRICULUM.md)
-- Project roadmap: [`.planning/ROADMAP.md`](.planning/ROADMAP.md)
+- Canonical curriculum: [`CURRICULUM.md`](CURRICULUM.md)
+- Project roadmap: [`ROADMAP.md`](ROADMAP.md)
+- FINOS proposal: [`PROPOSAL.md`](PROPOSAL.md)
 - Production workflow: [`docs-meta/PRODUCTION-WORKFLOW.md`](docs-meta/PRODUCTION-WORKFLOW.md)
 - Style guide: [`docs-meta/STYLE-GUIDE.md`](docs-meta/STYLE-GUIDE.md)
 - Lab format: [`docs-meta/LAB-FORMAT.md`](docs-meta/LAB-FORMAT.md)

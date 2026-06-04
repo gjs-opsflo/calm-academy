@@ -1,6 +1,6 @@
 # CALM Academy — Project Context for Claude
 
-> **Read this first.** Then `.planning/CURRICULUM.md` (canonical course design) and `.planning/ROADMAP.md` (delivery plan).
+> **Read this first.** Then `CURRICULUM.md` (canonical course design) and `ROADMAP.md` (delivery plan).
 
 ## What this repository is
 
@@ -44,7 +44,7 @@ M6: Enterprise adoption + Capstone (3 scenarios — A, B, C)
 - **B**: Autonomous Wealth Management (MiFID II, AIGF, full 8-layer ARB)
 - **C**: AI Credit Risk Scoring (SR 11-7, ECOA, model governance)
 
-Full detail: [`.planning/CURRICULUM.md`](.planning/CURRICULUM.md).
+Full detail: [`CURRICULUM.md`](CURRICULUM.md).
 
 ## Ecosystem context — critical to internalize
 
@@ -152,8 +152,9 @@ ARB (reference architectures)
 ## GSD harness usage
 
 This project uses Get Shit Done discipline:
-- `.planning/CURRICULUM.md` — canonical curriculum (source of truth)
-- `.planning/ROADMAP.md` — phased delivery plan
+- `CURRICULUM.md` (root) — canonical curriculum (source of truth)
+- `ROADMAP.md` (root) — phased delivery plan
+- `PROPOSAL.md` (root) — FINOS / Linux Foundation adoption proposal
 - `.planning/research/` — research outputs (Gemara analysis, FINOS ecosystem, repo audits)
 - `.planning/intel/` — codebase intelligence (FINOS architecture-as-code repo structure, etc.)
 - `.planning/phases/` — per-phase planning artifacts
@@ -161,7 +162,7 @@ This project uses Get Shit Done discipline:
 Each module = one GSD phase. Sub-deliverables (text lessons, labs, illustrations, quizzes) are tasks within the phase.
 
 Use:
-- `/gsd:new-project` to bootstrap roadmap (already done — see `.planning/ROADMAP.md`)
+- `/gsd:new-project` to bootstrap roadmap (already done — see `ROADMAP.md`)
 - `/gsd:plan-phase` per module
 - `/gsd:execute-plan` for content production
 - `/gsd:verify-phase` for module completion
@@ -237,8 +238,9 @@ Scopes: `module-NN`, `lab-NN`, `curriculum`, `roadmap`, `site`, `scripts`, `ci`,
 
 | Need | Location |
 |---|---|
-| Canonical curriculum | `.planning/CURRICULUM.md` |
-| Project roadmap | `.planning/ROADMAP.md` |
+| Canonical curriculum | `CURRICULUM.md` (root) |
+| Project roadmap | `ROADMAP.md` (root) |
+| FINOS proposal | `PROPOSAL.md` (root) |
 | Gemara research | `.planning/research/gemara-analysis.md` |
 | FINOS ecosystem research | `.planning/research/finos-ecosystem.md` |
 | FINOS aac repo intel | `.planning/intel/finos-aac-ecosystem.md` |

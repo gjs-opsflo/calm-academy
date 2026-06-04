@@ -4,10 +4,10 @@ GSD harness project management directory.
 
 ## Files
 
+**Canonical curriculum + roadmap live at repo root** (see [`../CURRICULUM.md`](../CURRICULUM.md), [`../ROADMAP.md`](../ROADMAP.md), [`../PROPOSAL.md`](../PROPOSAL.md)). This folder holds supporting research + GSD operational state.
+
 | File | Purpose |
 |---|---|
-| [`CURRICULUM.md`](CURRICULUM.md) | Canonical course curriculum (1400+ lines) — SOURCE OF TRUTH |
-| [`ROADMAP.md`](ROADMAP.md) | Phased delivery plan |
 | `research/` | Research artifacts (Gemara, FINOS ecosystem, etc.) |
 | `intel/` | Codebase intelligence (related repos like FINOS aac) |
 | `phases/` | (Phase 2+) Per-module GSD phase plans |
@@ -16,11 +16,12 @@ GSD harness project management directory.
 
 ## Reading order
 
-1. [`CURRICULUM.md`](CURRICULUM.md) — what we're building
-2. [`ROADMAP.md`](ROADMAP.md) — when + in what order
-3. [`research/gemara-analysis.md`](research/gemara-analysis.md) — flagship conceptual integration
-4. [`research/finos-ecosystem.md`](research/finos-ecosystem.md) — cross-project mapping
-5. [`intel/finos-aac-ecosystem.md`](intel/finos-aac-ecosystem.md) — where to find spec/tools
+1. [`../CURRICULUM.md`](../CURRICULUM.md) — what we're building
+2. [`../ROADMAP.md`](../ROADMAP.md) — when + in what order
+3. [`../PROPOSAL.md`](../PROPOSAL.md) — FINOS adoption pitch
+4. [`research/gemara-analysis.md`](research/gemara-analysis.md) — flagship conceptual integration
+5. [`research/finos-ecosystem.md`](research/finos-ecosystem.md) — cross-project mapping
+6. [`intel/finos-aac-ecosystem.md`](intel/finos-aac-ecosystem.md) — where to find spec/tools
 
 ## GSD usage
 

@@ -32,7 +32,7 @@ The same problem was solved twice before — Configuration as Code, Infrastructu
 
 Three capstone scenarios: FSI Modernization, Autonomous Wealth Management (MiFID II), AI Credit Risk Scoring (SR 11-7).
 
-**Canonical curriculum:** [`.planning/CURRICULUM.md`](.planning/CURRICULUM.md)
+**Canonical curriculum:** [`CURRICULUM.md`](CURRICULUM.md)
 
 ## Delivery formats
 
@@ -115,7 +115,7 @@ Phase 3: Modules 2–6 production
 Phase 4: FINOS proposal submission
 Phase 5: Public launch + workshop pilot at OSFF
 
-See [`.planning/ROADMAP.md`](.planning/ROADMAP.md) for full project plan.
+See [`ROADMAP.md`](ROADMAP.md) for full project plan. FINOS adoption pitch: [`PROPOSAL.md`](PROPOSAL.md).
 
 ## Contact
 

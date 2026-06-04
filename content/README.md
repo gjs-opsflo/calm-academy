@@ -25,4 +25,4 @@ Each module folder contains `.mdx` files (one per chapter) following the structu
 
 Phase 1 (bootstrap): folders empty.
 Phase 2: Module 0 + Module 1 authored.
-Phase 3+: Subsequent modules per [`../.planning/ROADMAP.md`](../.planning/ROADMAP.md).
+Phase 3+: Subsequent modules per [`../ROADMAP.md`](../ROADMAP.md).

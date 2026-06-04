@@ -17,4 +17,4 @@ When researching a new framework, regulation, or ecosystem touch-point:
 4. Add a "CALM Academy interpretation" section
 5. Add a "Why this matters for the course" section
 6. Update this README's file list
-7. Link from `.planning/CURRICULUM.md` where the research informs a chapter
+7. Link from root `CURRICULUM.md` where the research informs a chapter

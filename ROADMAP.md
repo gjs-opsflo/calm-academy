@@ -9,7 +9,7 @@ Ship a complete, FINOS-adoption-ready Architecture as Code course covering the f
 **Status:** Done (this commit)
 - Repo created, structure scaffolded
 - CLAUDE.md / AGENTS.md / README / LICENSE / CONTRIBUTING in place
-- Curriculum migrated to `.planning/CURRICULUM.md`
+- Curriculum at root `CURRICULUM.md`
 - Research migrated to `.planning/research/`
 - GSD scaffolding ready
 - Docusaurus site stubbed
