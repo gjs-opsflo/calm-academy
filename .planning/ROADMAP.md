@@ -51,6 +51,18 @@ Plans:
 **Requirements:** MOD-02, QUIZ-02, ILL-02, SLIDE-01
 **Dependencies:** Phase 1 complete (production workflow validated)
 
+**Plans:** 2 plans
+
+Plans:
+
+**Wave 1**
+
+- [ ] 02-01-PLAN.md — Module 1 text + illustration stubs + quiz: all 5 MDX chapters, 8 Excalidraw stubs (ILL-02), Module 1 quiz YAML (QUIZ-02)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 02-02-PLAN.md — Module 1 slide deck (SLIDE-01): Marp Markdown file at slides/module-01-case-for-aac.md, 20-30 slides, speaker notes, derived from Wave 1 text
+
 **Success Criteria:**
 
 1. All 5 Module 1 chapters authored, cross-referenced to Module 0 by permalink slug
