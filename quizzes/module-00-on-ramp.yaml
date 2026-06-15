@@ -38,6 +38,73 @@ chapters:
             explanation: "All three paths call finalize_architecture which validates internally, but running calm validate afterwards is still recommended as a final check for all paths."
         reference_section: "../content/module-00-on-ramp/three-paths-to-first-calm-doc.mdx#path-c-markdown--from-an-existing-architecture-doc"
 
+  - chapter: 0.2
+    slug: live-demo-diagram-to-calm-in-five-minutes
+    title: "Live Demo: Diagram to CALM in 5 Minutes"
+    questions:
+      - id: q0.2.1
+        type: multiple_choice
+        prompt: |
+          In CALM, which relationship type describes a human user opening a web application?
+        options:
+          - label: "interacts"
+            correct: true
+            explanation: "Correct. interacts is the CALM relationship type for actors (entities outside the system boundary) interacting with nodes inside the system. A user does not 'connect' to a web app in the network sense — they interact with the interface. CALM Guard and compliance tools rely on this distinction to identify user-facing entry points."
+          - label: "connects"
+            correct: false
+            explanation: "connects is for point-to-point network communication between two system components (e.g. webclient → service over HTTPS). A human user is an actor, not a system component, so the relationship is interacts, not connects."
+          - label: "deployed-in"
+            correct: false
+            explanation: "deployed-in describes a containment relationship — a node running inside an ecosystem (e.g. a service deployed inside a Kubernetes cluster). It does not describe a user's interaction with an application."
+          - label: "composed-of"
+            correct: false
+            explanation: "composed-of describes a node that is made up of other nodes (e.g. a system composed of multiple services). It does not describe a user's interaction with an application."
+        reference_section: "../content/module-00-on-ramp/live-demo-diagram-to-calm-in-five-minutes.mdx#relationship-1-user-interacts-todo-web"
+
+  - chapter: 0.3
+    slug: why-this-works-and-when-it-doesnt
+    title: "Why This Works (and When It Doesn't)"
+    questions:
+      - id: q0.3.1
+        type: multiple_choice
+        prompt: |
+          Which scenario most likely requires human review of an AI-generated CALM document?
+        options:
+          - label: "The architecture has 12 nodes and the AI generated it from a 3-sentence description"
+            correct: true
+            explanation: "Correct. A 3-sentence description rarely captures all the complexity of a 12-node system. The AI fills in structural gaps from training data, which may produce plausible but incorrect nodes, missing components, or wrong relationship directions. Human review is needed whenever the AI is extrapolating beyond what the description explicitly states."
+          - label: "The AI used read_calm_guide before creating any nodes"
+            correct: false
+            explanation: "read_calm_guide is the correct first step — it ensures the AI knows the valid node types and spec constraints before generating anything. This reduces errors rather than requiring review."
+          - label: "The architecture contains only actor, service, and database nodes"
+            correct: false
+            explanation: "Using only well-understood core node types is a sign of a simpler, lower-risk architecture. Fewer exotic types mean fewer opportunities for the AI to hallucinate an incorrect mapping."
+          - label: "calm validate returns exit code 0 with no errors"
+            correct: false
+            explanation: "A clean validate result means the document conforms to the CALM 1.2 schema. Schema validity is necessary but not sufficient — the architecture can be schema-valid while still having wrong relationships, missing nodes, or incorrect protocols. Schema checks do not catch semantic errors."
+        reference_section: "../content/module-00-on-ramp/why-this-works-and-when-it-doesnt.mdx"
+
+      - id: q0.3.2
+        type: multiple_choice
+        prompt: |
+          A CALM architecture has a `service` node for a payment API and an `ecosystem` node for the
+          AWS production environment. The payment API runs inside that environment. Which relationship
+          type correctly models this?
+        options:
+          - label: "deployed-in (payment-api deployed-in aws-prod)"
+            correct: true
+            explanation: "Correct. deployed-in describes a node that runs inside an ecosystem — it captures the deployment containment relationship. The ecosystem owns the runtime environment; the service is deployed within it."
+          - label: "composed-of (aws-prod composed-of payment-api)"
+            correct: false
+            explanation: "composed-of describes a node that is structurally made up of other nodes — e.g. a system that is itself composed of multiple subsystems. It describes ownership of structure, not deployment. Running inside an environment is a deployment relationship, not a compositional one."
+          - label: "connects (payment-api connects aws-prod)"
+            correct: false
+            explanation: "connects describes point-to-point network communication between two nodes over a protocol. A service does not 'connect' to its deployment environment — it is deployed inside it. Reserve connects for actual network calls."
+          - label: "interacts (payment-api interacts aws-prod)"
+            correct: false
+            explanation: "interacts is reserved for actor-to-node relationships — specifically for entities outside the system boundary that initiate interactions. A service node is not an actor, and a deployment environment is not an interaction target."
+        reference_section: "../content/module-00-on-ramp/why-this-works-and-when-it-doesnt.mdx"
+
   - chapter: 0.4
     slug: get-set-up-in-sixty-seconds
     title: "Get Set Up in 60 Seconds"
