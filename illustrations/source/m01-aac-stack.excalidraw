@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — The AaC Stack (Chapter 1.2, 1.3 + slide deck)\n\nLayout: Three horizontal layers stacked vertically.\n\nTOP LAYER (light shading):\n  Label: 'Policy / Compliance'\n  Sub-items: OPA, Rego, CALM Guard\n  Caption below layer: 'What rules must it follow?'\n\nMIDDLE LAYER (emphasised — HEAVY BORDER, medium shading):\n  Label: 'Architecture (CALM)'\n  Central box: '.architecture.json'\n  Caption below layer: 'What does it mean? How does it connect?'\n  Right-side annotation: '← the missing middle layer'\n\nBOTTOM LAYER (light shading):\n  Label: 'Infrastructure (Terraform / IaC)'\n  Sub-items: Terraform, AWS CDK, Pulumi\n  Caption below layer: 'What is deployed?'\n\nVertical arrows between layers:\n  Bottom → Middle arrow (upward): 'described by'\n  Middle → Top arrow (upward): 'validated against'\n\nTitle (above all layers): 'The Architecture as Code Stack'\n\nBottom annotation (below all layers, centred):\n  'Each layer answers a different question.'\n  'CALM is the answer to \"what does this system actually mean?\"'\n\nStyle: B&W only. Middle layer (CALM) has thicker/heavier border to draw the eye.\nNo colour. Clean, readable proportions.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — The AaC Stack (Chapter 1.2, 1.3 + slide deck)\n\nLayout: Three horizontal layers stacked vertically.\n\nTOP LAYER (light shading):\n  Label: 'Policy / Compliance'\n  Sub-items: OPA, Rego, CALM Guard\n  Caption below layer: 'What rules must it follow?'\n\nMIDDLE LAYER (emphasised — HEAVY BORDER, medium shading):\n  Label: 'Architecture (CALM)'\n  Central box: '.architecture.json'\n  Caption below layer: 'What does it mean? How does it connect?'\n  Right-side annotation: '← the missing middle layer'\n\nBOTTOM LAYER (light shading):\n  Label: 'Infrastructure (Terraform / IaC)'\n  Sub-items: Terraform, AWS CDK, Pulumi\n  Caption below layer: 'What is deployed?'\n\nVertical arrows between layers:\n  Bottom → Middle arrow (upward): 'described by'\n  Middle → Top arrow (upward): 'validated against'\n\nTitle (above all layers): 'The Architecture as Code Stack'\n\nBottom annotation (below all layers, centred):\n  'Each layer answers a different question.'\n  'CALM is the answer to \"what does this system actually mean?\"'\n\nStyle: B&W only. Middle layer (CALM) has thicker/heavier border to draw the eye.\nNo colour. Clean, readable proportions."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

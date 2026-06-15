@@ -1,0 +1,207 @@
+module: 1
+title: "Module 1: The Case for Architecture as Code"
+
+chapters:
+  - chapter: 1.1
+    slug: architecture-debt-crisis
+    title: "The Architecture Debt Crisis"
+    questions:
+      - id: q1.1.1
+        type: multiple_choice
+        prompt: |
+          What is "architecture drift" as defined in Chapter 1.1?
+        options:
+          - label: "The gap between a diagram and the running system it represents, widening over time"
+            correct: true
+            explanation: "Correct. Architecture drift is the divergence between documentation (diagrams, Confluence pages) and the actual running system. It begins the day the diagram is drawn and grows with every change that is not reflected in the documentation."
+          - label: "The process of migrating from one architectural style to another"
+            correct: false
+            explanation: "Architectural migration is a deliberate change in approach (e.g. monolith to microservices). Architecture drift is unintentional — it is the accumulation of undocumented changes that cause the diagram to misrepresent reality."
+          - label: "The delay between designing an architecture and deploying it"
+            correct: false
+            explanation: "The time between design and deployment is a planning concern, not architecture drift. Drift is about documentation accuracy, not deployment speed."
+        reference_section: "../content/module-01-case-for-aac/architecture-debt-crisis.mdx#architecture-drift-when-diagrams-lie"
+
+      - id: q1.1.2
+        type: multiple_choice
+        prompt: |
+          How does architecture debt differ from technical debt?
+        options:
+          - label: "Architecture debt is in the documentation of how a system should work; technical debt is in the code itself"
+            correct: true
+            explanation: "Correct. Technical debt is accrued when code is written with shortcuts — workarounds, missing abstractions, copy-paste. Architecture debt is accrued when the documentation of system topology, relationships, and controls diverges from reality. You can pay down all technical debt and still have severe architecture debt."
+          - label: "Architecture debt is always more expensive than technical debt"
+            correct: false
+            explanation: "The relative cost depends on context. Architecture debt is particularly expensive in regulated industries where documentation drives audit and compliance processes. But comparing the two as 'more expensive' or 'less expensive' is not the correct distinction — they are different in kind, not just in magnitude."
+          - label: "Architecture debt and technical debt are two names for the same problem"
+            correct: false
+            explanation: "They are distinct. Technical debt is shortcut code that will need to be refactored; architecture debt is inaccurate documentation of system topology. Different problems, different fixes, different costs."
+        reference_section: "../content/module-01-case-for-aac/architecture-debt-crisis.mdx#how-architecture-debt-compounds"
+
+  - chapter: 1.2
+    slug: lessons-from-adjacent-disciplines
+    title: "Lessons from Adjacent Disciplines"
+    questions:
+      - id: q1.2.1
+        type: multiple_choice
+        prompt: |
+          The chapter "Lessons from Adjacent Disciplines" argues that Architecture as Code
+          fills a missing layer in the modern engineering stack. Which layer is it between?
+        options:
+          - label: "Infrastructure (Terraform) and application policy (OPA)"
+            correct: true
+            explanation: "Correct. The AaC stack is: Terraform (infra) → CALM (architecture) → OPA/Policy (compliance). CALM sits between the infra layer that tells you what is deployed and the policy layer that tells you what rules apply."
+          - label: "Source code (Git) and containers (Docker)"
+            correct: false
+            explanation: "CALM is not between source control and containers. It operates at the architecture level — modeling the components and their communication patterns, not the code or the runtime packaging."
+          - label: "Configuration management (Ansible) and monitoring (Prometheus)"
+            correct: false
+            explanation: "Config management and monitoring are operational concerns. CALM is an architectural concern — it describes system topology and governance, not operational configuration or metrics."
+        reference_section: "../content/module-01-case-for-aac/lessons-from-adjacent-disciplines.mdx#now-architecture-as-code-the-punchline"
+
+      - id: q1.2.2
+        type: short_answer
+        prompt: |
+          In the IaC vs AaC comparison table, what is the CALM equivalent of Terraform state
+          (the IaC source of truth for what is actually deployed)?
+        accepted_answers:
+          - "CALM Hub"
+          - "calm hub"
+          - "Hub"
+        case_sensitive: false
+        explanation: "CALM Hub is the versioned registry that records what architectures an organisation has published — the source of truth for architecture, equivalent to Terraform state for infrastructure. It allows drift detection between the declared architecture and the running system."
+        reference_section: "../content/module-01-case-for-aac/lessons-from-adjacent-disciplines.mdx#the-iac-vs-aac-comparison-the-central-table"
+
+  - chapter: 1.3
+    slug: what-architecture-as-code-enables
+    title: "What Architecture as Code Enables"
+    questions:
+      - id: q1.3.1
+        type: multiple_choice
+        prompt: |
+          Which of the six AaC capabilities described in Chapter 1.3 enables CI/CD pipeline
+          gates that prevent a deployment if the architecture violates a declared pattern?
+        options:
+          - label: "Automated validation"
+            correct: true
+            explanation: "Correct. Automated validation — specifically the calm validate command run as a CI gate — is the capability that prevents deployments when the architecture violates a pattern or schema requirement. The gate runs in the pipeline and rejects changes that do not conform."
+          - label: "Pattern reuse"
+            correct: false
+            explanation: "Pattern reuse is the capability that lets teams instantiate from approved blueprints, ensuring every new service starts architecturally compliant. The CI gate itself is automated validation — the mechanism that checks conformance at merge time."
+          - label: "Compliance automation"
+            correct: false
+            explanation: "Compliance automation is the capability that generates evidence artifacts for auditors, using CALM Guard. The CI gate that prevents non-conforming architectures from merging is automated validation, not compliance automation."
+        reference_section: "../content/module-01-case-for-aac/what-architecture-as-code-enables.mdx#automated-validation"
+
+      - id: q1.3.2
+        type: code_completion
+        prompt: |
+          Which CLI command validates a CALM architecture document against the schema and
+          declared patterns? Complete the command:
+        snippet: |
+          <BLANK> my-system.architecture.json
+        accepted_answers:
+          - "calm validate"
+          - "calm validate -a"
+          - "npx @finos/calm-cli validate -a"
+        explanation: "calm validate is the command that checks a CALM architecture document against the CALM 1.2 schema and any declared patterns. It exits 0 if the document is valid and 1 if there are violations — making it suitable for use as a CI gate."
+        reference_section: "../content/module-01-case-for-aac/what-architecture-as-code-enables.mdx#automated-validation"
+
+  - chapter: 1.4
+    slug: governance-frameworks-and-aac
+    title: "Governance Frameworks and Why They Need AaC"
+    questions:
+      - id: q1.4.1
+        type: multiple_choice
+        prompt: |
+          Which Gemara layer does a CALM architecture document map to?
+        options:
+          - label: "Layer 4 (Sensitive Activities)"
+            correct: true
+            explanation: "Correct. Layer 4 is Gemara's pivot point — the actual system that introduces risk. CALM is the machine-optimized representation of this layer, specifically designed for the kind of machine-readable architecture documentation Gemara Section 8 calls for."
+          - label: "Layer 2 (Threats & Controls)"
+            correct: false
+            explanation: "Layer 2 is for technology-specific Threats and Controls — e.g. FINOS CCC. The CALM architecture is the sensitive activity those controls protect, which maps to Layer 4."
+          - label: "Layer 7 (Audit & Continuous Monitoring)"
+            correct: false
+            explanation: "Layer 7 is for audit and continuous monitoring. CALM Guard's continuous monitoring mode operates at Layer 7; CALM the architecture document is the Layer 4 input it monitors."
+        reference_section: "../content/module-01-case-for-aac/governance-frameworks-and-aac.mdx#gemara-the-grc-engineering-model"
+
+      - id: q1.4.2
+        type: multiple_choice
+        prompt: |
+          Which project is explicitly cited by the Gemara whitepaper as a canonical
+          Layer 2 (Threats & Controls) asset?
+        options:
+          - label: "FINOS CCC (Common Controls Catalog)"
+            correct: true
+            explanation: "Correct. The Gemara whitepaper explicitly cites FINOS CCC as a canonical Layer 2 asset — a catalog of technology-specific threat controls with assessment requirements. CCC provides the control definitions; CALM architectures declare the controls; CALM Guard evaluates compliance."
+          - label: "OpenSSF OSPS Baseline"
+            correct: false
+            explanation: "The OpenSSF OSPS Baseline is a Layer 2 asset cited by Gemara for supply chain security controls, but the canonical example explicitly cited in the whitepaper at Layer 2 is FINOS CCC. OSPS Baseline and CCC are both Layer 2 assets; CCC is the canonical citation."
+          - label: "Google SAIF"
+            correct: false
+            explanation: "Google SAIF (Secure AI Framework) is a governance framework with 6 principles for AI security, not a Layer 2 Threats & Controls catalog. SAIF maps to CALM ai:* node types and decorators; it does not operate at the Gemara Layer 2 level."
+        reference_section: "../content/module-01-case-for-aac/governance-frameworks-and-aac.mdx#gemara-the-grc-engineering-model"
+
+      - id: q1.4.3
+        type: multiple_choice
+        prompt: |
+          What does the FINOS AIGF (AI Governance Framework) do in the context of
+          CALM architectures?
+        options:
+          - label: "Auto-attaches as a governance overlay when ai:* nodes are detected in a CALM architecture"
+            correct: true
+            explanation: "Correct. AIGF is designed as an overlay — it attaches governance requirements to architectures that include AI systems, as signalled by the presence of ai:* node types. The architecture document becomes the trigger: when an ai:inference-service or ai:model-registry node is declared, AIGF requirements attach automatically as decorators."
+          - label: "Replaces the CALM specification for AI architectures"
+            correct: false
+            explanation: "AIGF does not replace CALM for AI systems — it extends it. The base CALM specification (nodes, relationships, interfaces, controls) applies to all architectures including AI ones. AIGF attaches additional governance requirements as decorators on top of the base architecture."
+          - label: "Validates that AI models are fair and unbiased"
+            correct: false
+            explanation: "Fairness and bias validation is a specific AI safety concern addressed by NIST AI RMF and related risk frameworks. AIGF is the governance overlay framework — it attaches governance requirements to architectures containing AI nodes, not a model evaluation tool."
+        reference_section: "../content/module-01-case-for-aac/governance-frameworks-and-aac.mdx#the-governance-landscape"
+
+  - chapter: 1.5
+    slug: introducing-calm
+    title: "Introducing CALM"
+    questions:
+      - id: q1.5.1
+        type: multiple_choice
+        prompt: |
+          Which organisation stewards the CALM specification?
+        options:
+          - label: "FINOS (Fintech Open Source Foundation), a Linux Foundation project"
+            correct: true
+            explanation: "Correct. CALM is stewarded by FINOS — the Fintech Open Source Foundation, a Linux Foundation project dedicated to accelerating open source and open standards in financial services. The FINOS CALM Working Group governs spec evolution."
+          - label: "The Open Source Security Foundation (OpenSSF)"
+            correct: false
+            explanation: "OpenSSF stewards projects related to open source security — including Gemara (the GRC Engineering Model). CALM is under FINOS governance, not OpenSSF governance. The two foundations are both Linux Foundation projects and their projects are complementary."
+          - label: "Google, as the lead contributor to the CALM reference implementation"
+            correct: false
+            explanation: "CALM is not governed by Google. Google SAIF is a Google framework that maps to CALM ai:* node types, but CALM itself is governed by FINOS. The reference implementation and CLI are maintained by the FINOS CALM community."
+        reference_section: "../content/module-01-case-for-aac/introducing-calm.mdx#finos-as-the-open-standard-home"
+
+      - id: q1.5.2
+        type: short_answer
+        prompt: |
+          Name one tool in the FINOS CALM ecosystem (other than the specification itself).
+        accepted_answers:
+          - "CALM CLI"
+          - "CLI"
+          - "calm cli"
+          - "CALM Hub"
+          - "Hub"
+          - "calm hub"
+          - "CALM Studio"
+          - "Studio"
+          - "calm studio"
+          - "CALM Guard"
+          - "Guard"
+          - "calm guard"
+          - "calmstudio-mcp"
+          - "MCP"
+          - "mcp"
+          - "calm-studio-mcp"
+        case_sensitive: false
+        explanation: "The FINOS CALM ecosystem includes: CALM CLI (validate, diff, docify), CALM Hub (versioned registry for architecture artifacts and patterns), CALM Studio (visual canvas with bidirectional sync), CALM Guard (AI-driven compliance automation), and calmstudio-mcp (MCP server for AI-driven architecture creation). Any of these is a correct answer."
+        reference_section: "../content/module-01-case-for-aac/introducing-calm.mdx#the-calm-ecosystem-at-a-glance"

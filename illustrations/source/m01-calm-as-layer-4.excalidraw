@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 480,
+      "text": "DIAGRAM SPEC — CALM as Gemara Layer 4 Pivot (Chapter 1.4)\n\nLayout: Vertical sandwich with three distinct zones.\n\nTOP ZONE (light shading, wide band):\n  Label: 'Layers 1–3 — what the rules SAY should exist'\n  Three small boxes inside:\n    - 'NIST CSF / MITRE ATT&CK [L1]'\n    - 'FINOS CCC [L2]'\n    - 'Org Risk Policy [L3]'\n  Downward arrow from bottom of this zone labelled 'feed into'\n\nCENTRE ZONE (medium shading, HEAVY border, prominent):\n  Label: 'Layer 4 — Sensitive Activities'\n  One large central box:\n    'CALM Architecture (.architecture.json)'\n  Upward arrow from top zone connects here\n  Downward arrow from here labelled 'evaluated by'\n\nBOTTOM ZONE (heavy shading, wide band):\n  Label: 'Layers 5–7 — did we BUILD it correctly?'\n  Three small boxes inside:\n    - 'CALM Guard Evaluation [L5]'\n    - 'CALM Guard Enforcement [L6]'\n    - 'CALM Guard Audit [L7]'\n  Upward arrow into centre zone\n\nRIGHT SIDE annotation (outside the sandwich):\n  'CALM is the pivot point —'\n  'Gemara Section 8 calls for this schema explicitly.'\n\nStyle: B&W only. Three distinct shading levels: light top, medium centre (with thicker border),\nheavy bottom. No colour. Sandwich layout clearly shows CALM as the central pivot.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — CALM as Gemara Layer 4 Pivot (Chapter 1.4)\n\nLayout: Vertical sandwich with three distinct zones.\n\nTOP ZONE (light shading, wide band):\n  Label: 'Layers 1–3 — what the rules SAY should exist'\n  Three small boxes inside:\n    - 'NIST CSF / MITRE ATT&CK [L1]'\n    - 'FINOS CCC [L2]'\n    - 'Org Risk Policy [L3]'\n  Downward arrow from bottom of this zone labelled 'feed into'\n\nCENTRE ZONE (medium shading, HEAVY border, prominent):\n  Label: 'Layer 4 — Sensitive Activities'\n  One large central box:\n    'CALM Architecture (.architecture.json)'\n  Upward arrow from top zone connects here\n  Downward arrow from here labelled 'evaluated by'\n\nBOTTOM ZONE (heavy shading, wide band):\n  Label: 'Layers 5–7 — did we BUILD it correctly?'\n  Three small boxes inside:\n    - 'CALM Guard Evaluation [L5]'\n    - 'CALM Guard Enforcement [L6]'\n    - 'CALM Guard Audit [L7]'\n  Upward arrow into centre zone\n\nRIGHT SIDE annotation (outside the sandwich):\n  'CALM is the pivot point —'\n  'Gemara Section 8 calls for this schema explicitly.'\n\nStyle: B&W only. Three distinct shading levels: light top, medium centre (with thicker border),\nheavy bottom. No colour. Sandwich layout clearly shows CALM as the central pivot."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

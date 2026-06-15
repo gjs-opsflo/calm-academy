@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 520,
+      "text": "DIAGRAM SPEC — Gemara 7-Layer Model Overview (Chapter 1.4 flagship + slide deck)\n\nLayout: 7 horizontal rows stacked bottom-to-top, OSI-style.\n\nRows from TOP to BOTTOM (top = highest layer):\n  L7 — 'Audit & Continuous Monitoring' (heavy shading — measurement layer)\n  L6 — 'Preventive & Remediative Enforcement' (heavy shading — measurement layer)\n  L5 — 'Intent & Behavioral Evaluation' (medium shading — measurement layer)\n  [THICK HORIZONTAL SEPARATOR labelled 'PIVOT POINT']\n  L4 — 'Sensitive Activities' (medium shading, heavy border — THE PIVOT)\n    Annotation on this row: '← CALM LIVES HERE'\n  [SEPARATOR]\n  L3 — 'Risks & Policy' (light shading — definition layer)\n  L2 — 'Threats & Controls' (light shading — definition layer)\n    Annotation: 'FINOS CCC cited at L2'\n  L1 — 'Vectors & Guidance' (light shading — definition layer)\n\nRight side of diagram:\n  Vertical bracket spanning L1–L3, labelled 'Definition layers'\n  Vertical bracket spanning L5–L7, labelled 'Measurement layers'\n  L4 row marked 'PIVOT' with double-headed arrow\n\nTitle (above diagram): 'Gemara — the GRC Engineering Model'\nCaption (below diagram): 'CALM is the Layer 4 schema Gemara calls for.'\n\nStyle: B&W only. Use diagonal hatching or dots to differentiate shading levels\n(light for L1–L3, medium for L4, heavy for L5–L7). L4 has bold/thick border.\nNo colour. Follow ILLUSTRATION-STANDARDS.md shading conventions.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Gemara 7-Layer Model Overview (Chapter 1.4 flagship + slide deck)\n\nLayout: 7 horizontal rows stacked bottom-to-top, OSI-style.\n\nRows from TOP to BOTTOM (top = highest layer):\n  L7 — 'Audit & Continuous Monitoring' (heavy shading — measurement layer)\n  L6 — 'Preventive & Remediative Enforcement' (heavy shading — measurement layer)\n  L5 — 'Intent & Behavioral Evaluation' (medium shading — measurement layer)\n  [THICK HORIZONTAL SEPARATOR labelled 'PIVOT POINT']\n  L4 — 'Sensitive Activities' (medium shading, heavy border — THE PIVOT)\n    Annotation on this row: '← CALM LIVES HERE'\n  [SEPARATOR]\n  L3 — 'Risks & Policy' (light shading — definition layer)\n  L2 — 'Threats & Controls' (light shading — definition layer)\n    Annotation: 'FINOS CCC cited at L2'\n  L1 — 'Vectors & Guidance' (light shading — definition layer)\n\nRight side of diagram:\n  Vertical bracket spanning L1–L3, labelled 'Definition layers'\n  Vertical bracket spanning L5–L7, labelled 'Measurement layers'\n  L4 row marked 'PIVOT' with double-headed arrow\n\nTitle (above diagram): 'Gemara — the GRC Engineering Model'\nCaption (below diagram): 'CALM is the Layer 4 schema Gemara calls for.'\n\nStyle: B&W only. Use diagonal hatching or dots to differentiate shading levels\n(light for L1–L3, medium for L4, heavy for L5–L7). L4 has bold/thick border.\nNo colour. Follow ILLUSTRATION-STANDARDS.md shading conventions."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
