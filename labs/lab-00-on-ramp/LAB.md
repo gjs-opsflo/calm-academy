@@ -45,7 +45,7 @@ steps:
     check:
       kind: command_regex
       command: "npx @finos/calm-cli validate -a my-system.architecture.json -f pretty"
-      pattern: "(?i)has.*error.*false|0 error|No issues found"
+      pattern: "No issues found"
     hints:
       - "Run: npx @finos/calm-cli validate -a my-system.architecture.json -f pretty"
       - "Look for hasErrors: false or 'No issues found' in the output"
