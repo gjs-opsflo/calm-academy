@@ -12,7 +12,7 @@ prerequisites:
 ## TL;DR
 
 - Pick a real system you know — describe it in 3 sentences
-- Use calmstudio-mcp to generate the `.calm.json` — watch the 6 tool calls happen
+- Use calmstudio-mcp to generate the `.calm.json` — watch the AI make six types of tool calls: `read_calm_guide`, `create_architecture`, `add_node` (×4), `add_relationship` (×3), `finalize_architecture`, `export_calm` — eleven calls total for a four-node architecture
 - Run `npx @finos/calm-cli validate -a my-system.architecture.json -f pretty` — confirm no issues
 - Open CALM Studio, import the file, see your architecture visualized
 - Takes 10–15 minutes. No spec knowledge required.
