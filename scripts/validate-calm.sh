@@ -8,6 +8,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
 PASS_COUNT=0
 FAIL_COUNT=0
 FAIL_FILES=()
@@ -25,7 +28,7 @@ while IFS= read -r -d '' FILE; do
     FAIL_FILES+=("$FILE")
     FAIL_COUNT=$((FAIL_COUNT + 1))
   fi
-done < <(find code-examples -name "*.architecture.json" -print0 2>/dev/null)
+done < <(find "${REPO_ROOT}/code-examples" -name "*.architecture.json" -print0 2>/dev/null)
 
 echo ""
 echo "Validation summary: $PASS_COUNT passed, $FAIL_COUNT failed"
@@ -39,7 +42,7 @@ if [ ${#FAIL_FILES[@]} -gt 0 ]; then
 fi
 
 if [ "$PASS_COUNT" -eq 0 ]; then
-  echo "No .architecture.json files found under code-examples/ — nothing to validate"
+  echo "No .architecture.json files found under ${REPO_ROOT}/code-examples/ — nothing to validate"
 fi
 
 exit 0

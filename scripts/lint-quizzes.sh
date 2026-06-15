@@ -9,7 +9,10 @@
 
 set -euo pipefail
 
-QUIZ_DIR="quizzes"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+QUIZ_DIR="${REPO_ROOT}/quizzes"
 PASS=0
 FAIL=0
 

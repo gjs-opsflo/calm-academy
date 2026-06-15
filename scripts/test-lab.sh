@@ -8,9 +8,12 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
 PASS=0
 FAIL=0
-LAB_DIR="labs/lab-00-on-ramp"
+LAB_DIR="${REPO_ROOT}/labs/lab-00-on-ramp"
 SOLUTION_DIR="${LAB_DIR}/solution"
 LAB_FILE="${LAB_DIR}/LAB.md"
 
