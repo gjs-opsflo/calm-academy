@@ -1,0 +1,155 @@
+---
+title: "Your First CALM Document"
+slug: your-first-calm-document
+module: 0
+chapter: 0.5
+estimated_minutes: 15
+prerequisites:
+  - three-paths-to-first-calm-doc
+  - get-set-up-in-sixty-seconds
+---
+
+## TL;DR
+
+- Pick a real system you know — describe it in 3 sentences
+- Use calmstudio-mcp to generate the `.calm.json` — watch the 6 tool calls happen
+- Run `npx @finos/calm-cli validate -a my-system.architecture.json -f pretty` — confirm no issues
+- Open CALM Studio, import the file, see your architecture visualized
+- Takes 10–15 minutes. No spec knowledge required.
+
+## Why it matters
+
+You just read four chapters of background. Now you do the thing. In 15 minutes you will produce a versionable, validated, AI-consumable architecture document. Not a diagram. Not a Confluence page. Not a PowerPoint. A machine-readable specification that a CI pipeline can check, a security scanner can interrogate, and an AI can use to generate code.
+
+You will spend the rest of this course learning why that document is structured the way it is — and what you can do with it that you could not do with a diagram. But you need to have produced one first. That is what this chapter is for.
+
+## The concept
+
+### Choosing your system
+
+The best system for this exercise is one you already know — not a tutorial example. Do not reach for a "blog" or "todo app" unless you actually work on one. Use your team's production API, your side project's data pipeline, a SaaS product you use daily and understand from the outside.
+
+CALM captures structure, not implementation detail. You do not need to know how many threads the API uses or what ORM the database layer calls. You need to know what talks to what, who initiates things, and where data lives. Three sentences is usually enough to capture that:
+
+1. **Who uses it and for what** — this identifies your `actor` node
+2. **What software components exist** — this identifies your `service`, `webclient`, or `system` nodes
+3. **Where data lives** — this identifies your `database` or `data-asset` nodes
+
+Here is an example from a financial services context. A financial advisor accesses a dashboard to view client portfolio data. The dashboard calls a portfolio API, which aggregates positions from a trading system and a custodian. The API caches positions in Redis. That 3-sentence description maps directly to: 1 actor (financial advisor), 1 webclient (dashboard), 1 service (portfolio API), 1 service (trading system), 1 service (custodian), 1 database (Redis). Six nodes, ready for CALM.
+
+Your 3-sentence description does not need to be that detailed. Start with what you know and let the AI ask clarifying questions.
+
+### Generating the .calm.json
+
+You have three ways to do this, depending on how you set up in Chapter 0.4:
+
+**If you have calmstudio-mcp configured** (Path A or B from Chapter 0.4):
+
+Open your AI client — Claude Code, Cursor, or Windsurf — with calmstudio-mcp active. Send a message describing your system:
+
+> "Using calmstudio-mcp, create a CALM 1.2 architecture for my system: [your 3 sentences here]"
+
+Watch what happens. The AI makes a sequence of tool calls:
+
+1. `read_calm_guide` — the AI reads the CALM specification before creating anything; this is how it knows to use `actor` instead of `user`
+2. `create_architecture` — initialises the document with `unique-id`, `name`, and `description`
+3. `add_node` (called once per node) — creates each node with the correct type
+4. `add_relationship` (called once per relationship) — connects the nodes
+5. `finalize_architecture` — runs internal validation, auto-attaches AIGF if any `ai:*` nodes are present
+6. `export_calm` — produces the final `.architecture.json` output
+
+Each tool call is one step the AI takes on your behalf. You described the system; the AI encoded it. Save the output as `my-system.architecture.json`.
+
+**If you are using CALM Studio web** (Path C from Chapter 0.4):
+
+Open [CALM Studio](https://studio.calm.finos.org) [verify URL before publication]. Use the visual canvas to add nodes (choose types from the dropdown) and draw relationships between them. When you are done, use the export function to download your architecture as a JSON file. Rename it `my-system.architecture.json`.
+
+CALM Studio web is a good path for your first document because the canvas shows you node type options visually — you cannot accidentally type `container` or `component` when the dropdown only lists valid types.
+
+### Validate your architecture
+
+Once you have `my-system.architecture.json`, run:
+
+```bash
+npx @finos/calm-cli validate -a my-system.architecture.json -f pretty
+```
+
+A successful run produces:
+
+```
+No issues found.
+```
+
+The command exits with code 0 and confirms `hasErrors: false`. That is your machine-readable green light.
+
+If you see errors, the most common cause is an invented node type. The AI occasionally uses `container`, `component`, or `microservice` — none of which exist in the CALM spec. The fix is to ask the AI:
+
+> "The validate command returned errors. Fix the invalid node types — only use types from: actor, ecosystem, system, service, database, network, ldap, webclient, data-asset"
+
+Run validate again after the AI corrects the file. It should pass.
+
+### Visualizing in CALM Studio
+
+Whether you generated your file via AI or created it manually, open [CALM Studio](https://studio.calm.finos.org) [verify URL before publication] and import `my-system.architecture.json`.
+
+You will see boxes (nodes) connected by arrows (relationships). Click a box to see the node type, `unique-id`, and `description`. Click an arrow to see the relationship type and protocol. The visual output is a direct rendering of the JSON you just produced.
+
+The canvas and the JSON are always in sync. If a node is missing, add it. If a relationship direction looks wrong, fix it either in the canvas (and export again) or in the JSON directly (then re-validate).
+
+### What you just produced
+
+Take a moment to look at the file you just validated.
+
+It is a versionable artifact — you can commit it to git, diff it across versions, and tag releases. It is a validated document — the CLI confirmed it conforms to the CALM 1.2 schema. It is AI-consumable — an AI assistant can read this file and answer questions about your system, generate API stubs, or flag architecture violations.
+
+This is what a Confluence page cannot do. A Confluence page tells you what exists. A CALM document specifies it in a format that machines can check, compare, and act on.
+
+Module 1 explains why this distinction matters across the industry. Module 2 teaches you to read and write CALM precisely without AI assistance. Module 3 shows you what to do with your CALM files in production — CI/CD integration, CALM Guard compliance checks, and the CALM Hub registry.
+
+For now: the 15-minute on-ramp is complete.
+
+## Code/CALM examples
+
+```
+// Reference solution: labs/lab-00-on-ramp/solution/my-system.architecture.json
+// Your architecture will look similar in structure but describe your actual system.
+```
+
+Expected validate output:
+
+```bash
+# Run this after generating my-system.architecture.json
+npx @finos/calm-cli validate -a my-system.architecture.json -f pretty
+# → No issues found.
+# (exit code 0, hasErrors: false, hasWarnings: false)
+```
+
+## Common mistakes
+
+- **Describing implementation instead of architecture.** "Uses PostgreSQL with UUID PKs and a connection pool of 10" is implementation. "Stores records in a database" is architecture. CALM captures structure, not configuration. Ask yourself: "does this describe what the system is, or how it is built?"
+
+- **Describing only one component.** The 3-sentence frame exists to prevent this. If your description has no actor node, no relationship to start from, and no data storage, you have described a feature, not a system. A system has users, components, and data — at minimum.
+
+- **Skipping validation before moving on.** The AI output is a draft. `finalize_architecture` catches most problems, but running `npx @finos/calm-cli validate -a` is still recommended as a final check. It takes three seconds. Do not skip it.
+
+- **Treating CALM as complete documentation.** Your 3-sentence description will produce a minimal architecture. A production system may have 20 nodes. CALM is not a substitute for full architecture documentation — it is the machine-readable layer that sits alongside it. The architecture you produce today will grow as you learn more of the spec.
+
+## Knowledge check
+
+Take the quiz to close the loop on what you just built:
+
+[Take the Module 0 quiz](../../quizzes/module-00-on-ramp.yaml)
+
+## Lab
+
+**Ready? Open the lab:**
+
+[Lab 0: Your First CALM Document in 15 Minutes](../../labs/lab-00-on-ramp/LAB.md)
+
+Complete all 4 steps, then come back here and take the quiz above. The lab is Docker-free and takes 10–15 minutes on a first attempt.
+
+## Further reading
+
+- [Why This Works (and When It Doesn't)](why-this-works-and-when-it-doesnt.mdx) — understand the CALM type system behind the document you just produced
+- [Live Demo: Diagram to CALM in Five Minutes](live-demo-diagram-to-calm-in-five-minutes.mdx) — replay the Chapter 0.2 demo with the knowledge you now have
+- CALM CLI reference: https://github.com/finos/architecture-as-code/tree/main/calm-ai/tools
