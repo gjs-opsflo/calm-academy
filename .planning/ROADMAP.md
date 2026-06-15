@@ -51,7 +51,7 @@ Plans:
 **Requirements:** MOD-02, QUIZ-02, ILL-02, SLIDE-01
 **Dependencies:** Phase 1 complete (production workflow validated)
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 
@@ -61,7 +61,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 02-02-PLAN.md — Module 1 slide deck (SLIDE-01): Marp Markdown file at slides/module-01-case-for-aac.md, 20-30 slides, speaker notes, derived from Wave 1 text
+- [x] 02-02-PLAN.md — Module 1 slide deck (SLIDE-01): Marp Markdown file at slides/module-01-case-for-aac.md, 20-30 slides, speaker notes, derived from Wave 1 text
 
 **Success Criteria:**
 
@@ -151,7 +151,7 @@ Plans:
 | Phase | Name | Requirements | Est. Duration |
 |-------|------|--------------|---------------|
 | 1 | 3/3 | Complete   | 2026-06-15 |
-| 2 | 1/2 | In Progress|  |
+| 2 | 2/2 | Complete   | 2026-06-15 |
 | 3 | Module 2 — CALM Fundamentals | MOD-03, LAB-02, QUIZ-03, ILL-03, SLIDE-02, CODE-01, CODE-02 | 2.5 weeks |
 | 4 | Module 3 — Ecosystem | MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03 | 2 weeks |
 | 5 | Site Launch Prep | SITE-01 | 1 week |
