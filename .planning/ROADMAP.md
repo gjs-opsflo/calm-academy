@@ -15,6 +15,13 @@
 **Requirements:** MOD-01, LAB-01, QUIZ-01, ILL-01
 **Dependencies:** calmstudio-mcp available globally (already confirmed)
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Setup gate: Chapter 0.1 (Three Paths) + Chapter 0.4 (Get Set Up) + todo-api code example + validation scripts
+- [ ] 01-02-PLAN.md — Demo + Why: Chapter 0.2 (Live Demo) + Chapter 0.3 (Why it Works) + 3 Excalidraw illustration stubs (ILL-01)
+- [ ] 01-03-PLAN.md — Hands-on: Chapter 0.5 (Lab wrapper) + Lab 0 (LAB.md + solution) + Module 0 quiz (QUIZ-01)
+
 **Success Criteria:**
 1. All 5 Module 0 chapters authored as MDX, readable in the site
 2. Lab 0 completes end-to-end on a fresh machine: `describe → .calm.json → calm validate → Studio visualize`
