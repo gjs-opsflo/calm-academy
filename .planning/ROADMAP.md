@@ -15,7 +15,7 @@
 **Requirements:** MOD-01, LAB-01, QUIZ-01, ILL-01
 **Dependencies:** calmstudio-mcp available globally (already confirmed)
 
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 
 Plans:
 
@@ -26,7 +26,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [ ] 01-02-PLAN.md — Demo + Why: Chapter 0.2 (Live Demo) + Chapter 0.3 (Why it Works) + 3 Excalidraw illustration stubs (ILL-01) `[autonomous: false — requires user illustration authoring]`
-- [ ] 01-03-PLAN.md — Hands-on: Chapter 0.5 (Lab wrapper) + Lab 0 (LAB.md + solution) + Module 0 quiz (QUIZ-01)
+- [x] 01-03-PLAN.md — Hands-on: Chapter 0.5 (Lab wrapper) + Lab 0 (LAB.md + solution) + Module 0 quiz (QUIZ-01)
 
 **Cross-cutting constraints:**
 
@@ -138,7 +138,7 @@ Plans:
 
 | Phase | Name | Requirements | Est. Duration |
 |-------|------|--------------|---------------|
-| 1 | 1/3 | In Progress|  |
+| 1 | 2/3 | In Progress|  |
 | 2 | Module 1 — Case for AaC | MOD-02, QUIZ-02, ILL-02, SLIDE-01 | 1.5 weeks |
 | 3 | Module 2 — CALM Fundamentals | MOD-03, LAB-02, QUIZ-03, ILL-03, SLIDE-02, CODE-01, CODE-02 | 2.5 weeks |
 | 4 | Module 3 — Ecosystem | MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03 | 2 weeks |
