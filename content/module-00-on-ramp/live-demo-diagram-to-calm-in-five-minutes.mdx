@@ -1,0 +1,339 @@
+---
+title: "Live Demo: Diagram to CALM in 5 Minutes"
+slug: live-demo-diagram-to-calm-in-five-minutes
+module: 0
+chapter: 0.2
+estimated_minutes: 7
+prerequisites:
+  - three-paths-to-first-calm-doc
+  - get-set-up-in-sixty-seconds
+---
+
+## TL;DR
+
+- You are about to watch (in text) a 5-minute AI-assisted CALM generation run, end to end
+- The AI makes six tool calls in sequence: `read_calm_guide` → `create_architecture` → `add_node` (×4) → `add_relationship` (×3) → `finalize_architecture` → `export_calm`
+- No JSON typed by hand, no spec consulted, no node-type guessing
+- The output is the `todo-api.architecture.json` from the previous chapter — a real validated CALM file
+- After reading this chapter, the generated CALM file is no longer a mystery: you know exactly what produced it and why
+
+## Why it matters
+
+Chapter 0.1 described three paths in the abstract. Here you see exactly what happens inside one of those paths — every AI decision, every tool call, every piece of output. This chapter makes the magic concrete. After reading it, you can explain to a colleague how the AI produced a valid CALM document from three sentences of natural language, why it chose each node type, and what the validation step confirms. That explanation is the foundation you need before you write your own architecture in Chapter 0.5.
+
+## The concept
+
+### The starting point: a 3-sentence system description
+
+Everything starts with this input — nothing more:
+
+> "A user opens a web app to manage their todos. The web app calls a REST API. The API stores todo items in a database."
+
+Three sentences. No diagrams, no spec knowledge, no JSON. The architecture is implicit in the description: there is something a user interacts with (the web app), something the web app calls (the REST API), and something the REST API writes to (the database). Every common web application shares this pattern. The three-sentence form captures it cleanly.
+
+This is Path A: Talk. You bring the description. The AI brings the spec knowledge.
+
+![Three paths to a CALM document: Path A (Talk), Path B (Sketch), Path C (Markdown) all converge to a single .calm.json output](../../illustrations/exported/m00-three-paths.svg)
+
+### Step 1: The AI reads the spec first
+
+When calmstudio-mcp is active and the AI receives the system description, the first tool call is always `read_calm_guide`. Not `create_architecture`. Not `add_node`. The spec first.
+
+```
+Tool call: read_calm_guide()
+```
+
+This tool returns the CALM specification — the 9 node types, the 5 relationship types, the required JSON structure, the valid property names. The AI now has the constraint set in its context before it creates anything.
+
+Why this matters: this is what prevents hallucinated node types. Without `read_calm_guide`, the AI would invent types from its training data — types like `container`, `component`, `microservice`, or `api-gateway`. These do not exist in the CALM spec. The CALM CLI would reject them. The MCP server prevents this by making `read_calm_guide` the mandatory first step.
+
+After `read_calm_guide` returns, the AI has the vocabulary. Now it can build.
+
+### Step 2: Creating the architecture scaffold
+
+The AI calls `create_architecture` with the top-level metadata derived from the description:
+
+```
+Tool call: create_architecture(
+  name: "Simple Todo API",
+  unique-id: "todo-api",
+  description: "A minimal web application for managing todo items"
+)
+```
+
+This creates the architecture shell — the JSON wrapper that will hold the nodes and relationships. The scaffold at this point is:
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "todo-api",
+  "name": "Simple Todo API",
+  "description": "A minimal web application for managing todo items",
+  "nodes": [],
+  "relationships": []
+}
+```
+
+An empty architecture is valid JSON but not very useful. The next step fills in the nodes.
+
+### Step 3: Adding nodes — one tool call per node
+
+The AI now reads the description again and identifies the components. Each component gets one `add_node` call. This is where the spec knowledge from `read_calm_guide` pays off — the AI knows exactly which of the 9 node types to use for each component.
+
+**Node 1: "A user" → actor**
+
+```
+Tool call: add_node(
+  unique-id: "user",
+  node-type: "actor",
+  name: "User",
+  description: "Person creating and viewing todo items"
+)
+```
+
+The decision: "A user" is an actor because actors are external entities that initiate interaction with the system. The user is not a component of the system — they are outside it. They trigger activity. Every other node type (service, webclient, database, etc.) represents something that lives inside the system boundary. An actor is the one entity that deliberately lives outside. The user could also have been typed as a `person` — but `person` does not exist in the CALM spec. The closest valid type is `actor`. (In the FINOS architecture-as-code repository examples, human users are always `actor` nodes.)
+
+**Node 2: "web app" → webclient**
+
+```
+Tool call: add_node(
+  unique-id: "todo-web",
+  node-type: "webclient",
+  name: "Todo Web App",
+  description: "Browser-based interface for managing todo items"
+)
+```
+
+The decision: "web app" maps to `webclient` because a webclient is a browser app, mobile app, or any frontend — anything that runs in the client's environment (browser, phone) and connects inward to a backend. It is not a `service` (which is stateful and runs server-side), not a `system` (which is a logical bounded context, not a UI), and not an `ecosystem` (which is a runtime environment like a Kubernetes cluster). The web app is the user-facing interface that runs in the browser: `webclient`.
+
+**Node 3: "REST API" → service**
+
+```
+Tool call: add_node(
+  unique-id: "todo-api",
+  node-type: "service",
+  name: "Todo API",
+  description: "REST API handling todo item CRUD operations"
+)
+```
+
+The decision: "REST API" maps to `service` because a service is a stateful internal component that handles business logic. It runs server-side, it is called by other nodes, and it owns the behavior of the system. The REST API handles create, read, update, and delete operations for todo items — that is business logic, that is stateful (it has to read and write to the database), that is server-side. `service` is the right type. It could not be a `network` (which is infrastructure like a load balancer or firewall), not a `database` (which is persistence only), and not a `webclient` (which runs on the client side).
+
+**Node 4: "database" → database**
+
+```
+Tool call: add_node(
+  unique-id: "todo-db",
+  node-type: "database",
+  name: "Todo Database",
+  description: "Persistent storage for todo items"
+)
+```
+
+The decision: this is the straightforward one. "Database" in the description maps directly to the `database` node type. The `database` type covers any data persistence: SQL, NoSQL, document stores, caches used for persistence, and queues used for storage. If the description had said "Redis cache" or "S3 bucket", the decision would require more judgment — but a database is a database. The only close alternative would be `data-asset` (for files, datasets, event streams), but `data-asset` is for passive data, not an active storage service that the API reads and writes to.
+
+### Step 4: Adding relationships — connecting the dots
+
+With four nodes in place, the AI now adds the connections. Each relationship describes how two nodes communicate. The AI has three relationships to add from the description.
+
+**Relationship 1: user interacts todo-web**
+
+```
+Tool call: add_relationship(
+  unique-id: "user-interacts-web",
+  relationship-type: "interacts",
+  actor: "user",
+  nodes: ["todo-web"],
+  description: "User accesses the todo web application"
+)
+```
+
+The relationship type is `interacts`, not `connects`. This distinction matters. `interacts` is the relationship type for actors — entities outside the system boundary that interact with nodes inside it. The user does not "connect" to the web app in the network sense (the user's browser connects to the web server, but from an architectural perspective, the user *interacts* with the interface). CALM treats actor-to-node relationships as `interacts` by convention, and this is what automated tools like CALM Guard expect when reasoning about user-facing entry points.
+
+**Relationship 2: todo-web connects todo-api (HTTPS)**
+
+```
+Tool call: add_relationship(
+  unique-id: "web-to-api",
+  relationship-type: "connects",
+  source: "todo-web",
+  destination: "todo-api",
+  protocol: "HTTPS",
+  description: "Web app calls the API to read and write todos"
+)
+```
+
+The relationship type is `connects` because this is a point-to-point network communication between two system components. The webclient calls the service over HTTPS. `connects` carries a `protocol` property — specifying HTTPS here is important: it tells downstream tools (CALM Guard, compliance automation) that this communication channel uses TLS. If the protocol were HTTP (unencrypted), that would show up as a finding in a security audit. The direction matters too: `todo-web` is the source (it initiates the call), `todo-api` is the destination (it receives the request).
+
+**Relationship 3: todo-api connects todo-db (JDBC)**
+
+```
+Tool call: add_relationship(
+  unique-id: "api-to-db",
+  relationship-type: "connects",
+  source: "todo-api",
+  destination: "todo-db",
+  protocol: "JDBC",
+  description: "API stores and retrieves todo items from the database"
+)
+```
+
+`connects` again — the API makes a database connection. The protocol is JDBC (Java Database Connectivity), the standard protocol for SQL database access. The direction is `todo-api` → `todo-db`: the API initiates the connection and queries the database. The database does not call back. CALM captures this asymmetry in the `source` and `destination` properties.
+
+### Step 5: Finalize and validate
+
+With nodes and relationships in place, the AI calls `finalize_architecture`:
+
+```
+Tool call: finalize_architecture()
+```
+
+This step does three things:
+
+1. **Schema validation**: Checks the architecture against the CALM 1.2 JSON Schema. Every required field must be present, every property must be the right type, every `unique-id` must be a valid identifier.
+
+2. **Reference validation**: Checks that every node referenced in a relationship actually exists in the nodes array. If a relationship says `source: "todo-web"` but no node with `unique-id: "todo-web"` exists, finalization catches this.
+
+3. **AIGF check**: Scans for any `ai:*` node types. If any are present, the FINOS AI Governance Framework (AIGF) decorator auto-attaches to the architecture. In this todo-api example, there are no `ai:*` nodes — the four nodes are actor, webclient, service, and database. AIGF does not attach here. (You will see AIGF auto-attachment in Module 5 when you build architectures with `ai:orchestrator` and `ai:agent` nodes.)
+
+The finalization output for the todo-api example:
+
+```
+hasErrors: false
+errors: []
+warnings: []
+aigf: not attached (no ai:* nodes detected)
+```
+
+Zero errors. Zero warnings. The architecture is valid.
+
+Then `export_calm` writes the final `.calm.json` file to disk.
+
+### The result: todo-api.architecture.json
+
+This is the file produced by the 5-minute run — the exact output, no modifications:
+
+```json
+// Output from the 5-minute demo — code-examples/module-00-on-ramp/todo-api.architecture.json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "todo-api",
+  "name": "Simple Todo API",
+  "description": "A minimal web application for managing todo items — a user accesses a web frontend, the frontend calls an API service, the API stores todos in a database.",
+  "nodes": [
+    {
+      "unique-id": "user",
+      "node-type": "actor",
+      "name": "User",
+      "description": "Person creating and viewing todo items"
+    },
+    {
+      "unique-id": "todo-web",
+      "node-type": "webclient",
+      "name": "Todo Web App",
+      "description": "Browser-based interface for managing todo items"
+    },
+    {
+      "unique-id": "todo-api",
+      "node-type": "service",
+      "name": "Todo API",
+      "description": "REST API handling todo item CRUD operations"
+    },
+    {
+      "unique-id": "todo-db",
+      "node-type": "database",
+      "name": "Todo Database",
+      "description": "Persistent storage for todo items"
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "user-interacts-web",
+      "description": "User accesses the todo web application",
+      "relationship-type": {
+        "interacts": {
+          "actor": "user",
+          "nodes": ["todo-web"]
+        }
+      }
+    },
+    {
+      "unique-id": "web-to-api",
+      "description": "Web app calls the API to read and write todos",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "todo-web" },
+          "destination": { "node": "todo-api" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "api-to-db",
+      "description": "API stores and retrieves todo items from the database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "todo-api" },
+          "destination": { "node": "todo-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
+```
+
+Forty-three lines of JSON. Four nodes. Three relationships. One architecture. Produced from three sentences.
+
+Load it into CALM Studio and you get this visualization:
+
+![CALM Studio canvas showing four nodes connected: User (actor) → Todo Web App (webclient) → Todo API (service) → Todo Database (database)](../../illustrations/exported/m00-calm-studio-mock.svg)
+
+The diagram matches the description exactly. The user interacts with the web app, the web app connects to the API over HTTPS, the API connects to the database over JDBC. What you described is what you got.
+
+### What you can do with this file right now
+
+You have a validated CALM architecture. Here are four things you can do with it immediately:
+
+**Validate it yourself.** Run the CLI to confirm the AI's finalization step:
+
+```bash
+npx @finos/calm-cli validate -a todo-api.architecture.json
+```
+
+You should see `hasErrors: false`. Zero warnings. If you edit the file and introduce a typo — say, change `"node-type": "service"` to `"node-type": "microservice"` — the validation fails. That is the spec enforcing itself.
+
+**Visualize it in CALM Studio.** Import the JSON into CALM Studio ([verify URL before publication]: `https://studio.calm.finos.org`). The Studio renders the nodes in their canonical shapes and draws the relationship arrows. This is what the diagram above shows.
+
+**Modify it.** Change a node description. Add a `network` node between the webclient and the API (a load balancer, perhaps). The spec is JSON — you can edit it directly, or use calmstudio-mcp to add nodes through the AI. `calm validate` will catch any mistakes.
+
+**Use it as the starting point for Chapter 0.5.** The hands-on exercise in Chapter 0.5 asks you to describe a system you actually work on and produce a CALM document from it. The todo-api example is your reference: three sentences in, valid JSON out, zero spec knowledge required.
+
+## Code/CALM examples
+
+The full `todo-api.architecture.json` is shown above in "The result" section. It is the direct output of the 5-minute demo — no modifications, no simplifications. The same file lives at `code-examples/module-00-on-ramp/todo-api.architecture.json` and validates with `npx @finos/calm-cli validate -a` returning exit code 0.
+
+## Common mistakes
+
+**Describing implementation details instead of architecture.** "The frontend uses React with a Redux state store and communicates over GraphQL" — this is implementation detail. CALM captures structural architecture (what components exist, how they connect), not implementation choices inside components. The React details belong inside the `todo-web` node's description, not as separate nodes. One webclient node covers the whole frontend, regardless of the framework.
+
+**Using vague verbs in descriptions that create ambiguous relationships.** "The frontend talks to the backend" — "talk" could mean any relationship type. CALM has five precise relationship types: `connects`, `interacts`, `deployed-in`, `composed-of`, and `options`. Vague verbs force the AI to guess. Precise descriptions ("the web app calls the REST API over HTTPS") produce precise relationships. The more specific your description, the more accurate the CALM output.
+
+**Expecting CALM to capture business logic.** CALM captures structure: what nodes exist and how they connect. It does not capture what the nodes do internally. "The API validates that todo titles are not empty" is business logic — it belongs in the service implementation, not in the architecture document. If you ask the AI to encode business rules in CALM, it will try, but the output will not be a valid CALM document.
+
+**Not checking the `finalize_architecture` output.** If you use calmstudio-mcp directly and skip finalization (or if the AI's context gets long and it rushes to export), the exported file may have subtle issues that `calm validate` catches. Always run validation as your last step. The CLI is the truth — not the AI's confidence that the file is correct.
+
+## Knowledge check
+
+👉 [Take the quiz](../../quizzes/module-00-on-ramp.yaml)
+
+## Lab
+
+👉 [Lab 00: Your First CALM Document](../../labs/lab-00-on-ramp/LAB.md)
+
+## Further reading
+
+- [Why This Works (and When It Doesn't)](./why-this-works-and-when-it-doesnt.mdx) — the next chapter explains the mechanism behind why the AI produces valid CALM
+- [Three Paths to Your First CALM Document](./three-paths-to-first-calm-doc.mdx) — the conceptual overview of all three input paths
+- CALM Studio: `https://studio.calm.finos.org` [verify URL before publication]
+- FINOS architecture-as-code: `https://github.com/finos/architecture-as-code`
