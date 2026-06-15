@@ -57,7 +57,7 @@ steps:
       kind: ai_judge
       prompt: "The learner opened CALM Studio and imported their my-system.architecture.json. They can describe seeing nodes (boxes) connected by arrows (relationships). Ask them: 'What node types can you see in your diagram?' — a correct answer names at least one of: actor, webclient, service, database, network, ecosystem, ldap, data-asset."
     hints:
-      - "Open https://studio.calm.finos.org [verify URL before publication] or the current CALM Studio web URL"
+      - "Open https://studio.calm.finos.org or the current CALM Studio web URL"
       - "Import your my-system.architecture.json file using the import button"
       - "You should see boxes (nodes) connected by arrows (relationships)"
       - "If the URL has changed, check https://github.com/finos/architecture-as-code for the current Studio link"
@@ -140,7 +140,7 @@ Run validate again after the AI fixes the file.
 
 ### Step 4: Visualize in CALM Studio
 
-Open CALM Studio in your browser: https://studio.calm.finos.org [verify URL before publication]
+Open CALM Studio in your browser: https://studio.calm.finos.org
 
 1. Click Import (or drag-and-drop)
 2. Select your `my-system.architecture.json` file

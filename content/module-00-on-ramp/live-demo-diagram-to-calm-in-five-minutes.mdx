@@ -303,7 +303,7 @@ npx @finos/calm-cli validate -a todo-api.architecture.json
 
 You should see `hasErrors: false`. Zero warnings. If you edit the file and introduce a typo — say, change `"node-type": "service"` to `"node-type": "microservice"` — the validation fails. That is the spec enforcing itself.
 
-**Visualize it in CALM Studio.** Import the JSON into CALM Studio ([verify URL before publication]: `https://studio.calm.finos.org`). The Studio renders the nodes in their canonical shapes and draws the relationship arrows. This is what the diagram above shows.
+**Visualize it in CALM Studio.** Import the JSON into CALM Studio at `https://studio.calm.finos.org`. The Studio renders the nodes in their canonical shapes and draws the relationship arrows. This is what the diagram above shows.
 
 **Modify it.** Change a node description. Add a `network` node between the webclient and the API (a load balancer, perhaps). The spec is JSON — you can edit it directly, or use calmstudio-mcp to add nodes through the AI. `calm validate` will catch any mistakes.
 
@@ -335,5 +335,5 @@ The full `todo-api.architecture.json` is shown above in "The result" section. It
 
 - [Why This Works (and When It Doesn't)](./why-this-works-and-when-it-doesnt.mdx) — the next chapter explains the mechanism behind why the AI produces valid CALM
 - [Three Paths to Your First CALM Document](./three-paths-to-first-calm-doc.mdx) — the conceptual overview of all three input paths
-- CALM Studio: `https://studio.calm.finos.org` [verify URL before publication]
+- CALM Studio: `https://studio.calm.finos.org`
 - FINOS architecture-as-code: `https://github.com/finos/architecture-as-code`
