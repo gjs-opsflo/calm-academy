@@ -1,0 +1,220 @@
+---
+title: "Three Paths to Your First CALM Document"
+slug: three-paths-to-first-calm-doc
+module: 0
+chapter: 0.1
+estimated_minutes: 5
+prerequisites: []
+---
+
+## TL;DR
+
+- There are exactly three ways to produce your first CALM document: describe it in plain English (Talk), hand over a diagram (Sketch), or point at an existing architecture doc (Markdown).
+- All three paths produce the same output: a valid `.architecture.json` file conforming to the CALM 1.2 schema.
+- None of the three paths requires you to know the CALM specification before you start.
+- The AI does the spec work — you bring what you already have: words, a picture, or a document.
+- CALM validation is a one-line CLI command that confirms your output is correct.
+
+## Why it matters
+
+You already have what you need to produce a CALM document. It is sitting in your head, on a whiteboard, or in a Confluence page. The three paths in this chapter meet you where your architecture already lives — you do not need to learn JSON Schema or read a 200-page spec to get started. The first CALM document is almost always free. The cost comes later: learning the spec deeply enough to refine, extend, and govern your architecture. That is what Modules 1 through 6 are for. Right now, your only job is to get something valid out the other end.
+
+## The concept
+
+Architecture documentation has a problem: it lives in formats that only humans can read. A Visio diagram communicates to the person in the same meeting room. A Confluence page serves the team that wrote it. A PowerPoint slide says nothing to a CI/CD pipeline, a security scanner, or an AI assistant generating code.
+
+CALM — the Common Architecture Language Model — solves this by encoding architecture as a machine-readable JSON document. But machine-readable does not mean human-hostile. The magic of the CALM ecosystem is that you do not have to write the JSON yourself. You describe what you have. The AI produces the JSON. The CLI validates it. You end up with a document that works for both humans and machines.
+
+There are three ways to start that process. Each corresponds to something you probably already have.
+
+### Path A: Talk — describe in plain English
+
+The simplest path is a conversation. You describe your system in three sentences. The AI (configured with calmstudio-mcp) produces valid CALM JSON.
+
+Three sentences is not arbitrary. It maps cleanly onto the three conceptual layers that matter most in a CALM document: who uses the system, what components exist, and how those components talk to each other.
+
+Here is the three-sentence description that produced the teaching example for this module:
+
+> "A user opens a web app to manage their todos. The web app calls a REST API. The API stores todo items in a database."
+
+That is it. Three sentences. One for each tier of a standard web application. The AI reads the spec first (via the `read_calm_guide` tool call), then generates the architecture, then validates it before handing it back to you.
+
+The result is this CALM architecture:
+
+```json
+// from code-examples/module-00-on-ramp/todo-api.architecture.json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "todo-api",
+  "name": "Simple Todo API",
+  "description": "A minimal web application for managing todo items — a user accesses a web frontend, the frontend calls an API service, the API stores todos in a database.",
+  "nodes": [
+    {
+      "unique-id": "user",
+      "node-type": "actor",
+      "name": "User",
+      "description": "Person creating and viewing todo items"
+    },
+    {
+      "unique-id": "todo-web",
+      "node-type": "webclient",
+      "name": "Todo Web App",
+      "description": "Browser-based interface for managing todo items"
+    },
+    {
+      "unique-id": "todo-api",
+      "node-type": "service",
+      "name": "Todo API",
+      "description": "REST API handling todo item CRUD operations"
+    },
+    {
+      "unique-id": "todo-db",
+      "node-type": "database",
+      "name": "Todo Database",
+      "description": "Persistent storage for todo items"
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "user-interacts-web",
+      "description": "User accesses the todo web application",
+      "relationship-type": {
+        "interacts": {
+          "actor": "user",
+          "nodes": ["todo-web"]
+        }
+      }
+    },
+    {
+      "unique-id": "web-to-api",
+      "description": "Web app calls the API to read and write todos",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "todo-web" },
+          "destination": { "node": "todo-api" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "api-to-db",
+      "description": "API stores and retrieves todo items from the database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "todo-api" },
+          "destination": { "node": "todo-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
+```
+
+Notice what happened. The AI mapped "user" to an `actor` node — the CALM type for anything that initiates interactions from outside a system boundary. It mapped "web app" to a `webclient` node — the type for browser-based or mobile frontends. It mapped "REST API" to a `service` node — the type for internal stateful components that handle logic. It mapped "database" to a `database` node — the type for any persistence layer.
+
+The AI did not invent these mappings. It read the CALM 1.2 specification (specifically the nine core node types) and matched your English description against the available types. The protocol fields (`HTTPS` on the web-to-API connection, `JDBC` on the API-to-database connection) come from the CALM protocol enumeration — only valid protocol names are allowed.
+
+This is the key insight of Path A: your job is to be accurate about your system. The AI's job is to be accurate about the spec. Together, you produce something neither of you could produce as efficiently alone.
+
+### Path B: Sketch — from a diagram or image
+
+You have a whiteboard photo, a Lucidchart export, a PowerPoint architecture slide, a screenshot of a draw.io diagram. Path B turns that image into CALM.
+
+The workflow is simple: drop the image into your AI client (Claude Code, Cursor, or Windsurf) with calmstudio-mcp configured, then ask for a CALM document. Before generating anything, the AI calls `read_calm_guide` to load the CALM 1.2 specification. Then it parses your image — identifying the boxes (nodes) and arrows (relationships) — and maps what it sees onto valid CALM types.
+
+What makes this powerful is what the AI brings to the interpretation. Your diagram might label a box "Auth Service" without specifying whether it is a dedicated OAuth server, a library, or an embedded component of another service. The AI will make a reasonable mapping to a `service` node and flag the ambiguity if needed. You can then correct it in conversation before the final document is generated.
+
+The limitation to know about: image quality directly affects output quality. A clean, high-contrast diagram with legible labels produces tight CALM. A blurry whiteboard photo with overlapping arrows and partial text produces a draft that needs more manual review. The AI will do its best, but it cannot recover information that was not captured in the image. If your whiteboard photo is unclear, retake it or convert it to a clean digital sketch first.
+
+Path B is particularly useful for teams that already have large libraries of architecture diagrams in Visio, Miro, or Lucidchart and want to migrate those assets to CALM format without redrawing everything from scratch.
+
+### Path C: Markdown — from an existing architecture doc
+
+The third path is the most powerful for teams with existing architecture documentation. If you have an Architecture Decision Record (ADR), an ARB submission document, an RFC, a Confluence architecture page, or any structured markdown describing a system, Path C converts it to CALM.
+
+The `calm-arb-convert` skill (available at `~/.claude/skills/calm-arb-convert/`) handles this workflow. The skill fetches the document, extracts the system description, identifies the components and their relationships, and generates CALM JSON. If the document contains security or threat model information, the skill also applies CALM threat decorator overlays — a feature you will learn about in Module 4.
+
+Here is the practical sequence:
+
+1. Point the AI at your architecture document (file path or URL)
+2. The skill reads the document and loads the CALM spec
+3. The AI generates a mapping plan — which components become which CALM node types
+4. You review and approve or adjust the plan
+5. The AI creates the CALM architecture
+6. The skill validates the output and exports the `.architecture.json` file
+
+Path C is especially valuable for financial services teams migrating existing architecture documentation to CALM format. A DORA compliance document, a SOX control narrative, or a PCI-DSS architecture review typically contains the information needed to generate a reasonably complete CALM architecture — often including the control points that will become CALM governance decorators later.
+
+The distinction between Path C and Path A is the level of structure you are starting with. A well-written architecture doc with clear component boundaries, named systems, and described interactions will produce a high-quality CALM document with minimal review. A loosely written document that mixes implementation details with architectural description will require more iteration.
+
+### What all three paths produce
+
+The output of all three paths is identical in format: a `.architecture.json` file containing a CALM 1.2 schema-compliant document. The schema requires a unique identifier, a name, a description, a list of nodes (each with a type, name, and description), and a list of relationships (each describing how nodes interact or connect).
+
+The quality ceiling is the same across all three paths. What differs is the input friction:
+
+- Path A (Talk) requires the clearest thinking — you must be able to describe your system accurately in a few sentences
+- Path B (Sketch) requires the clearest drawing — image quality bounds output quality
+- Path C (Markdown) requires the clearest writing — document quality bounds output quality
+
+In all cases, the generated draft benefits from two additional steps before you treat it as production architecture: validation and human review.
+
+**Validation** is a single command:
+
+```bash
+npx @finos/calm-cli validate -a your-system.architecture.json -f pretty
+```
+
+This runs the CALM 1.2 JSON schema validation and a set of Spectral linting rules. If the AI generated any non-standard node types or malformed relationships, the validator will catch them. A clean output looks like this:
+
+```
+Summary
+- Errors: no (0)
+- Warnings: no (0)
+- Info/Hints: 0
+
+No issues found.
+```
+
+**Human review** means asking: does this document accurately describe the system? Are there nodes missing? Are relationship directions correct? Are there components that the AI bundled together that should be separate nodes? The spec knowledge you build in Modules 1 through 3 is what enables confident human review.
+
+### The limits of the AI path
+
+The AI enforces the CALM specification mechanically — it will not generate a `container` node type because `container` is not a valid CALM 1.2 type. It will not use an invalid protocol name. It will not omit a required field. That enforcement comes from `read_calm_guide`, which loads the specification before any generation step.
+
+But the AI cannot guarantee that the architecture it generates matches your actual system. It can only match the description you gave it. If your three-sentence description omitted the message queue between your API and your worker service, the CALM document will omit it too. If your diagram did not show the CDN in front of your web app, neither will the CALM output.
+
+Think of the AI path as a first draft that is structurally correct but may be architecturally incomplete. The spec compliance is guaranteed. The architectural accuracy depends on you.
+
+This is intentional. Module 0 is about proving that you can get something valid out quickly. Modules 1 through 3 teach you the spec well enough to read the output critically, identify gaps, and extend the document into a complete architectural record. The first CALM document you produce today will be the document you refine in Module 2.
+
+## Code/CALM examples
+
+The todo-api example above is the anchor teaching artifact for all of Module 0. You will see this same four-node architecture referenced in Chapters 0.2, 0.3, and 0.5. It is intentionally minimal — four nodes, three relationships, two connection protocols — so that every part of the CALM structure is visible without noise.
+
+The file lives at `code-examples/module-00-on-ramp/todo-api.architecture.json` and validates cleanly with the CALM CLI. You will use it as a reference point when you produce your own first CALM document in Chapter 0.5.
+
+## Common mistakes
+
+- **Using invented node types.** The CALM 1.2 specification defines exactly nine core node types: `actor`, `ecosystem`, `system`, `service`, `database`, `network`, `ldap`, `webclient`, and `data-asset`. Common mistakes include using `container` (Docker terminology that does not exist in CALM), `component` (a generic term that has no CALM definition), or `microservice` (an architectural style, not a node type — use `service`). The CALM CLI will not reject these during generation if the AI hallucinates them, but `calm validate` will flag them as schema violations.
+
+- **Describing the implementation, not the architecture.** CALM captures what components exist and how they communicate — not how they are built. "Uses React with Redux and Axios" is an implementation description. "A webclient node that connects to a service node via HTTPS" is an architectural description. Feed Path A your architecture, not your tech stack.
+
+- **Skipping the three-sentence constraint and dumping a specification at the AI.** When you give the AI too much detail at once, it tends to create overly granular CALM documents with dozens of nodes — many of which should be grouped, not separated. Start with the three-sentence discipline. You can always add nodes in a follow-up.
+
+- **Forgetting to validate.** The AI generates a draft. `npx @finos/calm-cli validate -a` confirms the draft is structurally correct. Always validate before committing your `.architecture.json` to version control or referencing it in another document. The validation takes two seconds and catches errors that are invisible to the human eye.
+
+## Knowledge check
+
+[Take the Module 0 quiz](../../quizzes/module-00-on-ramp.yaml)
+
+## Lab
+
+[Lab 0: Your First CALM Document](../../labs/lab-00-on-ramp/LAB.md)
+
+## Further reading
+
+- [Get Set Up in 60 Seconds](./get-set-up-in-sixty-seconds.mdx) — configure calmstudio-mcp so you can try these paths yourself
+- [CALM 1.2 Schema](https://calm.finos.org/release/1.2/meta/calm.json) — the full specification your AI reads before generating
+- [FINOS architecture-as-code repository](https://github.com/finos/architecture-as-code) — source for the CALM CLI, calmstudio-mcp, and the spec itself
