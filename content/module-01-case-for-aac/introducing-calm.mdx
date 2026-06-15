@@ -1,0 +1,125 @@
+---
+title: "Introducing CALM"
+slug: introducing-calm
+module: 1
+chapter: 1.5
+estimated_minutes: 20
+prerequisites:
+  - governance-frameworks-and-aac
+---
+
+## TL;DR
+
+- FINOS is the open standard home for Architecture as Code; CALM 1.2 is the specification FINOS stewards.
+- CALM 1.2 covers five core concepts: nodes (9 core types + 15 `ai:*` types), relationships, interfaces, controls, and decorators.
+- The FINOS CALM ecosystem includes CLI, Hub, Studio, Guard, and MCP — each component addressing a different part of the AaC workflow.
+- The spec is community-governed through the FINOS CALM Working Group; contributions are open.
+- You already used the core artifact in Module 0. This chapter sets the stage for Module 2 to teach the vocabulary in depth.
+
+## Why it matters
+
+This is the closing chapter of Module 1's persuasion arc. Chapter 1.1 established the problem: architecture diagrams drift from reality and the consequences compound. Chapter 1.2 showed the historical pattern: the industry has solved this problem twice before, and the same pattern is underway for architecture. Chapter 1.3 enumerated what becomes possible when architecture is a file. Chapter 1.4 mapped the governance landscape converging on this requirement.
+
+This chapter introduces the actual specification that delivers on the promise — the standard that FINOS stewards, the tools that surround it, and the community that governs it. It is not a deep dive into the vocabulary (that is Module 2) or the tooling (that is Module 3) or the compliance workflows (that is Module 4). It is a "here is what exists, here is what governs it, and here is how you become part of it" orientation.
+
+## The concept
+
+### FINOS as the open-standard home
+
+FINOS is a Linux Foundation project dedicated to accelerating open source and open standards adoption in financial services. It governs projects that are too important to be owned by any single vendor and too valuable to be built separately by every firm that needs them. Projects under FINOS governance include things that financial services firms need to share — common data models, common infrastructure components, common governance standards — that create collective value when standardised but competitive risk if kept proprietary. CALM is one of those projects.
+
+The choice of an open standard matters for architecture documentation specifically. If CALM were a proprietary format owned by a vendor, adopting it would mean accepting vendor lock-in for a core engineering artifact — the document that describes what your systems are. Architecture documentation is infrastructure; it should be governed by the organisations that depend on it, not by a vendor that can change its terms or discontinue the product. The history of vendor-controlled data formats in enterprise software is not encouraging; organisations have spent decades migrating away from formats they did not control.
+
+An open standard under FINOS governance means that CALM is governed by the organisations that use it. The spec cannot be changed unilaterally by a single firm. Features that serve the financial services industry's regulatory and governance requirements are prioritised because the Working Group is staffed by engineers from firms with those requirements. The evolution of the spec is transparent and traceable — every change is a PR to a public repository, discussed in a public forum, with a recorded rationale.
+
+FINOS governance also means that CALM is adoption-ready for regulated financial institutions in a way that vendor-controlled formats are not. Regulators are more comfortable with open standards than with proprietary formats. Financial institutions have existing processes for approving open source adoption under their vendor risk management frameworks; many do not require these same processes for open standards under foundation governance.
+
+FINOS governance means that CALM evolves through a community process. The FINOS CALM Working Group includes engineers from FINOS member organisations — financial institutions, technology vendors, and system integrators — who contribute to the spec, validate it against real-world use cases, and ensure that it remains compatible with the regulatory and governance requirements of the financial services industry. The spec is public, the issues are public, and the pull requests are public. Anyone can contribute.
+
+### CALM 1.2 at a glance
+
+CALM 1.2 is the current stable release of the specification. It covers five core concepts — each is introduced briefly here; Module 2 teaches the vocabulary in full.
+
+**Nodes** model the components of a system. There are 9 core node types: `actor` (users and external entities), `ecosystem` (deployment environments), `system` (bounded systems), `service` (running applications), `database` (data persistence), `network` (network infrastructure), `ldap` (directory services), `webclient` (browser/mobile frontends), and `data-asset` (data at rest). There are also 15 `ai:*` node types for modelling AI system components — `ai:inference-service`, `ai:model-registry`, `ai:vector-store`, and others. No other node types exist in the spec. (`container` and `component` are not CALM node types — they are Docker/Kubernetes terms that learners often attempt to use; Module 2 establishes the canonical list.)
+
+**Relationships** connect nodes. The 5 relationship types are: `connects` (network communication between nodes), `interacts` (actor-to-node interaction), `deployed-in` (containment in an ecosystem), `composed-of` (structural composition), and `links` (generic cross-reference). Each relationship has a defined semantic that CALM Guard and validation tools use for analysis.
+
+**Interfaces** are formal communication contracts between connected nodes. They declare protocol, port, and communication pattern. An interface says "this service accepts HTTPS on port 443" rather than just "this service is connected to another service." Formal interfaces enable automated interface validation and drift detection.
+
+**Controls** are testable compliance requirements attached to nodes or relationships. A control declares that a node or interface must satisfy a specific requirement — TLS version, authentication method, data classification, access policy. Controls are the mechanism by which governance frameworks' requirements are encoded into the architecture document.
+
+**Decorators** are cross-cutting overlays that attach to architecture elements. The AIGF decorator, for example, attaches to any architecture containing `ai:*` nodes and adds AI governance requirements from the FINOS AI Governance Framework. Decorators allow governance overlays to be applied systematically without modifying the base architecture specification.
+
+### The CALM ecosystem at a glance
+
+The specification is surrounded by a growing ecosystem of tools. Each addresses a different part of the AaC workflow.
+
+**CALM CLI** is the command-line toolchain for working with CALM documents. `calm validate` checks an architecture against the schema and declared patterns. `calm diff` compares two architecture versions and produces a structured diff. `calm docify` generates human-readable documentation from a CALM architecture. The CLI is the primary interface for engineers working with CALM in their development workflow.
+
+**CALM Hub** is the versioned registry for CALM architecture artifacts and patterns. It is the "npm registry for architectures" — a place where organisations publish patterns for others to instantiate from, where teams publish their architecture documents, and where CALM Guard retrieves the architecture it validates. Hub enables the pattern reuse capability described in Chapter 1.3.
+
+**CALM Studio** is the visual canvas for CALM. It renders a `.architecture.json` as an interactive diagram and allows bidirectional editing — changes made in the canvas update the JSON, and changes to the JSON update the canvas. Studio closes the loop between the machine-readable artifact and the human-readable diagram: you do not give up diagrams by adopting CALM; you gain a diagram that is always derived from the source of truth.
+
+**CALM Guard** is the AI-driven compliance automation tool. It takes a CALM architecture, evaluates it against the declared controls and patterns, and produces structured evidence artifacts. Guard is the component that makes compliance automation real: instead of generating documentation for an auditor, the organisation generates evidence artifacts from the machine-readable architecture. Guard is where CALM's compliance capabilities are operationalised.
+
+**calmstudio-mcp** is the MCP server that enables AI-driven architecture creation. You used this in Module 0 — it is the tool that took your system description and produced a `.architecture.json`. The MCP server gives Claude Code and other AI tools access to CALM's node types, relationship types, and validation capabilities, so that AI-generated architectures conform to the spec.
+
+![Hub-and-spoke FINOS ecosystem map with CALM Architecture (.architecture.json) at the centre and surrounding boxes: ARB on the left encoding as CALM, calmstudio-mcp at top for AI-driven creation, AIGF top-right auto-attaching, CALM Hub on the right, CALM Studio bottom-right for bidirectional sync, CALM CLI bottom-centre, CALM Guard bottom-left, and OpenSSF Gemara on the far right showing CALM at Layer 4](../../illustrations/exported/m01-finos-ecosystem-map.svg)
+
+### Community and governance
+
+The CALM specification evolves through the FINOS CALM Working Group. The Working Group follows the standard FINOS governance model: proposals are submitted as issues or pull requests to the `finos/architecture-as-code` repository, discussed in Working Group meetings, and merged when consensus is reached.
+
+The spec release process follows a staged progression: Draft (in development), Release Candidate (stable for testing), and Release (stable for production use). CALM 1.2 is the current Release. The community is actively working on future versions.
+
+Contributing to CALM — filing issues, proposing new node types, suggesting spec improvements — is open to anyone. The FINOS CALM Working Group meets regularly; the meeting schedule is in the repository. When CALM Academy is adopted by FINOS, learners completing this course will be well-positioned to contribute to the specification itself.
+
+### Adoption
+
+Teams at FINOS member organisations are adopting CALM for architecture documentation, pattern governance, and compliance automation. The FINOS CALM Working Group is the canonical source for current adoption status and case studies — the Working Group actively collects and publishes adoption stories from its member organisations.
+
+One concrete adoption reference: the FINOS Multi-Agent Reference Architecture, developed by the FINOS Architectural Reference Board (ARB), is available as a CALM pattern in the FINOS repository. It is a real artifact — a CALM document encoding a reference architecture for multi-agent AI systems in financial services — that demonstrates CALM's capability for AI system modelling. Module 5 covers this reference architecture in depth.
+
+### Before you move on — a reflection exercise
+
+Before proceeding to Module 2, try this exercise. It takes five minutes and sets up the hands-on work ahead.
+
+> Sketch the architecture of a system you work on, from memory. Do not look anything up. Use pencil and paper, or a blank whiteboard, or a blank slide. Label the components and the connections between them.
+>
+> When you are done, note:
+> - What components are you uncertain about? What are you guessing?
+> - What connections did you omit because you were not sure they exist?
+> - What would you not be able to explain clearly to a new team member joining this week?
+> - How many components are there? How many connections?
+>
+> Save this sketch. In Module 2, you will translate it into a CALM document — and compare what you thought you knew with what the spec forces you to make explicit.
+
+This is not assessed. There are no right answers. The sketch is a diagnostic — a baseline measurement of how much architecture knowledge you carry in your head versus how much is in documentation. Most engineers are surprised by how much they omit when drawing from memory. The omissions are the architecture drift in your head, independent of what any diagram says.
+
+### Where the rest of the course takes you
+
+Module 2 teaches the vocabulary: node types, relationship types, interface declarations, controls, and decorators. The goal is to be able to read and write CALM precisely. Module 3 teaches the toolchain: CLI, Hub, Studio, and how to integrate CALM into a CI/CD pipeline. Module 4 teaches governance and Gemara at depth: each layer, how CALM Guard operates, and how to use CALM for compliance automation. Module 5 covers `ai:*` node types, the AIGF decorator, and the multi-agent reference architecture. Module 6 covers enterprise adoption and delivers three capstone scenarios.
+
+The case is made. You have the context you need. Now you learn the language.
+
+## Common mistakes
+
+**Trying to learn the spec vocabulary in Module 1.** This chapter introduced node types, relationship types, interfaces, controls, and decorators at a "what it is" level. Module 2 teaches each concept in depth, with code examples, validation exercises, and hands-on practice. Do not jump ahead — the vocabulary needs the context that Module 1 provides, and Module 2 needs the motivation that Module 1 establishes.
+
+**Citing specific FINOS Hub-hosted patterns by name in Module 1 discussions.** The CALM Hub is live, but the pattern registry is actively growing. Patterns referenced in Module 1 may be renamed, versioned, or reorganised by the time learners access them. Module 3 teaches the Hub in depth, with current navigation guidance. At Module 1 depth, the concept is sufficient.
+
+**Treating the ecosystem map as a feature matrix.** This chapter described what each component in the FINOS CALM ecosystem does — its purpose in the workflow. The current feature status of each component (what is available now, what is planned, what is in development) is Module 3 territory. At Module 1 depth, the architecture of the ecosystem is the teaching point, not the feature list.
+
+**Skipping the reflection exercise.** The sketch from memory is not busywork. It is the starting point for Module 2. Learners who skip it will find Module 2's hands-on work more abstract and less grounded. The five minutes spent on the reflection saves time in Module 2.
+
+## Knowledge check
+
+[Take the Module 1 quiz](../../quizzes/module-01-case-for-aac.yaml)
+
+## Further reading
+
+- Module 2 — CALM Fundamentals: [The CALM Specification](../module-02-fundamentals/the-calm-specification.mdx) — the vocabulary deep-dive this chapter sets up [note: resolves when Module 2 is published]
+- [Governance Frameworks and Why They Need AaC](./governance-frameworks-and-aac.mdx) — Chapter 1.4: the governance landscape that CALM serves
+- [Your First CALM Document](../module-00-on-ramp/your-first-calm-document.mdx) — the Module 0 chapter where you first produced a `.architecture.json`
+- [FINOS CALM project](https://www.finos.org/calm) — the primary home for the CALM specification and Working Group
+- [CALM 1.2 specification](https://github.com/finos/architecture-as-code) — the canonical specification repository
