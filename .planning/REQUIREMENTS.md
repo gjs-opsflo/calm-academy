@@ -104,10 +104,10 @@ Updated by roadmapper. Each requirement maps to exactly one phase.
 | LAB-01 | Phase 1 | Pending |
 | QUIZ-01 | Phase 1 | Pending |
 | ILL-01 | Phase 1 | Pending |
-| MOD-02 | Phase 3 | Pending |
-| QUIZ-02 | Phase 3 | Pending |
-| ILL-02 | Phase 3 | Pending |
-| SLIDE-01 | Phase 3 | Pending |
+| MOD-02 | Phase 2 | Pending |
+| QUIZ-02 | Phase 2 | Pending |
+| ILL-02 | Phase 2 | Pending |
+| SLIDE-01 | Phase 2 | Pending |
 | MOD-03 | Phase 4 | Pending |
 | LAB-02 | Phase 4 | Pending |
 | QUIZ-03 | Phase 4 | Pending |

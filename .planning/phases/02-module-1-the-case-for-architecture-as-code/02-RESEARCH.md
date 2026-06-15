@@ -707,7 +707,7 @@ Phase 2 is content authoring — no code deployed, no authentication, no user da
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Which FINOS ecosystem tools are stable enough to describe as "available now" vs. "coming soon" in Chapter 1.5?**
    - What we know: CURRICULUM.md has a detailed roadmap section with GAP vs. EXISTS tags for each feature
