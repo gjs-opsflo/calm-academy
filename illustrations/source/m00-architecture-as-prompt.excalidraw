@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 700,
+      "height": 400,
+      "text": "DIAGRAM SPEC — Architecture as the Prompt\n\nLayout: Left to right flow\nLeft side:\n  - Stick figure (label: Architect)\n  - Speech bubble: 'My system has a web app, an API, and a database...'\nCenter:\n  - Arrow labeled 'describes'\n  - Box: AI + calmstudio-mcp (icon: brain or robot)\nRight side:\n  - Arrow labeled 'produces'\n  - File icon: my-system.architecture.json\nOptional bottom row (smaller):\n  - Same file icon -> arrow -> 'CI/CD gate'\n  - Same file icon -> arrow -> 'CALM Guard'\n  - Same file icon -> arrow -> 'CALM Hub'\nConcept label at top: 'Describing a system IS creating its spec'\nStyle: B&W only, Excalidraw house style",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Architecture as the Prompt\n\nLayout: Left to right flow\nLeft side:\n  - Stick figure (label: Architect)\n  - Speech bubble: 'My system has a web app, an API, and a database...'\nCenter:\n  - Arrow labeled 'describes'\n  - Box: AI + calmstudio-mcp (icon: brain or robot)\nRight side:\n  - Arrow labeled 'produces'\n  - File icon: my-system.architecture.json\nOptional bottom row (smaller):\n  - Same file icon -> arrow -> 'CI/CD gate'\n  - Same file icon -> arrow -> 'CALM Guard'\n  - Same file icon -> arrow -> 'CALM Hub'\nConcept label at top: 'Describing a system IS creating its spec'\nStyle: B&W only, Excalidraw house style"
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

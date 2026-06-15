@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 700,
+      "height": 400,
+      "text": "DIAGRAM SPEC — CALM Studio Canvas Mock\n\nLayout: Browser window frame (rectangle with tab bar)\nInside the window:\n  - 4 node shapes positioned in a loose cluster:\n    - Stick figure (label: actor — User)\n    - Browser window shape (label: webclient — Todo Web App)\n    - Hexagon (label: service — Todo API)\n    - Cylinder (label: database — Todo Database)\n  - Arrows connecting:\n    - actor -> webclient (solid arrow)\n    - webclient -> service (solid arrow)\n    - service -> database (solid arrow)\nCaption below window: 'CALM Studio — your architecture visualized'\nStyle: B&W only, Excalidraw house style\nNote: Node shapes should match CALM Studio canvas shapes per ILLUSTRATION-STANDARDS.md",
+      "fontSize": 16,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — CALM Studio Canvas Mock\n\nLayout: Browser window frame (rectangle with tab bar)\nInside the window:\n  - 4 node shapes positioned in a loose cluster:\n    - Stick figure (label: actor — User)\n    - Browser window shape (label: webclient — Todo Web App)\n    - Hexagon (label: service — Todo API)\n    - Cylinder (label: database — Todo Database)\n  - Arrows connecting:\n    - actor -> webclient (solid arrow)\n    - webclient -> service (solid arrow)\n    - service -> database (solid arrow)\nCaption below window: 'CALM Studio — your architecture visualized'\nStyle: B&W only, Excalidraw house style\nNote: Node shapes should match CALM Studio canvas shapes per ILLUSTRATION-STANDARDS.md"
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
