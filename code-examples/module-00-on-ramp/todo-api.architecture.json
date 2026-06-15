@@ -1,0 +1,66 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "todo-api",
+  "name": "Simple Todo API",
+  "description": "A minimal web application for managing todo items — a user accesses a web frontend, the frontend calls an API service, the API stores todos in a database.",
+  "nodes": [
+    {
+      "unique-id": "user",
+      "node-type": "actor",
+      "name": "User",
+      "description": "Person creating and viewing todo items"
+    },
+    {
+      "unique-id": "todo-web",
+      "node-type": "webclient",
+      "name": "Todo Web App",
+      "description": "Browser-based interface for managing todo items"
+    },
+    {
+      "unique-id": "todo-api",
+      "node-type": "service",
+      "name": "Todo API",
+      "description": "REST API handling todo item CRUD operations"
+    },
+    {
+      "unique-id": "todo-db",
+      "node-type": "database",
+      "name": "Todo Database",
+      "description": "Persistent storage for todo items"
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "user-interacts-web",
+      "description": "User accesses the todo web application",
+      "relationship-type": {
+        "interacts": {
+          "actor": "user",
+          "nodes": ["todo-web"]
+        }
+      }
+    },
+    {
+      "unique-id": "web-to-api",
+      "description": "Web app calls the API to read and write todos",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "todo-web" },
+          "destination": { "node": "todo-api" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "api-to-db",
+      "description": "API stores and retrieves todo items from the database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "todo-api" },
+          "destination": { "node": "todo-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}

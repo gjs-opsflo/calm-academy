@@ -1,0 +1,142 @@
+---
+title: "Get Set Up in 60 Seconds"
+slug: get-set-up-in-sixty-seconds
+module: 0
+chapter: 0.4
+estimated_minutes: 3
+prerequisites:
+  - three-paths-to-first-calm-doc
+---
+
+## TL;DR
+
+- Three options: Claude Code CLI (check if already configured), Claude Desktop/Cursor/Windsurf (JSON config block), or CALM Studio web (zero install — recommended for Lab 0).
+- Claude Code users: run `claude mcp list` first — calmstudio-mcp may already be registered.
+- The MCP package is NOT on npm; install from the FINOS architecture-as-code releases page if missing.
+- Zero-install path (CALM Studio web) is sufficient for Lab 0 and the visualization step.
+- Setup takes under 60 seconds for any path.
+
+## Why it matters
+
+Chapter 0.2 is a live demo you can follow along with. If calmstudio-mcp is configured before you watch it, you can pause the video and try each step on your own system in real time. Setup first, watch second. This chapter is intentionally short — pick one of the three options, follow the steps, and you are done.
+
+Note: This chapter precedes the demo (Chapter 0.2) in the reading order precisely so you can follow along. If you just want to read the course without producing any CALM documents yet, you can skip this chapter and come back before Chapter 0.5 (the hands-on exercise).
+
+## The concept
+
+calmstudio-mcp is an MCP (Model Context Protocol) server that gives your AI client direct access to the CALM specification and the tools to create, validate, and export CALM architecture documents. When calmstudio-mcp is connected, your AI client can call tools like `read_calm_guide` (which loads the CALM 1.2 specification before generating anything) and `create_architecture` (which builds the structured JSON document).
+
+There are three ways to configure it. Pick the one that matches your current AI tooling.
+
+### Option 1: Claude Code CLI (check existing config first)
+
+calmstudio-mcp is not available on npm. It is distributed as a local install from the FINOS architecture-as-code repository releases page at `https://github.com/finos/architecture-as-code/releases`.
+
+Before installing anything, check whether it is already configured in your Claude Code setup:
+
+```bash
+claude mcp list
+```
+
+If you see `calmstudio-mcp` in the output, you are done — skip to the verification step below.
+
+If calmstudio-mcp is NOT listed, install it:
+
+1. Go to `https://github.com/finos/architecture-as-code/releases`
+2. Download the latest `calmstudio-mcp.cjs` package for your OS
+3. Note the path where you saved it (for example, `~/.local/share/calmstudio-mcp/calmstudio-mcp.cjs`)
+4. Register it with Claude Code:
+
+```bash
+claude mcp add --scope user calmstudio-mcp -- node /path/to/calmstudio-mcp.cjs
+```
+
+Replace `/path/to/calmstudio-mcp.cjs` with the actual path of the downloaded file.
+
+The `--scope user` flag makes this MCP server available in all your Claude Code sessions, not just the current project. You only need to register it once.
+
+After registration, verify it is active:
+
+```bash
+claude mcp list
+```
+
+You should now see `calmstudio-mcp` in the list.
+
+### Option 2: Claude Desktop, Cursor, or Windsurf (manual config)
+
+For AI clients that use a JSON configuration file for MCP servers, you need to add a `mcpServers` block pointing to your locally downloaded `calmstudio-mcp.cjs` file.
+
+First, download the `calmstudio-mcp.cjs` file from the FINOS architecture-as-code releases page: `https://github.com/finos/architecture-as-code/releases`
+
+Then add the following block to your AI client's configuration file:
+
+```json
+{
+  "mcpServers": {
+    "calmstudio-mcp": {
+      "command": "node",
+      "args": ["/path/to/calmstudio-mcp.cjs"]
+    }
+  }
+}
+```
+
+Replace `/path/to/calmstudio-mcp.cjs` with the actual path where you saved the downloaded file.
+
+**Configuration file locations by client:**
+
+| AI client | Configuration file |
+|---|---|
+| Claude Desktop (macOS) | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Claude Desktop (Windows) | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Cursor | `.cursor/mcp.json` in your project root |
+| Windsurf | `.windsurf/mcp.json` in your project root |
+
+After editing the configuration file, restart your AI client. MCP servers are loaded at startup — most clients do not pick up config changes without a restart.
+
+Full config reference and download links: `https://github.com/finos/architecture-as-code/releases`
+
+### Option 3: CALM Studio web (zero install — recommended for Lab 0)
+
+If you do not want to install anything right now, you can use CALM Studio in a browser. Open `https://studio.calm.finos.org` [verify URL before publication] for the visual canvas.
+
+CALM Studio web provides the visualization interface — you can import a `.architecture.json` file and see your architecture rendered as a diagram of nodes and relationships.
+
+There is one important distinction: CALM Studio web provides the visual canvas but not the AI-driven generation workflow (calmstudio-mcp). For the AI generation paths (Path A, B, and C from Chapter 0.1), you need either Option 1 or Option 2. CALM Studio web is fully sufficient for the visualization step of Lab 0 (Step 4: import and visualize your architecture).
+
+If your goal for now is to follow along with the demo in Chapter 0.2 and complete Lab 0, Option 3 gives you everything you need without any installation.
+
+### Verify your setup (Options 1 and 2)
+
+After configuring calmstudio-mcp, verify it is active in your AI client. Open your AI client and type:
+
+> "Using calmstudio-mcp, create a simple CALM architecture for a web app with a database."
+
+If calmstudio-mcp is connected, your AI client will make tool calls — you will see `read_calm_guide` and `create_architecture` appear in the tool call panel or chat history. The AI will produce a CALM JSON document in response.
+
+If you see no tool calls and the AI just writes prose about CALM without making any tool calls, calmstudio-mcp is not connected. Try restarting your AI client and repeating the test.
+
+## Common mistakes
+
+- **Trying to install with `npx @calmstudio/mcp`.** This package is not on the npm registry. Running `npx @calmstudio/mcp` will fail with a 404 or "package not found" error. Install the local `.cjs` file from the FINOS architecture-as-code releases page instead.
+
+- **Forgetting `--scope user` in the Claude Code CLI command.** Without `--scope user`, the MCP server is registered per-project, meaning it will only be available in the directory where you ran the command. Use `--scope user` to make calmstudio-mcp available globally across all Claude Code sessions.
+
+- **Confusing calmstudio-mcp with CALM Studio.** They are different tools that complement each other. calmstudio-mcp is an MCP server that enables AI-driven CALM document generation inside your AI client. CALM Studio is a visual canvas (web or desktop app) for exploring and editing CALM documents. The workflow is: generate with calmstudio-mcp → visualize in CALM Studio.
+
+- **Not restarting the AI client after config changes.** Most AI clients that use JSON configuration files (Claude Desktop, Cursor, Windsurf) load MCP servers at startup. If you added calmstudio-mcp to the config file but the AI is still not making tool calls, restart the client and try again.
+
+## Knowledge check
+
+[Take the Module 0 quiz](../../quizzes/module-00-on-ramp.yaml)
+
+## Lab
+
+[Lab 0: Your First CALM Document](../../labs/lab-00-on-ramp/LAB.md)
+
+## Further reading
+
+- [Three Paths to Your First CALM Document](./three-paths-to-first-calm-doc.mdx) — what you can do once calmstudio-mcp is configured
+- [Your First CALM Document](./your-first-calm-document.mdx) — the hands-on chapter where you produce your own `.architecture.json`
+- [FINOS architecture-as-code repository](https://github.com/finos/architecture-as-code) — calmstudio-mcp source, releases, and install instructions
