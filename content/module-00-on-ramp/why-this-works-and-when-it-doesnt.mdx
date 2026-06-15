@@ -1,0 +1,125 @@
+---
+title: "Why This Works (and When It Doesn't)"
+slug: why-this-works-and-when-it-doesnt
+module: 0
+chapter: 0.3
+estimated_minutes: 5
+prerequisites:
+  - live-demo-diagram-to-calm-in-five-minutes
+---
+
+## TL;DR
+
+- The MCP server bakes the spec into every tool call — the AI literally cannot invent node types
+- `read_calm_guide` is called first; the AI has the full spec in its context before creating anything
+- Generated CALM is a draft — you still need Module 1+ to refine it intelligently
+- Architecture-as-the-prompt: your description is the spec; CALM captures the structure of your intent
+- The AI path works reliably for clear descriptions of standard architectures; it needs human judgment for ambiguous, incomplete, or complex topologies
+
+## Why it matters
+
+Chapter 0.2 showed you what happens step by step. This chapter explains why it is reliable — and where the limits are. Understanding both makes you a better reviewer of AI-generated architecture, which is what you will spend much of the rest of this course learning to do. The goal is not to trust the AI blindly; the goal is to understand the mechanism well enough to know when to trust the output and when to inspect it.
+
+## The concept
+
+### Why the AI doesn't invent node types
+
+The central claim of the AI path is that it produces valid CALM — correct node types, correct relationship syntax, correct schema structure. This is not because the AI is unusually disciplined. It is because the toolchain enforces the constraint structurally.
+
+Here is the mechanism in three steps:
+
+**1. `read_calm_guide` returns the CALM spec.** The first tool call in the calmstudio-mcp workflow is always `read_calm_guide`. This tool returns the CALM specification — the 9 node types, the 5 relationship types, the required JSON structure, the valid property names. By the time the AI makes its first `add_node` call, the spec is in its context.
+
+**2. The spec is now a constraint, not a suggestion.** When the AI builds the `add_node` call, it has read — in the current session — that `node-type` must be one of: `actor`, `ecosystem`, `system`, `service`, `database`, `network`, `ldap`, `webclient`, `data-asset`. These are not rules from training data that the AI "remembers vaguely". They are in the current context window, read five seconds ago from the tool response. The AI cannot add a `container` node type because the spec it just read does not include `container`.
+
+**3. `finalize_architecture` validates before export.** After the AI has added all nodes and relationships, `finalize_architecture` runs the CALM CLI validator against the architecture. If a wrong type somehow slipped through — an edge case where the AI misread the spec — validation catches it before the file is exported. The output is either `hasErrors: false` or a list of specific schema violations that the AI can fix before exporting.
+
+The protection is structural, not instructional. You are not relying on a prompt that says "please use valid CALM node types". You are relying on a tool that returns the spec, a validator that checks against it, and a workflow that enforces both. This is why the AI path is reliable enough to use in a teaching context — the correctness guarantee is mechanical.
+
+![An architect describes their system in plain English, calmstudio-mcp converts the description to a validated .calm.json, which then feeds CI/CD, CALM Guard, and CALM Hub](../../illustrations/exported/m00-architecture-as-prompt.svg)
+
+### The 9 core node types: a reference table
+
+Before Module 2 teaches the full CALM vocabulary, here is the reference table you need right now. These are the only nine node types that exist in the CALM 1.2 specification. When you review AI-generated CALM or write your own, every node must map to exactly one of these:
+
+| Type | What it models |
+|------|----------------|
+| `actor` | Users, external systems, anything that initiates interaction from outside the system boundary |
+| `ecosystem` | Runtime environments — Kubernetes clusters, agent sandboxes, cloud accounts |
+| `system` | Logical bounded contexts, architectural layers, domain groupings |
+| `service` | Microservices, APIs, stateful internal components that handle business logic |
+| `database` | Any data persistence — SQL, NoSQL, cache used for storage, queues used as storage |
+| `network` | Load balancers, firewalls, VPNs, CDNs, API gateways (the infrastructure layer) |
+| `ldap` | Identity providers, directory services, authentication backends |
+| `webclient` | Browser apps, mobile apps, any frontend that runs on the client side |
+| `data-asset` | Files, datasets, S3 buckets, event streams — passive data, not a live service |
+
+Two types that do not exist, despite being commonly used in architecture discussions:
+
+- **`container`** — imported from Docker/Kubernetes mental models. There is no `container` type in CALM. A containerized service is still a `service`. The container is an implementation detail, not an architectural component. The CALM CLI will reject any node with `"node-type": "container"`.
+- **`component`** — a generic UML term that does not appear in the CALM spec. Architects new to CALM sometimes reach for `component` as a catch-all. There is no catch-all. Every component in your system maps to exactly one of the nine types above. If you cannot decide which type fits, that is a signal the architecture description needs more precision — not that a new type is needed.
+
+These are the two most common mistakes beginner architects make — both imported from adjacent mental models (Docker/K8s for `container`, UML for `component`). The MCP prevents them during AI-assisted generation. After Module 2, you will understand why the spec was designed this way.
+
+### When the AI path breaks down
+
+The AI path is reliable for clear descriptions of standard architectures. It needs human judgment in five scenarios:
+
+**1. Ambiguous descriptions.** "The system has a caching layer." Is the cache a `service` (a Redis instance acting as an application cache), a `database` (used as persistent storage), or a `network` node (an edge cache like Varnish or a CDN)? The AI will make a reasonable guess based on context — probably `database` for "caching layer" — but the right answer depends on how the cache is used. A CALM-educated architect makes a principled choice (Module 2 teaches the decision criteria). The AI makes a statistical one. For simple, standard architectures, the statistical choice is usually correct. For specialized or unusual architectures, it may not be.
+
+**2. Missing nodes.** A 3-sentence description of "a web app with an API and a database" omits the load balancer in front of the API, the identity provider the web app calls for authentication, the CDN serving the frontend assets, and the message queue the API uses for async processing. The AI generates what you describe. If your description is incomplete, your CALM is incomplete. This is not a bug — it is the intended behavior. CALM is a structural specification, not a discovery tool. You bring the architecture; the AI captures it. If you bring three components, you get three nodes.
+
+**3. Incorrect relationship direction.** `connects` has a source and a destination. The direction implies data flow: the source initiates the call, the destination receives it. In simple cases (web app calls API, API calls database), direction is unambiguous. In more complex cases — bidirectional communication, event-driven systems, pub/sub patterns — the AI may flip source and destination. A human reviewer familiar with the runtime behavior of the system catches this; an LLM reasoning from a text description might not. This is one of the most common issues in AI-generated CALM for event-driven architectures.
+
+**4. Relationship type selection.** CALM has five relationship types. The AI uses `connects` and `interacts` correctly in simple cases (as you saw in Chapter 0.2). But `deployed-in`, `composed-of`, and `options` require architectural knowledge to use correctly. `deployed-in` describes runtime deployment (a service deployed inside a Kubernetes ecosystem). `composed-of` describes structural containment (a system composed of multiple services). `options` models architectural decision points — multiple alternative paths in the same architecture. For descriptions that involve these relationship types, the AI needs more precise input and the output needs human review.
+
+**5. Edge cases in the CALM 1.2 specification.** CALM 1.2 has features that the AI path in Module 0 does not surface: interfaces (the formal communication contract between nodes), controls (testable compliance requirements), decorators (threat model overlays, governance annotations), and timelines (architecture evolution over time). The `read_calm_guide` tool covers these features, but a 3-sentence description does not give the AI enough information to attach controls or decorators. These capabilities require Module 2+ knowledge to use correctly. The Module 0 output is a structural skeleton — nodes and relationships. The rest of the spec gives that skeleton governance, compliance, and security meaning.
+
+### Architecture as the prompt
+
+This is the headline concept of Module 0. It is worth stating plainly.
+
+When you describe your system to the AI, you are not asking it to infer your architecture. You are specifying it. Your words are the specification. CALM captures the structure of your intent.
+
+This inverts the usual workflow. The conventional approach is: build the system first, then document it (usually months later, usually incompletely, usually in a format that only humans can read). The Architecture as Code approach is: specify the architecture first (in three sentences or three pages, depending on the complexity), and let the documentation be the spec. CALM is what that spec looks like when it is machine-readable.
+
+The phrase "architecture as the prompt" captures this precisely. The architect's description is not a vague request for the AI to "generate an architecture" from whole cloth. It is a structured prompt that the AI translates into a machine-readable format. The architecture — what components exist, what they do, how they connect — comes from the architect. The CALM encoding comes from the AI. The validation comes from the CLI. Three parties. Each doing what they are best at.
+
+Module 1 will make the case for why this matters at scale — why diagrams drift from reality, why teams cannot collaborate on an architecture that only exists in someone's head or in a PowerPoint file. Module 2 teaches the vocabulary to describe architectures precisely enough that the AI encoding is not just correct but useful: interfaces, controls, decorators, the full CALM spec. Module 3 shows the toolchain that makes it actionable in a real engineering organization: CALM Hub as the architecture registry, CALM Guard as the compliance gate, CI/CD integration that validates architectures on every pull request.
+
+For now: you wrote three sentences. You have a validated CALM document. You know exactly how it was produced and why it is correct. The rest of the course teaches you what to do with it that you cannot do with a PowerPoint diagram.
+
+### What the rest of the course teaches
+
+Module 0 got you from zero to a validated architecture document in 15 minutes. That is the proof of concept. Here is what the remaining modules build on top of it:
+
+- **Module 1** explains why architecture documentation matters and why static diagrams fail. It makes the case for Architecture as Code by analogy to Infrastructure as Code — the discipline that transformed how teams manage servers and cloud resources. If you have ever wondered why CALM is structured as JSON and validated by a CLI rather than stored as a Visio file, Module 1 answers that question.
+
+- **Module 2** teaches the full CALM vocabulary. The 9 node types you saw in the reference table above are just the beginning. Module 2 goes deep on each type, teaches you the 5 relationship types in detail, and introduces interfaces (communication contracts), controls (compliance requirements), and decorators (governance overlays like threat models and AIGF annotations). After Module 2, you can review AI-generated CALM and know immediately whether the encoding is correct.
+
+- **Module 3** shows the toolchain: CALM CLI commands beyond `validate`, CALM Studio for visual architecture design and editing, CALM Hub as the versioned registry where your organization's approved architectures and patterns live, and CI/CD integration that makes architecture validation a gate in your deployment pipeline — not an afterthought.
+
+## Common mistakes
+
+**Treating AI-generated CALM as final without validation.** `calm validate` is the truth, not the AI's confidence. Even when the AI says "the architecture looks correct", run validation. The CLI checks against the JSON schema and catches issues the AI may miss — a missing required field, a relationship referencing a node ID that does not exist, a typo in a protocol name. Always validate before committing.
+
+**Describing implementation, not architecture.** "Uses PostgreSQL 15 with UUID primary keys and row-level security enabled" — this is implementation detail. The CALM architecture says `"node-type": "database"`, `"name": "Todo Database"`. What database software is used, what version it runs, what security features are enabled — these belong in the service configuration or the deployment runbook, not in the architecture document. CALM captures the structural relationship between components, not the implementation choices inside them.
+
+**Expecting the AI to know your organization's conventions.** calmstudio-mcp knows the CALM spec. It does not know that your organization names all API nodes with an `-svc` suffix, or that all databases must be typed with a specific naming scheme, or that your enterprise architecture standards require certain controls on every `service` node. These conventions live in your organization's CALM patterns (Module 3) and standards. The AI generates spec-compliant CALM; your patterns enforce organizational compliance on top of it.
+
+**Confusing CALM completeness with system completeness.** A 3-sentence description of a web application produces a 4-node CALM document. Your production web application has many more components: a load balancer, a CDN, an identity provider, a monitoring stack, a message queue, multiple database replicas, a secrets manager. The CALM document is as complete as your description. This is not a flaw — it is a feature. You can start with the skeleton (the 4-node todo-api) and iteratively add complexity as your understanding of the architecture deepens. CALM documents grow with your architecture practice.
+
+## Knowledge check
+
+👉 [Take the quiz](../../quizzes/module-00-on-ramp.yaml)
+
+## Lab
+
+👉 [Lab 00: Your First CALM Document](../../labs/lab-00-on-ramp/LAB.md)
+
+## Further reading
+
+- [Get Set Up in 60 Seconds](./get-set-up-in-sixty-seconds.mdx) — configure calmstudio-mcp if you have not already
+- [Your First CALM Document](./your-first-calm-document.mdx) — Chapter 0.5, where you apply this knowledge hands-on with a system you actually work on
+- CALM 1.2 specification: `https://calm.finos.org/release/1.2/meta/calm.json`
+- FINOS architecture-as-code: `https://github.com/finos/architecture-as-code`
