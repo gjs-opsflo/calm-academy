@@ -1,0 +1,115 @@
+module: 0
+title: "Module 0: The 15-Minute On-Ramp"
+
+chapters:
+  - chapter: 0.1
+    slug: three-paths-to-first-calm-doc
+    title: "Three Paths to Your First CALM Document"
+    questions:
+      - id: q0.1.1
+        type: multiple_choice
+        prompt: |
+          Which three input types can the calmstudio-mcp skill convert to a valid CALM document?
+        options:
+          - label: "Plain English description, diagram or image, existing markdown document"
+            correct: true
+            explanation: "These are the three paths: Talk (describe in plain English), Sketch (image or diagram), Markdown (existing architecture doc like an ARB or RFC)."
+          - label: "YAML, JSON, and XML files"
+            correct: false
+            explanation: "CALM outputs JSON, but these are data serialisation formats, not the three named input paths. The paths describe what the human brings, not what CALM produces."
+          - label: "PowerPoint, Visio, and Lucidchart files"
+            correct: false
+            explanation: "You can upload a screenshot of a Visio diagram as an image (Path B: Sketch), but PowerPoint, Visio, and Lucidchart themselves are not the three named paths."
+        reference_section: "../content/module-00-on-ramp/three-paths-to-first-calm-doc.mdx#path-a-talk--describe-in-plain-english"
+
+      - id: q0.1.2
+        type: multiple_choice
+        prompt: |
+          What does Path C (Markdown) do that the other two paths cannot do automatically?
+        options:
+          - label: "Attach threat model decorators based on the architecture described in the document"
+            correct: true
+            explanation: "Correct. The calm-arb-convert skill (used in Path C) fetches the architecture markdown and a companion threat model document, producing CALM JSON with threat decorators already attached."
+          - label: "Produce a CALM file with more nodes than the other paths"
+            correct: false
+            explanation: "The number of nodes depends on the description, not the input path. A detailed plain English description (Path A) can produce more nodes than a sparse markdown document."
+          - label: "Validate the output automatically so no calm validate step is needed"
+            correct: false
+            explanation: "All three paths call finalize_architecture which validates internally, but running calm validate afterwards is still recommended as a final check for all paths."
+        reference_section: "../content/module-00-on-ramp/three-paths-to-first-calm-doc.mdx#path-c-markdown--from-an-existing-architecture-doc"
+
+  - chapter: 0.4
+    slug: get-set-up-in-sixty-seconds
+    title: "Get Set Up in 60 Seconds"
+    questions:
+      - id: q0.4.1
+        type: multiple_choice
+        prompt: |
+          Which of the following is the correct first step when setting up calmstudio-mcp for Claude Code users?
+        options:
+          - label: "Run 'claude mcp list' to check if calmstudio-mcp is already configured"
+            correct: true
+            explanation: "Correct. calmstudio-mcp is distributed as a local .cjs file — not via npm. Claude Code users should first check if it is already registered via 'claude mcp list'. If missing, install from the FINOS architecture-as-code releases page."
+          - label: "Run 'npx @calmstudio/mcp --version' to verify the package is available"
+            correct: false
+            explanation: "Incorrect. @calmstudio/mcp is NOT available on npm. Running this command will fail. The correct first step is 'claude mcp list' to check existing configuration."
+          - label: "Run 'npm install -g @calmstudio/mcp' to install the package globally"
+            correct: false
+            explanation: "Incorrect. @calmstudio/mcp is not on the npm registry. It is distributed as a local .cjs file from the FINOS architecture-as-code releases page."
+        reference_section: "../content/module-00-on-ramp/get-set-up-in-sixty-seconds.mdx#option-1-claude-code-cli-check-existing-config-first"
+
+  - chapter: 0.5
+    slug: your-first-calm-document
+    title: "Your First CALM Document"
+    questions:
+      - id: q0.5.1
+        type: multiple_choice
+        prompt: |
+          After running `npx @finos/calm-cli validate -a my-system.architecture.json -f pretty`,
+          what does a successful result look like?
+        options:
+          - label: "hasErrors: false in the output (or 'No issues found') and exit code 0"
+            correct: true
+            explanation: "Correct. The validate command exits with code 0 and prints hasErrors: false (JSON output) or 'No issues found' (pretty output) when the architecture conforms to the CALM 1.2 schema."
+          - label: "A green checkmark in the browser"
+            correct: false
+            explanation: "calm validate is a CLI command — all output goes to the terminal. There is no browser UI for validation."
+          - label: "The .calm.json file is automatically saved in a corrected form"
+            correct: false
+            explanation: "calm validate only checks validity, it does not modify files. If errors are found, you fix the source file manually (or ask the AI to fix it)."
+        reference_section: "../content/module-00-on-ramp/your-first-calm-document.mdx#validate-your-architecture"
+
+      - id: q0.5.2
+        type: code_completion
+        prompt: |
+          Complete the missing `node-type` for a node representing the end user of a system.
+        snippet: |
+          {
+            "unique-id": "end-user",
+            "name": "End User",
+            "node-type": "<BLANK>",
+            "description": "Person using the application"
+          }
+        accepted_answers:
+          - "actor"
+        explanation: "actor is the CALM type for users and any external entity that initiates interactions with the system. Common mistakes: 'user', 'person', 'human' — none of these exist in the CALM spec."
+        reference_section: "../content/module-00-on-ramp/why-this-works-and-when-it-doesnt.mdx#the-9-core-node-types-a-reference-table"
+
+      - id: q0.5.3
+        type: multiple_choice
+        prompt: |
+          Which of these is NOT a valid CALM 1.2 node type?
+        options:
+          - label: "container"
+            correct: true
+            explanation: "Correct — container does not exist in the CALM spec. It is a Docker/Kubernetes term that beginners frequently try to use. The 9 valid core types are: actor, ecosystem, system, service, database, network, ldap, webclient, data-asset."
+          - label: "database"
+            correct: false
+            explanation: "database IS a valid CALM node type. It represents any data persistence layer: SQL, NoSQL, cache, queues used as storage."
+          - label: "webclient"
+            correct: false
+            explanation: "webclient IS a valid CALM node type. It represents browser apps, mobile apps, and any frontend interface."
+          - label: "actor"
+            correct: false
+            explanation: "actor IS a valid CALM node type. It represents users and external systems that initiate interactions."
+        reference_section: "../content/module-00-on-ramp/why-this-works-and-when-it-doesnt.mdx#the-9-core-node-types-a-reference-table"
