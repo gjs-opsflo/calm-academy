@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 500,
+      "text": "DIAGRAM SPEC — Architecture Drift Timeline (Chapter 1.1 flagship)\n\nLayout: Three horizontal panels side by side with a TIME arrow across the bottom.\n\nPanel 1 (Launch day):\n  - 4 boxes: webclient → service → database, plus auth-ldap\n  - Arrows connecting them\n  - Caption: 'diagram matches reality'\n  - Solid border on all boxes\n\nPanel 2 (12 months later):\n  - Left sub-panel: original diagram cluster (dashed border = 'what the diagram shows')\n    Still shows same 4 boxes from launch\n  - Right sub-panel: reality cluster (solid border = 'what is actually running')\n    Shows original 4 boxes PLUS 2 new additions: cache, queue\n  - Dashed boundary label: 'DIAGRAM'\n  - Solid boundary label: 'REALITY'\n  - Caption: 'the team added a cache and queue, nobody updated the diagram'\n\nPanel 3 (Today):\n  - Left sub-panel: dashed border, still shows original 4-box diagram (unchanged)\n  - Right sub-panel: solid border, shows 7 boxes totally different configuration;\n    2 deprecated boxes marked with strikethrough or X\n  - Red zigzag arrow into reality cluster labelled '3am incident here'\n  - Caption: 'the diagram describes a system that no longer exists'\n\nBottom: Heavy horizontal arrow labelled 'TIME →' spanning all three panels\n\nStyle: B&W only. Dashed lines for 'diagram' clusters. Solid lines for 'reality' clusters.\nNo colour. Use shading patterns if needed to differentiate areas.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Architecture Drift Timeline (Chapter 1.1 flagship)\n\nLayout: Three horizontal panels side by side with a TIME arrow across the bottom.\n\nPanel 1 (Launch day):\n  - 4 boxes: webclient → service → database, plus auth-ldap\n  - Arrows connecting them\n  - Caption: 'diagram matches reality'\n  - Solid border on all boxes\n\nPanel 2 (12 months later):\n  - Left sub-panel: original diagram cluster (dashed border = 'what the diagram shows')\n    Still shows same 4 boxes from launch\n  - Right sub-panel: reality cluster (solid border = 'what is actually running')\n    Shows original 4 boxes PLUS 2 new additions: cache, queue\n  - Dashed boundary label: 'DIAGRAM'\n  - Solid boundary label: 'REALITY'\n  - Caption: 'the team added a cache and queue, nobody updated the diagram'\n\nPanel 3 (Today):\n  - Left sub-panel: dashed border, still shows original 4-box diagram (unchanged)\n  - Right sub-panel: solid border, shows 7 boxes totally different configuration;\n    2 deprecated boxes marked with strikethrough or X\n  - Red zigzag arrow into reality cluster labelled '3am incident here'\n  - Caption: 'the diagram describes a system that no longer exists'\n\nBottom: Heavy horizontal arrow labelled 'TIME →' spanning all three panels\n\nStyle: B&W only. Dashed lines for 'diagram' clusters. Solid lines for 'reality' clusters.\nNo colour. Use shading patterns if needed to differentiate areas."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

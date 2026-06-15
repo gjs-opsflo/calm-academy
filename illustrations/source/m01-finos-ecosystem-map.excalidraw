@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 500,
+      "text": "DIAGRAM SPEC — FINOS Ecosystem Map (Chapter 1.5 flagship + slide deck)\n\nLayout: Hub-and-spoke diagram.\n\nCentral box (heavy border, bold label):\n  'CALM Architecture (.architecture.json)'\n\nSurrounding boxes positioned around the central box (max 8 boxes):\n  LEFT: 'ARB (Architectural Reference Board)'\n    Arrow from ARB → CALM, labelled 'encodes as'\n  TOP: 'calmstudio-mcp'\n    Arrow from calmstudio-mcp → CALM, labelled 'AI-driven creation'\n  TOP-RIGHT: 'AIGF (AI Governance Framework)'\n    Arrow from AIGF → CALM, labelled 'auto-attaches on ai:* nodes'\n  RIGHT: 'CALM Hub (versioned registry)'\n    Arrow from CALM → CALM Hub, labelled 'published to'\n  BOTTOM-RIGHT: 'CALM Studio'\n    Double-headed arrow CALM ↔ CALM Studio, labelled 'bidirectional sync'\n  BOTTOM-CENTER: 'CALM CLI (validate / diff / docify)'\n    Arrow from CALM → CALM CLI, labelled 'consumed by'\n  BOTTOM-LEFT: 'CALM Guard'\n    Arrow CALM Guard → CALM Hub, labelled 'pulls from Hub, validates'\n  FAR RIGHT (annotation strip): 'OpenSSF Gemara'\n    Annotation label: 'CALM at Layer 4'\n\nStyle: B&W only. Central box has heavier/thicker border to draw the eye.\nMax 2 annotation labels per arrow. No colour.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — FINOS Ecosystem Map (Chapter 1.5 flagship + slide deck)\n\nLayout: Hub-and-spoke diagram.\n\nCentral box (heavy border, bold label):\n  'CALM Architecture (.architecture.json)'\n\nSurrounding boxes positioned around the central box (max 8 boxes):\n  LEFT: 'ARB (Architectural Reference Board)'\n    Arrow from ARB → CALM, labelled 'encodes as'\n  TOP: 'calmstudio-mcp'\n    Arrow from calmstudio-mcp → CALM, labelled 'AI-driven creation'\n  TOP-RIGHT: 'AIGF (AI Governance Framework)'\n    Arrow from AIGF → CALM, labelled 'auto-attaches on ai:* nodes'\n  RIGHT: 'CALM Hub (versioned registry)'\n    Arrow from CALM → CALM Hub, labelled 'published to'\n  BOTTOM-RIGHT: 'CALM Studio'\n    Double-headed arrow CALM ↔ CALM Studio, labelled 'bidirectional sync'\n  BOTTOM-CENTER: 'CALM CLI (validate / diff / docify)'\n    Arrow from CALM → CALM CLI, labelled 'consumed by'\n  BOTTOM-LEFT: 'CALM Guard'\n    Arrow CALM Guard → CALM Hub, labelled 'pulls from Hub, validates'\n  FAR RIGHT (annotation strip): 'OpenSSF Gemara'\n    Annotation label: 'CALM at Layer 4'\n\nStyle: B&W only. Central box has heavier/thicker border to draw the eye.\nMax 2 annotation labels per arrow. No colour."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
