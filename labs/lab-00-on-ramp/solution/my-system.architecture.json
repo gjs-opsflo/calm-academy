@@ -1,0 +1,66 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "simple-blog",
+  "name": "Simple Blog",
+  "description": "A user visits a blog website, the website serves content from an API, the API reads posts from a database.",
+  "nodes": [
+    {
+      "unique-id": "reader",
+      "node-type": "actor",
+      "name": "Reader",
+      "description": "Reader browsing blog posts"
+    },
+    {
+      "unique-id": "blog-web",
+      "node-type": "webclient",
+      "name": "Blog Frontend",
+      "description": "Browser-rendered blog frontend"
+    },
+    {
+      "unique-id": "blog-api",
+      "node-type": "service",
+      "name": "Blog API",
+      "description": "API serving blog post content"
+    },
+    {
+      "unique-id": "posts-db",
+      "node-type": "database",
+      "name": "Posts Database",
+      "description": "Database storing blog posts and metadata"
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "reader-reads-blog",
+      "description": "Reader accesses the blog website",
+      "relationship-type": {
+        "interacts": {
+          "actor": "reader",
+          "nodes": ["blog-web"]
+        }
+      }
+    },
+    {
+      "unique-id": "web-to-api",
+      "description": "Blog frontend calls the API to retrieve post content",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "blog-web" },
+          "destination": { "node": "blog-api" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "api-to-db",
+      "description": "API queries the database to read and serve posts",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "blog-api" },
+          "destination": { "node": "posts-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
