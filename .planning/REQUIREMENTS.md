@@ -100,10 +100,10 @@ Updated by roadmapper. Each requirement maps to exactly one phase.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| MOD-01 | Phase 2 | Pending |
-| LAB-01 | Phase 2 | Pending |
-| QUIZ-01 | Phase 2 | Pending |
-| ILL-01 | Phase 2 | Pending |
+| MOD-01 | Phase 1 | Pending |
+| LAB-01 | Phase 1 | Pending |
+| QUIZ-01 | Phase 1 | Pending |
+| ILL-01 | Phase 1 | Pending |
 | MOD-02 | Phase 3 | Pending |
 | QUIZ-02 | Phase 3 | Pending |
 | ILL-02 | Phase 3 | Pending |

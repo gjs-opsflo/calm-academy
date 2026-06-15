@@ -135,7 +135,7 @@ ARB (reference architectures)
 
 ### Code examples
 - Live under `code-examples/`
-- Every `.calm.json` file validates with `calm validate` — enforced by CI
+- Every `.architecture.json` file validates with `calm validate` — enforced by CI
 - Every example is referenced by at least one text lesson
 
 ### Quizzes
@@ -217,7 +217,7 @@ Scopes: `module-NN`, `lab-NN`, `curriculum`, `roadmap`, `site`, `scripts`, `ci`,
 
 ### File naming
 - All Markdown: kebab-case (`why-it-matters.mdx`, not `WhyItMatters.mdx`)
-- CALM JSON: `<system-slug>.calm.json` (e.g. `wealth-management.calm.json`)
+- CALM JSON: `<system-slug>.architecture.json` (e.g. `wealth-management.architecture.json`) — canonical FINOS convention per `architecture-as-code` repo
 - Excalidraw: kebab-case (`gemara-7-layers.excalidraw`)
 
 ## Critical reminders for any agent session

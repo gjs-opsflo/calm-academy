@@ -18,9 +18,18 @@
 **Plans:** 3 plans
 
 Plans:
+
+**Wave 1**
 - [ ] 01-01-PLAN.md — Setup gate: Chapter 0.1 (Three Paths) + Chapter 0.4 (Get Set Up) + todo-api code example + validation scripts
-- [ ] 01-02-PLAN.md — Demo + Why: Chapter 0.2 (Live Demo) + Chapter 0.3 (Why it Works) + 3 Excalidraw illustration stubs (ILL-01)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+- [ ] 01-02-PLAN.md — Demo + Why: Chapter 0.2 (Live Demo) + Chapter 0.3 (Why it Works) + 3 Excalidraw illustration stubs (ILL-01) `[autonomous: false — requires user illustration authoring]`
 - [ ] 01-03-PLAN.md — Hands-on: Chapter 0.5 (Lab wrapper) + Lab 0 (LAB.md + solution) + Module 0 quiz (QUIZ-01)
+
+**Cross-cutting constraints:**
+- All `.architecture.json` examples must validate with `npx @finos/calm-cli validate` before commit
+- No `npx @calmstudio/mcp` references anywhere — package is NOT on npm; use local .cjs install or CALM Studio web
+- Illustrations: user must author Excalidraw files and export SVGs (>1KB each) before phase gate
 
 **Success Criteria:**
 1. All 5 Module 0 chapters authored as MDX, readable in the site

@@ -636,17 +636,25 @@ For Module 0, the learner uses a simplified version of the MCP workflow (not the
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED 2026-06-15)
 
-1. **calmstudio-mcp npm package verification**
-   - What we know: `npx @calmstudio/mcp` is specified in CURRICULUM.md; CALM AI assistants reference it; the calm-arb-convert skill uses it
-   - What's unclear: Package name on npm registry at research time returned no result from this environment; FINOS orgs use scoped packages
-   - Recommendation: Executor should verify `npx @calmstudio/mcp --version` works before authoring Chapter 0.4 setup instructions; fall back to `npx calmstudio-mcp` if needed
+1. **calmstudio-mcp npm package verification — RESOLVED**
+   - **Finding:** `@calmstudio/mcp` is NOT published on npm registry (404). `calmstudio-mcp` (unscoped) also not found.
+   - **Actual install:** Local `.cjs` file at `/Users/gshah/.local/share/calmstudio-mcp/calmstudio-mcp.cjs`, version 0.0.0 (PR build from `fix/calm-studio-mcp-relationship-1-2-nested @ a08390f`, Jun 4 2026). Registered in Claude via `~/.claude.json` mcpServers as `node <path>`.
+   - **Resolution for Chapter 0.4 and Lab setup:** Three paths for learners:
+     - **Path A (Claude Code users):** calmstudio-mcp must be installed locally; no npm package exists yet. Instruction: "Check if `calmstudio-mcp` is already configured: run `claude mcp list` and look for it. If missing, install from the FINOS aac repo releases page."
+     - **Path B (Claude Desktop / Cursor / Windsurf):** Add mcpServers block pointing to local `.cjs` file.
+     - **Path C (Zero-install):** Use CALM Studio web — no MCP needed for visualization. This is the recommended path for Lab 0.
+   - **Lab step-1 fix:** Remove `npx @calmstudio/mcp --version` check. Use `file_state` check on `~/.claude.json` containing `calmstudio-mcp` OR instruct learner to use CALM Studio web path and skip MCP check entirely.
+   - **CURRICULUM.md note:** The `npx @calmstudio/mcp` instruction in CURRICULUM.md is aspirational future state pending npm publication.
 
-2. **CALM Studio web public URL**
-   - What we know: CURRICULUM.md mentions "CALM Studio web (zero-config visual canvas)" and the aac repo contains a Studio codebase
-   - What's unclear: The public URL (possibly `https://studio.calm.finos.org`) is not confirmed at research time
-   - Recommendation: Verify the URL before writing it into Lab step-4 hints; the alternative is to describe visualization from a local Studio or the VSCode extension
+2. **CALM Studio web public URL — RESOLVED**
+   - **Finding:** URL not publicly confirmed from this environment. The CURRICULUM.md states "CALM Studio web (zero-config visual canvas)" without a URL. The aac repo codebase exists but hosted URL is unknown.
+   - **Resolution for Lab step-4:** Describe visualization as optional/aspirational. Lab solution validation uses `calm validate` (CLI) as the primary check, not Studio visualization. Chapter 0.2 and 0.5 reference Studio as "open in CALM Studio if available"; include a note that the URL will be provided by the course platform.
+   - **Placeholder:** Use `https://studio.calm.finos.org` in content with a `[verify URL]` annotation for human review before publication.
+
+3. **Excalidraw illustration authoring timing — RESOLVED**
+   - **Resolution:** Illustrations are user-authored in Excalidraw using the agentic skill. Plans create `.excalidraw` stubs with embedded authoring specs. User authors actual illustrations before phase gate. This is a documented manual step, tracked in VALIDATION.md ILL-01 gate note.
 
 3. **Excalidraw illustration authoring responsibility**
    - What we know: User has the Excalidraw agentic skill; ILLUSTRATION-STANDARDS.md says "user authors illustration interactively in Excalidraw"
