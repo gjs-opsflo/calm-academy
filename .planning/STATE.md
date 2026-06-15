@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: "Phase 1 — Module 0: The 15-Minute On-Ramp"
-status: Ready to execute
-last_updated: "2026-06-15T08:30:00.000Z"
+current_phase: 01
+status: executing
+last_updated: "2026-06-15T08:51:04.714Z"
 progress:
   total_phases: 6
   completed_phases: 0
@@ -21,8 +21,8 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 
 **Core value:** A learner produces a validated `.calm.json` in under 15 minutes (Module 0) — before learning a single spec rule.
 **Current milestone:** Milestone 1 — First Public Draft (Modules 0–3 + Site)
-**Current phase:** Phase 1 — Module 0: The 15-Minute On-Ramp
-**Status:** Ready to execute — 3 plans in 2 waves
+**Current phase:** 01
+**Status:** Executing Phase 01
 
 ## Milestone Progress
 

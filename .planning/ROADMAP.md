@@ -15,23 +15,27 @@
 **Requirements:** MOD-01, LAB-01, QUIZ-01, ILL-01
 **Dependencies:** calmstudio-mcp available globally (already confirmed)
 
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
 
 **Wave 1**
-- [ ] 01-01-PLAN.md — Setup gate: Chapter 0.1 (Three Paths) + Chapter 0.4 (Get Set Up) + todo-api code example + validation scripts
+
+- [x] 01-01-PLAN.md — Setup gate: Chapter 0.1 (Three Paths) + Chapter 0.4 (Get Set Up) + todo-api code example + validation scripts
 
 **Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 01-02-PLAN.md — Demo + Why: Chapter 0.2 (Live Demo) + Chapter 0.3 (Why it Works) + 3 Excalidraw illustration stubs (ILL-01) `[autonomous: false — requires user illustration authoring]`
 - [ ] 01-03-PLAN.md — Hands-on: Chapter 0.5 (Lab wrapper) + Lab 0 (LAB.md + solution) + Module 0 quiz (QUIZ-01)
 
 **Cross-cutting constraints:**
+
 - All `.architecture.json` examples must validate with `npx @finos/calm-cli validate` before commit
 - No `npx @calmstudio/mcp` references anywhere — package is NOT on npm; use local .cjs install or CALM Studio web
 - Illustrations: user must author Excalidraw files and export SVGs (>1KB each) before phase gate
 
 **Success Criteria:**
+
 1. All 5 Module 0 chapters authored as MDX, readable in the site
 2. Lab 0 completes end-to-end on a fresh machine: `describe → .calm.json → calm validate → Studio visualize`
 3. Module 0 quiz (YAML) passes auto-grade check with correct answer key
@@ -48,6 +52,7 @@ Plans:
 **Dependencies:** Phase 1 complete (production workflow validated)
 
 **Success Criteria:**
+
 1. All 5 Module 1 chapters authored, cross-referenced to Module 0 by permalink slug
 2. Module 1 quiz covers CALM positioning, FINOS ecosystem at a glance, and Gemara overview
 3. 8–10 Excalidraw B&W illustrations complete — includes architecture drift timeline, FINOS ecosystem map, Gemara 7-layer overview
@@ -64,6 +69,7 @@ Plans:
 **Dependencies:** Phase 2 complete; all 9 core node types confirmed from CALM 1.2 spec
 
 **Success Criteria:**
+
 1. All 7 Module 2 chapters authored — covers all 9 core node types, relationship types, interface shapes, controls, decorators, metadata, and building a first full architecture
 2. Lab 2 (conference signup architecture) completes end-to-end: learner writes CALM JSON by hand, passes `calm validate`, visualizes in Studio
 3. Module 2 quiz covers all CALM vocabulary — largest quiz in the course
@@ -82,6 +88,7 @@ Plans:
 **Dependencies:** Phase 3 complete; CALM CLI available locally; GitHub Actions runner available for Lab 3
 
 **Success Criteria:**
+
 1. All 7 Module 3 chapters authored — covers CLI commands, Studio canvas workflow, Hub publish/consume, Server concepts, VSCode extension, pattern library, CI/CD gate
 2. Lab 3 (CI/CD gate) runs end-to-end: learner forks a repo, adds `calm validate` to GitHub Actions, pushes a passing and failing architecture — both behave as expected
 3. Module 3 quiz covers CLI, Hub, and CI/CD patterns
@@ -98,6 +105,7 @@ Plans:
 **Dependencies:** Phases 1–4 complete (all module content exists)
 
 **Success Criteria:**
+
 1. Docusaurus site builds with zero errors or warnings; all Module 0–3 content published
 2. Search works across all modules
 3. Quiz MDX component renders correctly for all 4 quizzes with correct auto-grading
@@ -116,6 +124,7 @@ Plans:
 **Dependencies:** Phase 5 complete
 
 **Success Criteria:**
+
 1. All cross-references between lessons use permalink slugs (no chapter numbers)
 2. Glossary complete with all CALM and Gemara terms defined
 3. All `code-examples/` pass `calm validate` in CI (CODE-01 final verification)
@@ -129,7 +138,7 @@ Plans:
 
 | Phase | Name | Requirements | Est. Duration |
 |-------|------|--------------|---------------|
-| 1 | Module 0 — On-Ramp | MOD-01, LAB-01, QUIZ-01, ILL-01 | 1 week |
+| 1 | 1/3 | In Progress|  |
 | 2 | Module 1 — Case for AaC | MOD-02, QUIZ-02, ILL-02, SLIDE-01 | 1.5 weeks |
 | 3 | Module 2 — CALM Fundamentals | MOD-03, LAB-02, QUIZ-03, ILL-03, SLIDE-02, CODE-01, CODE-02 | 2.5 weeks |
 | 4 | Module 3 — Ecosystem | MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03 | 2 weeks |
