@@ -60,14 +60,17 @@ Exceptions:
 Quiz component typography inherits Docusaurus body text. The only explicit declarations are for
 roles that diverge from body text.
 
+Declared weights: **400** (regular) and **700** (bold). No third weight.
+
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
 | Body (inherited) | 16px (Docusaurus default) | 400 | 1.5 | Question prompt text, option labels, explanation body |
-| Label | 14px | 600 | 1.4 | Chapter section heading inside quiz, "Question N of N" counter |
+| Label | 14px | 700 | 1.4 | Chapter section heading inside quiz, "Question N of N" counter |
 | Heading | 20px | 700 | 1.3 | Quiz title (module title displayed at top of component) |
 | Score display | 28px | 700 | 1.2 | Score number inside score badge ("3 / 5") |
 
 Source: pre-populated from CONTEXT.md D5 (Docusaurus classic default inherited) + 8pt grid defaults.
+Typography fix: label weight changed from 600 to 700 to enforce two-weight maximum (400 + 700).
 
 ---
 
@@ -103,10 +106,10 @@ This is the core design contract for `Quiz.tsx`. Define every state precisely.
 | Answered (pre-submit) | User selects a radio option | Selected option row: left border 2px solid `--ifm-color-primary`. All other options: unchanged. Submit button: enabled (full opacity, pointer cursor). Hint text hidden. |
 | Partially answered (multiple questions) | Some questions answered, some not | Submit button remains enabled. Unanswered questions show hint text "Please answer this question to see your score" injected after submit attempt. |
 | Submitted | User clicks Submit | All options become read-only (pointer-events: none). Score badge appears. Per-question result (correct/incorrect) and explanation text revealed. |
-| Correct (post-submit) | Submitted, selected option has `correct: true` | Correct option row: left border 2px solid `--ifm-color-success` (#2e8555), light green background tint. "Correct" label badge (14px, weight 600, green) above explanation. |
-| Incorrect (post-submit) | Submitted, selected option has `correct: false` | Selected option row: left border 2px solid `--ifm-color-danger` (#fa383e), light red background tint. "Incorrect" label badge (14px, weight 600, red). Correct answer row highlighted with green border (even though not selected). |
+| Correct (post-submit) | Submitted, selected option has `correct: true` | Correct option row: left border 2px solid `--ifm-color-success` (#2e8555), light green background tint. "Correct" label badge (14px, weight 700, green) above explanation. |
+| Incorrect (post-submit) | Submitted, selected option has `correct: false` | Selected option row: left border 2px solid `--ifm-color-danger` (#fa383e), light red background tint. "Incorrect" label badge (14px, weight 700, red). Correct answer row highlighted with green border (even though not selected). |
 | Short answer (pre-submit) | Question type is `short_answer` | Textarea rendered read-only with placeholder: "Your answer (model answer revealed after you submit the full quiz)". No freetext input or grading. |
-| Short answer (post-submit) | Submitted, type is `short_answer` | Model answer text block revealed below the textarea. Label: "Model Answer" (14px, weight 600). Textarea border: secondary (no correct/incorrect color — not graded). |
+| Short answer (post-submit) | Submitted, type is `short_answer` | Model answer text block revealed below the textarea. Label: "Model Answer" (14px, weight 700). Textarea border: secondary (no correct/incorrect color — not graded). |
 | Error: quiz load failure | `data` prop is undefined or malformed | Error state block rendered in place of quiz. (See Copywriting Contract for error copy.) |
 
 ### Multiple correct (`multiple_correct` type)
