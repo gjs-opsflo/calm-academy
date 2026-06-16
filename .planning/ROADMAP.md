@@ -116,7 +116,7 @@ Plans:
 **Requirements:** MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03
 **Dependencies:** Phase 3 complete; CALM CLI available locally; GitHub Actions runner available for Lab 3
 
-**Plans:** 4/5 plans executed
+**Plans:** 5/5 plans complete
 
 Plans:
 
@@ -132,7 +132,7 @@ Plans:
 
 **Wave 3** *(blocked on all Wave 2 completion)*
 
-- [ ] 04-05-PLAN.md — Derived artifact: Module 3 slide deck (SLIDE-03, 25-35 Marp slides, derived from 7 chapters + 10 m03-*.svg illustrations)
+- [x] 04-05-PLAN.md — Derived artifact: Module 3 slide deck (SLIDE-03, 25-35 Marp slides, derived from 7 chapters + 10 m03-*.svg illustrations)
 
 **Cross-cutting constraints:**
 
@@ -196,7 +196,7 @@ Plans:
 | 1 | 3/3 | Complete   | 2026-06-15 |
 | 2 | 2/2 | Complete   | 2026-06-15 |
 | 3 | 4/4 | Complete   | 2026-06-16 |
-| 4 | 4/5 | In Progress|  |
+| 4 | 5/5 | Complete   | 2026-06-16 |
 | 5 | Site Launch Prep | SITE-01 | 1 week |
 | 6 | Polish + Milestone Close | (all 21) | 1 week |
 
