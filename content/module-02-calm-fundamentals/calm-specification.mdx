@@ -1,0 +1,152 @@
+---
+title: "The CALM specification"
+slug: calm-specification
+module: 2
+chapter: 2.1
+estimated_minutes: 18
+prerequisites:
+  - introducing-calm
+---
+
+## TL;DR
+
+- CALM 1.2 is a JSON Schema document — every `.architecture.json` is validated against it.
+- The six top-level fields are `$schema`, `unique-id`, `name`, `description`, `nodes`, and `relationships` — the first four are required.
+- The `$schema` URL must be exactly `https://calm.finos.org/release/1.2/meta/calm.json` — no other value is valid for 1.2 work.
+- The validator checks shape, required fields, and enum values — it does not check whether your architecture makes sense.
+- Spec discipline (using only the 9 core node types) is a cultural rule, not a technical one — the schema allows arbitrary strings.
+
+## Why it matters
+
+Every powerful tooling ecosystem in software started with a file format that everyone agreed on. Terraform works because every engineer writes HCL that Terraform understands. OpenAPI works because every team publishes a YAML contract that code generators, API gateways, and test suites all read. The CALM specification is that agreement for architecture documentation. Without it, you have diagrams that drift and prose that nobody reads. With it, you have a machine-readable artifact that CLI tools, Studio, Hub, and Guard can all act on independently — because they all speak the same language. This chapter teaches the grammar of that language.
+
+## The concept
+
+### Why JSON Schema
+
+CALM uses JSON Schema (Draft 2020-12) as its schema language, not a custom DSL or YAML format. This is a deliberate choice with practical consequences.
+
+JSON Schema is widely understood. Every programming language has a validating library for it. The `$schema` keyword at the top of a document is a pointer to the schema that governs it — a pattern that JSON Schema formalised and that tools like AJV, jsonschema (Python), and similar libraries implement automatically. When you point a validator at a `.architecture.json`, it follows the `$schema` pointer to `https://calm.finos.org/release/1.2/meta/calm.json` and validates the document against that schema without any additional configuration.
+
+YAML DSLs (like Kubernetes manifests or GitHub Actions workflows) are human-friendly but suffer from whitespace ambiguity and require custom tooling for validation. Ad-hoc formats (like early AWS CloudFormation) start simple but accumulate special cases that only the issuing vendor understands. JSON Schema avoids both problems: it is machine-precise, vendor-neutral, and backed by a standard that predates CALM.
+
+The choice also enables extension. The `anyOf` pattern used for node types allows CALM to define a canonical set of types (the 9 core types) while leaving an extension hook open for future packs — without requiring a new spec version. Your validator can enforce the 9-type discipline; the schema itself stays flexible.
+
+### The CALM document anatomy
+
+A CALM 1.2 architecture document has the following top-level fields:
+
+| Field | Required | Purpose |
+|-------|----------|---------|
+| `$schema` | Yes | Pointer to the CALM 1.2 schema; enables validation |
+| `unique-id` | Yes | Globally unique identifier for this architecture (kebab-case by convention) |
+| `name` | Yes | Human-readable name for the architecture |
+| `description` | Yes | One-to-two sentence description of what this architecture represents |
+| `nodes` | No (array) | Array of node objects — the system components |
+| `relationships` | No (array) | Array of relationship objects — the connections between nodes |
+| `metadata` | No | Freeform metadata array or object (version, author, data-classification) |
+| `controls` | No | Control assertions keyed by control ID |
+| `flows` | No | Ordered sequences of relationship traversals (business process models) |
+| `adrs` | No | Array of URLs or references to Architecture Decision Records |
+
+In practice, almost every architecture document includes `nodes` and `relationships` — they are the core content. `metadata`, `controls`, `flows`, and `adrs` become relevant as you add governance detail. Chapter 2.2 covers nodes. Chapter 2.3 covers relationships. Chapters 2.4 through 2.6 cover interfaces, controls, and decorators.
+
+![CALM document top-level structure with required fields highlighted](../illustrations/exported/m02-calm-document-structure.svg)
+
+The document structure maps directly to what you saw in the [Module 0 on-ramp](../module-00-on-ramp/your-first-calm-document.mdx) — when `calmstudio-mcp` generated your first architecture, it produced exactly these fields.
+
+### The $schema URL and spec versioning
+
+The `$schema` value for CALM 1.2 is:
+
+```
+https://calm.finos.org/release/1.2/meta/calm.json
+```
+
+This exact string is the single most important constraint in the whole spec. Get it wrong and your validator either rejects the file or validates it against the wrong schema version. Common mistakes are using `1.0-rc1`, `1.1`, or omitting the `/release/` path segment.
+
+CALM follows a three-stage governance process:
+
+1. **Draft** — active development, may change without notice. Schema lives at a date-stamped path (e.g. `/draft/2025-03/meta/calm.json`). Do not use in production tooling.
+2. **Release Candidate (RC)** — stable for testing. Tools can implement against it, but the Working Group may still make breaking changes. Files produced against 1.0-rc1 used interface types (`url-interface`, `host-port-interface`) that no longer exist in 1.2.
+3. **Release** — stable. CALM 1.2 is a Release. Breaking changes require a new minor or major version.
+
+If you are working against 1.2 today, use the release schema URL. If you are exploring a Draft, use the Draft URL and accept that the schema may evolve under you.
+
+Why does the URL end in `/meta/calm.json` rather than just `/1.2/calm.json`? The `/meta/` directory contains multiple schema files — `core.json` (nodes, relationships, protocol), `interface.json`, `control.json`, `flow.json`, `decorators.json`, and `timeline.json`. The `calm.json` file at the top of `/meta/` is the composed root that `$ref`s all of them. Your architecture document should always point at `calm.json`, not at a sub-schema.
+
+### Schema conformance vs spec discipline
+
+Here is something that surprises learners on first encounter: the CALM 1.2 schema will accept `"node-type": "container"` without error. It will also accept `"node-type": "microservice"` or `"node-type": "pizza"`. The schema's node-type definition uses an `anyOf` with two branches — an enum of the 9 canonical types, and an open `"type": "string"` branch. That second branch is an extension hook for future node-type packs (AWS-specific types, Kubernetes-specific types), not a license for inventing your own.
+
+The validator enforces **schema conformance**: does this document have the right shape, the right required fields, the right enum values where enums exist? It does not enforce **spec discipline**: are you using only the 9 canonical types? Are your node descriptions meaningful? Does your architecture actually reflect a real system?
+
+Spec discipline is cultural. The course teaches it; your team enforces it in code review; calmstudio-mcp enforces it at generation time. But if someone hand-writes a CALM file with `"node-type": "container"`, the validator will not stop them. This is intentional — the spec leaves room for the ecosystem to grow without requiring schema changes.
+
+The practical implication: teach the 9 types (see [Nodes: modeling system components](./nodes.mdx)), use them consistently, and review CALM files in pull requests for discipline violations the same way you review code for anti-patterns. The validator is a floor, not a ceiling.
+
+### What `calm validate` actually checks
+
+The `npx @finos/calm-cli validate -a <file>` command (which wraps the core validator) performs two kinds of checks:
+
+**JSON Schema checks** — the document must conform to the CALM 1.2 JSON Schema. This catches:
+- Missing required fields (`unique-id`, `node-type`, `name`, `description` on nodes; `unique-id`, `relationship-type` on relationships)
+- Malformed relationship-type structures (e.g. a `connects` without `source` and `destination`)
+- Protocol enum violations (e.g. `"protocol": "REST"` — not in the enum)
+- `$schema` format violations
+
+**Spectral lint checks** — a set of architectural rules layered on top of the schema. In CALM 1.44.1, these include:
+- `architecture-nodes-must-be-referenced` — warns if a node is declared but not referenced by any relationship
+- Node uniqueness checks — warns if two nodes share a `unique-id`
+- Pattern conformance checks (when validating against a pattern)
+
+The output is a JSON document with `hasErrors` (boolean) and `hasWarnings` (boolean) and an array of validation results. An architecture file is production-ready when `hasErrors: false`. Warnings are advisory — they point at things that may indicate a modeling error but are not necessarily wrong.
+
+What `calm validate` does **not** check:
+- Semantic correctness of relationships (you can put a `connects` between nodes that would never communicate in reality)
+- Network reachability (whether your described protocols are implementable)
+- Whether relationship descriptions match what the relationship actually does
+- Control requirement completeness (it validates the structure of controls, not whether they are sufficient)
+
+These semantic checks are the domain of CALM Guard — covered in Module 4.
+
+## Code/CALM examples
+
+A minimal valid CALM 1.2 document needs only the four required top-level fields plus empty arrays for nodes and relationships:
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "my-first-architecture",
+  "name": "My First Architecture",
+  "description": "A skeleton CALM 1.2 document — no nodes or relationships yet",
+  "nodes": [],
+  "relationships": []
+}
+```
+
+This document passes `calm validate`. It produces a warning (`architecture-nodes-must-be-referenced` — but with empty arrays there are no nodes to warn about). It is the starting point for Chapter 2.7's step-by-step build-up exercise.
+
+The full reference architecture used throughout Chapter 2.2 is in `code-examples/module-02-calm-fundamentals/node-types-reference.architecture.json`. The full reference architecture used throughout Chapter 2.3 is in `code-examples/module-02-calm-fundamentals/relationship-types-reference.architecture.json`. Both validate against the 1.2 schema.
+
+## Common mistakes
+
+**Using the wrong `$schema` URL.** The most common wrong values are `https://calm.finos.org/release/1.0-rc1/meta/calm.json` (from older blog posts and Stack Overflow answers), `https://calm.finos.org/release/1.1/meta/calm.json` (if you copied from a pre-1.2 file), and `https://calm.finos.org/meta/calm.json` (omitting the `/release/1.2/` path). Any of these will cause the validator to either reject the file or validate against a different schema version where node types, interface structures, and decorator support differ.
+
+**Missing `description` on nodes.** The schema requires `description` on every node. Learners in a hurry skip it, assuming it is optional. It is not. The validator will reject the file with a missing-required-field error. Every node must have all four required fields: `unique-id`, `node-type`, `name`, `description`.
+
+**Treating a validator `PASS` as semantic correctness.** A document that passes `calm validate` is shape-correct, not semantically correct. You can have a `connects` relationship between a `database` node and another `database` node with `protocol: "HTTPS"` — that will validate fine. Whether it makes architectural sense is a human or CALM Guard concern.
+
+**Embedding decorator-type data inside the architecture.** Decorators (threat models, AIGF overlays, deployment metadata) are separate JSON documents that point at the architecture file via a `target` array. Embedding threat categories in a node's `metadata` works syntactically but defeats the cross-architecture enrichment benefit that decorators enable. Chapter 2.6 covers decorators in detail.
+
+**Inventing node types because the validator allows it.** As explained in the schema conformance vs spec discipline section: the schema's open `anyOf` branch accepts any string as a `node-type`. Using `"node-type": "container"` will not cause a validation error. But it destroys tooling interoperability — CALM Studio, CALM Guard, and pattern matchers all depend on the 9 canonical types to function correctly.
+
+## Knowledge check
+
+[Take the Module 2 quiz](../quizzes/module-02-calm-fundamentals.yaml)
+
+## Further reading
+
+- [Nodes: modeling system components](./nodes.mdx) — the next chapter: all 9 node types with FSI examples
+- [Introducing CALM](../module-01-case-for-aac/introducing-calm.mdx) — Module 1's orientation chapter that situates the spec in the broader CALM ecosystem
+- [CALM 1.2 specification](https://calm.finos.org/release/1.2/) — the authoritative schema and release notes
