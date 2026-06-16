@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 500,
+      "text": "DIAGRAM SPEC — Bidirectional Sync: Canvas ↔ JSON (Chapter 3.2)\n\nLayout: Before/after split with two side-by-side panels, plus a second example below.\n\nTOP ROW — CANVAS-TO-JSON direction:\n\nLEFT PANEL — 'Before' state:\n  Title: 'Before'\n  Mini-canvas: service hexagon at position A (top-left of canvas area)\n  JSON snippet box (right side of panel): shows x:100, y:80 for the service node\n\nARROW BETWEEN PANELS:\n  Bold arrow pointing right\n  Label: 'User drags node on canvas →'\n\nRIGHT PANEL — 'After' state:\n  Title: 'After'\n  Mini-canvas: service hexagon now at position B (bottom-right of canvas area, moved)\n  JSON snippet box: shows x:340, y:220 (highlighted/circled to show change)\n  Caption below: 'JSON updates instantly — no manual sync required.'\n\nHORIZONTAL DIVIDER between top and bottom rows (thin dashed line)\n\nBOTTOM ROW — JSON-TO-CANVAS direction:\n  Bold arrow pointing LEFT\n  Label: 'User edits JSON → canvas moves'\n  Caption: 'Mutex prevents loops — one change at a time.'\n  Small note below: 'canvas edit ✓ → JSON update ✓ → (mutex blocks) → no loop'\n\nTitle above everything: 'CALM Studio bidirectional sync'\nStyle: B&W only. No colour. Simple clean shapes. JSON snippets in monospace box.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Bidirectional Sync: Canvas ↔ JSON (Chapter 3.2)\n\nLayout: Before/after split with two side-by-side panels, plus a second example below.\n\nTOP ROW — CANVAS-TO-JSON direction:\n\nLEFT PANEL — 'Before' state:\n  Title: 'Before'\n  Mini-canvas: service hexagon at position A (top-left of canvas area)\n  JSON snippet box (right side of panel): shows x:100, y:80 for the service node\n\nARROW BETWEEN PANELS:\n  Bold arrow pointing right\n  Label: 'User drags node on canvas →'\n\nRIGHT PANEL — 'After' state:\n  Title: 'After'\n  Mini-canvas: service hexagon now at position B (bottom-right of canvas area, moved)\n  JSON snippet box: shows x:340, y:220 (highlighted/circled to show change)\n  Caption below: 'JSON updates instantly — no manual sync required.'\n\nHORIZONTAL DIVIDER between top and bottom rows (thin dashed line)\n\nBOTTOM ROW — JSON-TO-CANVAS direction:\n  Bold arrow pointing LEFT\n  Label: 'User edits JSON → canvas moves'\n  Caption: 'Mutex prevents loops — one change at a time.'\n  Small note below: 'canvas edit ✓ → JSON update ✓ → (mutex blocks) → no loop'\n\nTitle above everything: 'CALM Studio bidirectional sync'\nStyle: B&W only. No colour. Simple clean shapes. JSON snippets in monospace box."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

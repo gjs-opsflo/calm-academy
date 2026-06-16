@@ -34,6 +34,9 @@ Stubs are replaced when user authors in Excalidraw and runs `bash scripts/export
 | m03-pattern-vs-architecture | Pattern File to Architecture via calm generate | Module 3 (Ch 3.6) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 | m03-hub-namespace-tree | Hub Namespace Resource Tree with Versions | Module 3 (Ch 3.3) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 | m03-hub-publish-consume-flow | Hub Publish-Consume Workflow | Module 3 (Ch 3.3) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-studio-canvas-anatomy | Studio Canvas: Node Palette, Canvas, JSON Panel, Properties | Module 3 (Ch 3.2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-bidirectional-sync | Studio Bidirectional Sync: Canvas edit → JSON update | Module 3 (Ch 3.2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-calm-server-platform-pattern | Validation as a Service vs Local CLI Pattern | Module 3 (Ch 3.4) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 
 ## Updating This File
 

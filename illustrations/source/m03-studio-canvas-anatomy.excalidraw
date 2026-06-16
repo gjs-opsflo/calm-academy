@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 520,
+      "text": "DIAGRAM SPEC — CALM Studio Canvas Anatomy (Chapter 3.2)\n\nLayout: A wireframe of the Studio web application window with four labelled regions.\n\nLEFT PANEL (~15% width):\n  Label: 'Node palette'\n  Content: Vertical list of 9 node type icons with labels:\n    - actor (person silhouette)\n    - ecosystem (cloud outline)\n    - system (bold rectangle)\n    - service (hexagon)\n    - database (cylinder)\n    - network (shield shape)\n    - webclient (monitor screen)\n    - ldap (directory stack)\n    - data-asset (document stack)\n  Sub-label below panel: 'Drag to canvas'\n\nCENTER PANEL (~60% width):\n  Label: 'Canvas'\n  Content: 3-4 CALM nodes connected by arrows;\n    one deployed-in containment panel visible (dashed border containing a service node)\n    Nodes: webclient -> service (solid arrow), service inside network (dashed container)\n  Sub-label: 'Drag, connect, arrange. Canvas↔JSON sync.'\n\nRIGHT PANEL (~25% width):\n  Label: 'JSON code editor'\n  Content: Monospace code snippet showing a few lines of CALM JSON\n    (unique-id, name, node-type fields visible)\n  Sub-label: 'Edit JSON directly. Canvas updates instantly.'\n\nBOTTOM STRIP (full width, below canvas):\n  Label: 'Properties panel'\n  Content: Form fields showing selected node name, type, description\n  Sub-label: 'Click any node or edge to inspect and edit.'\n\nTitle above all panels: 'CALM Studio canvas anatomy'\nStyle: B&W only. Clean wireframe style. No colour. Borders for each panel region.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — CALM Studio Canvas Anatomy (Chapter 3.2)\n\nLayout: A wireframe of the Studio web application window with four labelled regions.\n\nLEFT PANEL (~15% width):\n  Label: 'Node palette'\n  Content: Vertical list of 9 node type icons with labels:\n    - actor (person silhouette)\n    - ecosystem (cloud outline)\n    - system (bold rectangle)\n    - service (hexagon)\n    - database (cylinder)\n    - network (shield shape)\n    - webclient (monitor screen)\n    - ldap (directory stack)\n    - data-asset (document stack)\n  Sub-label below panel: 'Drag to canvas'\n\nCENTER PANEL (~60% width):\n  Label: 'Canvas'\n  Content: 3-4 CALM nodes connected by arrows;\n    one deployed-in containment panel visible (dashed border containing a service node)\n    Nodes: webclient -> service (solid arrow), service inside network (dashed container)\n  Sub-label: 'Drag, connect, arrange. Canvas↔JSON sync.'\n\nRIGHT PANEL (~25% width):\n  Label: 'JSON code editor'\n  Content: Monospace code snippet showing a few lines of CALM JSON\n    (unique-id, name, node-type fields visible)\n  Sub-label: 'Edit JSON directly. Canvas updates instantly.'\n\nBOTTOM STRIP (full width, below canvas):\n  Label: 'Properties panel'\n  Content: Form fields showing selected node name, type, description\n  Sub-label: 'Click any node or edge to inspect and edit.'\n\nTitle above all panels: 'CALM Studio canvas anatomy'\nStyle: B&W only. Clean wireframe style. No colour. Borders for each panel region."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
