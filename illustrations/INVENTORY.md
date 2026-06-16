@@ -23,6 +23,13 @@ Stubs are replaced when user authors in Excalidraw and runs `bash scripts/export
 | m02-system-vs-service-vs-ecosystem | System vs Service vs Ecosystem | Module 2 (Ch 2.2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 | m02-relationship-types | All 5 CALM Relationship Types | Module 2 (Ch 2.3, slide deck) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 | m02-connects-vs-interacts | Connects vs Interacts Side-by-Side | Module 2 (Ch 2.3) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m02-interface-anatomy | Interface Anatomy: Freeform vs Formal Forms | Module 2 (Ch 2.4) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m02-control-anatomy | Control Anatomy Chain | Module 2 (Ch 2.5) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m02-decorator-external-overlay | Decorator as External Overlay | Module 2 (Ch 2.6) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m02-deployed-in-composed-of | deployed-in vs composed-of Side-by-Side | Module 2 (Ch 2.3, Ch 2.7) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m02-conference-signup-step1-nodes | Conference Signup Step 1: 6 Nodes, No Relationships | Module 2 (Ch 2.7, lab 2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m02-conference-signup-step2-relationships | Conference Signup Step 2: All 5 Relationships Added | Module 2 (Ch 2.7, lab 2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m02-conference-signup-step3-complete | Conference Signup Step 3: Complete with Interface + Control | Module 2 (Ch 2.7, lab 2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 
 ## Updating This File
 

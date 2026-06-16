@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — Conference signup step 3: interface + control added, architecture complete (Chapter 2.7, Lab 2)\n\nLayout: Same 6 nodes + 5 relationships as step 2, plus two additions:\n\nAddition 1 — Interface callout on attendees service:\n  A small rectangular callout box attached to the 'attendees (service)' hexagon:\n    Label: 'interface: attendees-api\\nHTTPS : 8443'\n  Connected to the attendees hexagon by a small solid line.\n\nAddition 2 — Control badge at the architecture level:\n  A small rectangular badge in the top-right corner of the diagram (or near the document boundary):\n    Label: 'control: encryption-in-transit\\nTLS 1.3+'\n  Annotated with: '(top-level — applies to all connections)'\n\nTop-right corner annotation: '[VALIDATED]' in a small box — indicating this architecture has passed calm validate.\n\nCaption below: 'Step 3 — add the interface contract and the security control. The architecture is now complete and validates.'\n\nNote at bottom: Interface callout and control badge are visual representations of the interfaces[] array on the attendees node and the top-level controls block — they are not separate CALM objects.\n\nStyle: B&W only. No colour fills. Same arrow and node styles as step 2. Interface callout box has a lighter stroke. Control badge has a double-border to indicate it is a policy annotation.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Conference signup step 3: interface + control added, architecture complete (Chapter 2.7, Lab 2)\n\nLayout: Same 6 nodes + 5 relationships as step 2, plus two additions:\n\nAddition 1 — Interface callout on attendees service:\n  A small rectangular callout box attached to the 'attendees (service)' hexagon:\n    Label: 'interface: attendees-api\\nHTTPS : 8443'\n  Connected to the attendees hexagon by a small solid line.\n\nAddition 2 — Control badge at the architecture level:\n  A small rectangular badge in the top-right corner of the diagram (or near the document boundary):\n    Label: 'control: encryption-in-transit\\nTLS 1.3+'\n  Annotated with: '(top-level — applies to all connections)'\n\nTop-right corner annotation: '[VALIDATED]' in a small box — indicating this architecture has passed calm validate.\n\nCaption below: 'Step 3 — add the interface contract and the security control. The architecture is now complete and validates.'\n\nNote at bottom: Interface callout and control badge are visual representations of the interfaces[] array on the attendees node and the top-level controls block — they are not separate CALM objects.\n\nStyle: B&W only. No colour fills. Same arrow and node styles as step 2. Interface callout box has a lighter stroke. Control badge has a double-border to indicate it is a policy annotation."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

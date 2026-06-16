@@ -1,0 +1,100 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "with-interfaces",
+  "name": "CALM 1.2 Interfaces Reference",
+  "description": "A reference architecture demonstrating both interface forms available in CALM 1.2: the freeform interface-type (no definition-url) and the formal interface-definition (definition-url + config). Interfaces live on NODES, not on relationships. Relationships reference interface unique-ids via source.interfaces and destination.interfaces arrays. This file uses only CALM 1.2 interface forms — no deprecated pre-1.1 interface types.",
+  "nodes": [
+    {
+      "unique-id": "analyst",
+      "node-type": "actor",
+      "name": "Analyst",
+      "description": "Human user who queries the orders system via the analyst portal."
+    },
+    {
+      "unique-id": "analyst-portal",
+      "node-type": "webclient",
+      "name": "Analyst Portal",
+      "description": "Browser-based web application through which the analyst accesses the orders system.",
+      "interfaces": [
+        {
+          "unique-id": "analyst-portal-url",
+          "name": "Portal URL",
+          "protocol": "HTTPS",
+          "url": "https://orders.example.com"
+        }
+      ]
+    },
+    {
+      "unique-id": "orders-api",
+      "node-type": "service",
+      "name": "Orders API",
+      "description": "Backend REST service exposing order management operations. Demonstrates two interface forms: a freeform interface-type (unique-id + free properties) and a formal interface-definition (definition-url + config).",
+      "interfaces": [
+        {
+          "unique-id": "orders-api-rest",
+          "name": "Orders REST API",
+          "protocol": "HTTPS",
+          "port": 8443
+        },
+        {
+          "unique-id": "orders-api-host-port",
+          "definition-url": "https://calm.finos.org/release/1.2/prototype/interface/tcp-host-port.json",
+          "config": {
+            "host": "orders-api.internal",
+            "port": 8443
+          }
+        }
+      ]
+    },
+    {
+      "unique-id": "orders-db",
+      "node-type": "database",
+      "name": "Orders Database",
+      "description": "Relational database storing order records, accessible only by the Orders API via JDBC."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "analyst-to-portal",
+      "description": "Analyst accesses the orders portal to submit and monitor order activity.",
+      "relationship-type": {
+        "interacts": {
+          "actor": "analyst",
+          "nodes": ["analyst-portal"]
+        }
+      }
+    },
+    {
+      "unique-id": "portal-to-orders-api",
+      "description": "Analyst portal calls the Orders API over HTTPS. The source.interfaces references the freeform interface on analyst-portal; destination.interfaces references the freeform REST interface on orders-api. This demonstrates how relationships reference interface unique-ids to specify which interfaces participate in the connection.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "analyst-portal",
+            "interfaces": ["analyst-portal-url"]
+          },
+          "destination": {
+            "node": "orders-api",
+            "interfaces": ["orders-api-rest"]
+          }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "orders-api-to-db",
+      "description": "Orders API reads and writes order records to the Orders Database via JDBC.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "orders-api"
+          },
+          "destination": {
+            "node": "orders-db"
+          }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}

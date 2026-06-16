@@ -1,0 +1,142 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "conference-signup",
+  "name": "Conference Signup System",
+  "description": "A registration system where conference attendees sign up via a browser-based portal backed by a REST service and a database. The service and database are deployed in a Kubernetes cluster.",
+  "controls": {
+    "encryption-in-transit": {
+      "description": "All data transmitted between system components must be encrypted using TLS 1.3 or higher with validated certificates. This control applies system-wide to every connection in this architecture.",
+      "requirements": [
+        {
+          "requirement-url": "https://example.com/security/encryption-in-transit.json",
+          "config": {
+            "protocol": "TLS",
+            "minimumVersion": "1.3",
+            "certificateValidation": "required",
+            "mutualTLS": "recommended"
+          }
+        }
+      ]
+    }
+  },
+  "metadata": [
+    {
+      "name": "conference-signup",
+      "version": "1.0.0",
+      "created-by": "calm-academy module-02"
+    }
+  ],
+  "nodes": [
+    {
+      "unique-id": "conference-attendee",
+      "node-type": "actor",
+      "name": "Conference Attendee",
+      "description": "Person registering for the conference via the signup portal."
+    },
+    {
+      "unique-id": "conference-website",
+      "node-type": "webclient",
+      "name": "Conference Website",
+      "description": "Browser-based signup portal where attendees complete and submit their registration details."
+    },
+    {
+      "unique-id": "load-balancer",
+      "node-type": "network",
+      "name": "Load Balancer",
+      "description": "Routes incoming HTTPS traffic from the conference website to the attendees service. Terminates TLS from the public internet."
+    },
+    {
+      "unique-id": "attendees",
+      "node-type": "service",
+      "name": "Attendees Service",
+      "description": "Backend service handling signup requests: validates input, persists registrations, and returns confirmation responses.",
+      "interfaces": [
+        {
+          "unique-id": "attendees-api",
+          "name": "Attendees REST API",
+          "protocol": "HTTPS",
+          "port": 8443
+        }
+      ]
+    },
+    {
+      "unique-id": "attendees-store",
+      "node-type": "database",
+      "name": "Attendees Store",
+      "description": "Persistent storage for registered attendees. Holds registration records including name, email, and session preferences."
+    },
+    {
+      "unique-id": "k8s-cluster",
+      "node-type": "system",
+      "name": "Kubernetes Cluster",
+      "description": "Production Kubernetes deployment environment hosting the load balancer, attendees service, and attendees store."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "attendee-to-website",
+      "description": "Conference attendee uses the conference website to complete and submit the signup form.",
+      "relationship-type": {
+        "interacts": {
+          "actor": "conference-attendee",
+          "nodes": ["conference-website"]
+        }
+      }
+    },
+    {
+      "unique-id": "website-to-load-balancer",
+      "description": "Conference website sends signup requests to the load balancer over HTTPS.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "conference-website"
+          },
+          "destination": {
+            "node": "load-balancer"
+          }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "load-balancer-to-attendees",
+      "description": "Load balancer forwards requests to the attendees service using mutual TLS for service-to-service authentication within the cluster.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "load-balancer"
+          },
+          "destination": {
+            "node": "attendees"
+          }
+        }
+      },
+      "protocol": "mTLS"
+    },
+    {
+      "unique-id": "attendees-to-store",
+      "description": "Attendees service reads and writes registration records to the attendees store via JDBC.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "attendees"
+          },
+          "destination": {
+            "node": "attendees-store"
+          }
+        }
+      },
+      "protocol": "JDBC"
+    },
+    {
+      "unique-id": "deployed-in-k8s-cluster",
+      "description": "The load balancer, attendees service, and attendees store are deployed-in the Kubernetes cluster. The k8s-cluster node is the runtime container for these three components.",
+      "relationship-type": {
+        "deployed-in": {
+          "container": "k8s-cluster",
+          "nodes": ["load-balancer", "attendees", "attendees-store"]
+        }
+      }
+    }
+  ]
+}
