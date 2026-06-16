@@ -116,13 +116,13 @@ Plans:
 **Requirements:** MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03
 **Dependencies:** Phase 3 complete; CALM CLI available locally; GitHub Actions runner available for Lab 3
 
-**Plans:** 5 plans in 3 waves
+**Plans:** 1/5 plans executed
 
 Plans:
 
 **Wave 1** *(foundational — unblocks all Wave 2 work)*
 
-- [ ] 04-01-PLAN.md — CI glob fix + Ch 3.1 CLI toolbox + Ch 3.6 Patterns + code examples (pattern + 3 .calm.json files) + 4 illustration stubs (m03-calm-cli-command-map, m03-pattern-vs-architecture, m03-hub-namespace-tree, m03-hub-publish-consume-flow)
+- [x] 04-01-PLAN.md — CI glob fix + Ch 3.1 CLI toolbox + Ch 3.6 Patterns + code examples (pattern + 3 .calm.json files) + 4 illustration stubs (m03-calm-cli-command-map, m03-pattern-vs-architecture, m03-hub-namespace-tree, m03-hub-publish-consume-flow)
 
 **Wave 2** *(04-02, 04-03, 04-04 run in parallel — all blocked on Wave 1)*
 
@@ -196,7 +196,7 @@ Plans:
 | 1 | 3/3 | Complete   | 2026-06-15 |
 | 2 | 2/2 | Complete   | 2026-06-15 |
 | 3 | 4/4 | Complete   | 2026-06-16 |
-| 4 | Module 3 — Ecosystem | MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03 | 2 weeks |
+| 4 | 1/5 | In Progress|  |
 | 5 | Site Launch Prep | SITE-01 | 1 week |
 | 6 | Polish + Milestone Close | (all 21) | 1 week |
 

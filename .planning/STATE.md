@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 3
+current_phase: 4
 status: executing
-last_updated: "2026-06-16T03:58:47.893Z"
+last_updated: "2026-06-16T09:09:24.018Z"
 progress:
   total_phases: 6
-  completed_phases: 2
-  total_plans: 9
-  completed_plans: 5
-  percent: 33
+  completed_phases: 3
+  total_plans: 14
+  completed_plans: 9
+  percent: 50
 ---
 
 # Project State: CALM Academy
@@ -21,8 +21,8 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 
 **Core value:** A learner produces a validated `.calm.json` in under 15 minutes (Module 0) — before learning a single spec rule.
 **Current milestone:** Milestone 1 — First Public Draft (Modules 0–3 + Site)
-**Current phase:** 3
-**Status:** Executing Phase 3
+**Current phase:** 4
+**Status:** Executing Phase 4
 
 ## Milestone Progress
 
