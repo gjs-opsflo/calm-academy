@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — Side-by-side: connects vs interacts (Chapter 2.3)\n\nLayout: Two panels separated by a vertical centre line.\n\nPANEL 1 (left) — 'connects':\n  Heading: 'connects'\n  Left node: Browser rectangle shape labelled 'payments-portal' (node-type: webclient)\n  Arrow: Solid directional arrow pointing right\n  Arrow label above: 'protocol: HTTPS'\n  Arrow label below: '← TOP LEVEL of relationship object'\n  Right node: Hexagon labelled 'payments-service' (node-type: service)\n  Caption below panel: 'node-to-node with a wire protocol'\n  Code snippet below caption (small font):\n    { \"relationship-type\": { \"connects\": { source, destination } }, \"protocol\": \"HTTPS\" }\n\nPANEL 2 (right) — 'interacts':\n  Heading: 'interacts'\n  Left shape: Stick figure labelled 'payments-analyst' (node-type: actor)\n  Arrow: Solid arrow with open arrowhead pointing right\n  Arrow label above: 'actor: payments-analyst'\n  Arrow label below: '(no protocol field)'\n  Right node: Browser rectangle labelled 'payments-portal' (node-type: webclient)\n  Caption below panel: 'actor pulls the trigger; protocol omitted'\n  Code snippet below caption (small font):\n    { \"relationship-type\": { \"interacts\": { \"actor\": \"payments-analyst\", \"nodes\": [...] } } }\n\nBottom annotation (spans full width):\n  'connects is symmetric data flow with a wire protocol. interacts is human/external intent.'\n  'The actor field in interacts MUST reference a node of node-type: actor.'\n\nStyle: B&W only. Clear panel separation. Arrow direction unmistakably left-to-right in both panels. No colour.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Side-by-side: connects vs interacts (Chapter 2.3)\n\nLayout: Two panels separated by a vertical centre line.\n\nPANEL 1 (left) — 'connects':\n  Heading: 'connects'\n  Left node: Browser rectangle shape labelled 'payments-portal' (node-type: webclient)\n  Arrow: Solid directional arrow pointing right\n  Arrow label above: 'protocol: HTTPS'\n  Arrow label below: '← TOP LEVEL of relationship object'\n  Right node: Hexagon labelled 'payments-service' (node-type: service)\n  Caption below panel: 'node-to-node with a wire protocol'\n  Code snippet below caption (small font):\n    { \"relationship-type\": { \"connects\": { source, destination } }, \"protocol\": \"HTTPS\" }\n\nPANEL 2 (right) — 'interacts':\n  Heading: 'interacts'\n  Left shape: Stick figure labelled 'payments-analyst' (node-type: actor)\n  Arrow: Solid arrow with open arrowhead pointing right\n  Arrow label above: 'actor: payments-analyst'\n  Arrow label below: '(no protocol field)'\n  Right node: Browser rectangle labelled 'payments-portal' (node-type: webclient)\n  Caption below panel: 'actor pulls the trigger; protocol omitted'\n  Code snippet below caption (small font):\n    { \"relationship-type\": { \"interacts\": { \"actor\": \"payments-analyst\", \"nodes\": [...] } } }\n\nBottom annotation (spans full width):\n  'connects is symmetric data flow with a wire protocol. interacts is human/external intent.'\n  'The actor field in interacts MUST reference a node of node-type: actor.'\n\nStyle: B&W only. Clear panel separation. Arrow direction unmistakably left-to-right in both panels. No colour."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

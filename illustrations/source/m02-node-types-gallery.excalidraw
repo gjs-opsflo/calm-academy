@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — All 9 CALM 1.2 core node types in a single visual gallery (Chapter 2.2, slide deck)\n\nLayout: 3x3 grid. Each cell contains the canonical Studio canvas shape and the node-type label below it.\n\nRow 1:\n  Cell 1: actor     — stick figure shape. Label below: 'actor'\n  Cell 2: ecosystem — large dashed-border rectangle (container). Label below: 'ecosystem'\n  Cell 3: system    — large solid rounded rectangle (smaller than ecosystem). Label below: 'system'\n\nRow 2:\n  Cell 4: service  — hexagon shape. Label below: 'service'\n  Cell 5: database — cylinder shape (classic DB icon). Label below: 'database'\n  Cell 6: network  — cloud or pipe shape. Label below: 'network'\n\nRow 3:\n  Cell 7: webclient — browser window shape (rectangle with address bar). Label below: 'webclient'\n  Cell 8: ldap      — tree/directory structure (folder hierarchy). Label below: 'ldap'\n  Cell 9: data-asset — document icon (rectangle with dog-ear corner). Label below: 'data-asset'\n\nTitle above grid: 'The 9 CALM 1.2 Core Node Types'\n\nBottom annotation: 'Use these exact strings in the node-type field. No others.'\n\nStyle: B&W only, no colour fills. Grid cells separated by light grey lines. Each shape drawn in outline only.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — All 9 CALM 1.2 core node types in a single visual gallery (Chapter 2.2, slide deck)\n\nLayout: 3x3 grid. Each cell contains the canonical Studio canvas shape and the node-type label below it.\n\nRow 1:\n  Cell 1: actor     — stick figure shape. Label below: 'actor'\n  Cell 2: ecosystem — large dashed-border rectangle (container). Label below: 'ecosystem'\n  Cell 3: system    — large solid rounded rectangle (smaller than ecosystem). Label below: 'system'\n\nRow 2:\n  Cell 4: service  — hexagon shape. Label below: 'service'\n  Cell 5: database — cylinder shape (classic DB icon). Label below: 'database'\n  Cell 6: network  — cloud or pipe shape. Label below: 'network'\n\nRow 3:\n  Cell 7: webclient — browser window shape (rectangle with address bar). Label below: 'webclient'\n  Cell 8: ldap      — tree/directory structure (folder hierarchy). Label below: 'ldap'\n  Cell 9: data-asset — document icon (rectangle with dog-ear corner). Label below: 'data-asset'\n\nTitle above grid: 'The 9 CALM 1.2 Core Node Types'\n\nBottom annotation: 'Use these exact strings in the node-type field. No others.'\n\nStyle: B&W only, no colour fills. Grid cells separated by light grey lines. Each shape drawn in outline only."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

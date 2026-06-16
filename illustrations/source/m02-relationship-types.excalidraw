@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — All 5 CALM relationship types in a single diagram (Chapter 2.3, slide deck)\n\nLayout: 5 rows, each row shows two abstract node boxes with the relationship line between them.\n\nROW 1 — connects:\n  Left box: 'webclient'. Right box: 'service'.\n  Line: Solid arrow pointing right (directional). Arrow label: 'protocol: HTTPS'.\n  Row label (far left): 'connects' (bold)\n  Row description (far right): 'node-to-node data flow with protocol'\n\nROW 2 — interacts:\n  Left shape: Stick figure ('actor'). Right box: 'webclient'.\n  Line: Solid arrow with open arrowhead pointing right.\n  Row label: 'interacts' (bold)\n  Row description: 'actor initiates to node(s) — no protocol field'\n\nROW 3 — deployed-in:\n  Outer dashed-border box ('ecosystem'). Inside: two smaller boxes ('service', 'database').\n  Line: Dashed arrow from inner nodes to outer container.\n  Row label: 'deployed-in' (bold)\n  Row description: 'nodes live inside a runtime container'\n\nROW 4 — composed-of:\n  Outer solid-border box ('system'). Inside: two hexagons ('service-a', 'service-b').\n  Line: Diamond arrowhead (from container to contained, or UML composition style).\n  Row label: 'composed-of' (bold)\n  Row description: 'container structurally made of these nodes'\n\nROW 5 — options:\n  Central diamond decision point. Two arrow branches left and right to 'option-a' and 'option-b' boxes.\n  Row label: 'options' (bold)\n  Row description: 'decision branches (ADR-in-spec)'\n\nTitle above all rows: 'The 5 CALM 1.2 Relationship Types'\n\nStyle: B&W only. Each row clearly separated by light horizontal line. No colour.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — All 5 CALM relationship types in a single diagram (Chapter 2.3, slide deck)\n\nLayout: 5 rows, each row shows two abstract node boxes with the relationship line between them.\n\nROW 1 — connects:\n  Left box: 'webclient'. Right box: 'service'.\n  Line: Solid arrow pointing right (directional). Arrow label: 'protocol: HTTPS'.\n  Row label (far left): 'connects' (bold)\n  Row description (far right): 'node-to-node data flow with protocol'\n\nROW 2 — interacts:\n  Left shape: Stick figure ('actor'). Right box: 'webclient'.\n  Line: Solid arrow with open arrowhead pointing right.\n  Row label: 'interacts' (bold)\n  Row description: 'actor initiates to node(s) — no protocol field'\n\nROW 3 — deployed-in:\n  Outer dashed-border box ('ecosystem'). Inside: two smaller boxes ('service', 'database').\n  Line: Dashed arrow from inner nodes to outer container.\n  Row label: 'deployed-in' (bold)\n  Row description: 'nodes live inside a runtime container'\n\nROW 4 — composed-of:\n  Outer solid-border box ('system'). Inside: two hexagons ('service-a', 'service-b').\n  Line: Diamond arrowhead (from container to contained, or UML composition style).\n  Row label: 'composed-of' (bold)\n  Row description: 'container structurally made of these nodes'\n\nROW 5 — options:\n  Central diamond decision point. Two arrow branches left and right to 'option-a' and 'option-b' boxes.\n  Row label: 'options' (bold)\n  Row description: 'decision branches (ADR-in-spec)'\n\nTitle above all rows: 'The 5 CALM 1.2 Relationship Types'\n\nStyle: B&W only. Each row clearly separated by light horizontal line. No colour."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

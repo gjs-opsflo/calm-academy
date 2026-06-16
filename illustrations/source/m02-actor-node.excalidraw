@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — Close-up of an actor initiating an interaction (Chapter 2.2)\n\nLayout: Two nodes with an arrow between them, centred horizontally.\n\nLeft node: Large stick figure labelled 'trading-analyst' below. Above the shape: small label 'node-type: actor'.\n\nArrow: Solid line with open arrowhead pointing RIGHT from actor to service.\nAbove the arrow: relationship-type label 'interacts'\nBelow the arrow: small annotation 'actor field = trading-analyst'\n\nRight node: Hexagon shape labelled 'order-service' below. Above the shape: small label 'node-type: service'.\n\nSide annotation on the left (below actor): 'Actors pull the trigger — they initiate.'\nSide annotation on the right (below service): 'Services respond — they do not initiate.'\n\nBottom of canvas, full-width annotation:\n  'interacts.actor must reference a node of node-type: actor — not a service.'\n\nStyle: B&W only. Actor shape outlined clearly. Arrow clearly directional (left to right). No colour fills.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Close-up of an actor initiating an interaction (Chapter 2.2)\n\nLayout: Two nodes with an arrow between them, centred horizontally.\n\nLeft node: Large stick figure labelled 'trading-analyst' below. Above the shape: small label 'node-type: actor'.\n\nArrow: Solid line with open arrowhead pointing RIGHT from actor to service.\nAbove the arrow: relationship-type label 'interacts'\nBelow the arrow: small annotation 'actor field = trading-analyst'\n\nRight node: Hexagon shape labelled 'order-service' below. Above the shape: small label 'node-type: service'.\n\nSide annotation on the left (below actor): 'Actors pull the trigger — they initiate.'\nSide annotation on the right (below service): 'Services respond — they do not initiate.'\n\nBottom of canvas, full-width annotation:\n  'interacts.actor must reference a node of node-type: actor — not a service.'\n\nStyle: B&W only. Actor shape outlined clearly. Arrow clearly directional (left to right). No colour fills."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
