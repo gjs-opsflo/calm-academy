@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — Full Hub-Integrated Architecture Pipeline (Chapter 3.7, slide deck)\n\nLayout: Vertical pipeline, 7 sequential steps connected by downward arrows. Centre-aligned.\n\nStep 1 (top): 'PR opened'\n  Sub-label: 'developer pushes architecture update'\n  Icon: document with upward arrow\n\nStep 2: 'calm validate'\n  Sub-label: 'architecture vs Hub-hosted pattern'\n  Gate marker: diamond shape on left side. Label: 'Gate 1'\n  Fail path (right side, dashed arrow): 'blocked — PR cannot merge'\n\nStep 3: 'calm diff'\n  Sub-label: 'compare PR version vs Hub-published version'\n  Gate marker: diamond shape on left side. Label: 'Gate 2'\n  Output (right side): 'summary in PR comments'\n\nStep 4: 'Tests pass'\n  Sub-label: 'application tests run in parallel'\n  Note: parallel track (can show offset box)\n\nStep 5: 'PR merged'\n  Sub-label: 'architecture + app code merge to main'\n\nStep 6: 'calm hub push'\n  Sub-label: 'new architecture version published to CALM Hub'\n  Highlight: HEAVY BORDER (this is the critical publish step)\n  Label: 'Hub now holds the new canonical version'\n\nStep 7: Branch into two parallel tracks:\n  Track A (left): 'CALM Guard'\n    → 'pulls from Hub'\n    → 'compliance check'\n    → 'alert if non-compliant'\n  Track B (right): 'Terraform / IaC'\n    → 'applies infrastructure'\n    → 'matches architecture'\n    → 'Deploy'\n\nRight-side annotation (vertical, beside steps 1–6):\n  'Architecture is code. It gets the same pipeline as app code.'\n\nBottom caption (below step 7):\n  'No merge without valid architecture.'\n  'No deploy without Hub-published architecture.'\n\nTitle (above Step 1): 'Full CALM Hub-Integrated Pipeline'\n\nStyle: B&W only. Steps 2 and 3 have gate diamond shapes. Step 6 has heavy border.\nAll arrows downward (main path) or branching right (fail paths, parallel tracks).",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Full Hub-Integrated Architecture Pipeline (Chapter 3.7, slide deck)\n\nLayout: Vertical pipeline, 7 sequential steps connected by downward arrows. Centre-aligned.\n\nStep 1 (top): 'PR opened'\n  Sub-label: 'developer pushes architecture update'\n  Icon: document with upward arrow\n\nStep 2: 'calm validate'\n  Sub-label: 'architecture vs Hub-hosted pattern'\n  Gate marker: diamond shape on left side. Label: 'Gate 1'\n  Fail path (right side, dashed arrow): 'blocked — PR cannot merge'\n\nStep 3: 'calm diff'\n  Sub-label: 'compare PR version vs Hub-published version'\n  Gate marker: diamond shape on left side. Label: 'Gate 2'\n  Output (right side): 'summary in PR comments'\n\nStep 4: 'Tests pass'\n  Sub-label: 'application tests run in parallel'\n  Note: parallel track (can show offset box)\n\nStep 5: 'PR merged'\n  Sub-label: 'architecture + app code merge to main'\n\nStep 6: 'calm hub push'\n  Sub-label: 'new architecture version published to CALM Hub'\n  Highlight: HEAVY BORDER (this is the critical publish step)\n  Label: 'Hub now holds the new canonical version'\n\nStep 7: Branch into two parallel tracks:\n  Track A (left): 'CALM Guard'\n    → 'pulls from Hub'\n    → 'compliance check'\n    → 'alert if non-compliant'\n  Track B (right): 'Terraform / IaC'\n    → 'applies infrastructure'\n    → 'matches architecture'\n    → 'Deploy'\n\nRight-side annotation (vertical, beside steps 1–6):\n  'Architecture is code. It gets the same pipeline as app code.'\n\nBottom caption (below step 7):\n  'No merge without valid architecture.'\n  'No deploy without Hub-published architecture.'\n\nTitle (above Step 1): 'Full CALM Hub-Integrated Pipeline'\n\nStyle: B&W only. Steps 2 and 3 have gate diamond shapes. Step 6 has heavy border.\nAll arrows downward (main path) or branching right (fail paths, parallel tracks)."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

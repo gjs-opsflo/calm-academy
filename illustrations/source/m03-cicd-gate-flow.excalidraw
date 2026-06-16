@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — GitHub Actions CI/CD Gate Flow (Chapter 3.7)\n\nLayout: Horizontal flow from left to right, with a branch at the validation step.\n\nMAIN SEQUENCE (left to right, all boxes have heavy solid borders):\n  Step 1: 'PR opened' (document icon with branch arrow). Arrow right →\n  Step 2: 'Checkout + Install CALM CLI' (gear icon, npm install -g @finos/calm-cli). Arrow right →\n  Step 3: 'calm validate -a arch.calm.json' (terminal/box shape, monospace label)\n\nBRANCH FROM Step 3:\n\n  PASS BRANCH (upward arc from Step 3):\n    Check icon (✓) → 'Architecture valid'\n    → 'Output JUnit: -f junit -o results.xml'\n    → 'upload-artifact (if: always())'\n    → 'PR can merge' (heavy border box, merge icon)\n\n  FAIL BRANCH (downward arc from Step 3):\n    X icon → 'Architecture invalid'\n    → 'Pipeline blocked'\n    Caption: 'Engineers see error in Problems panel / CI dashboard'\n    (dashed border box for FAIL path boxes)\n\nBELOW MAIN FLOW (annotation):\n  'calm validate -f junit -o results.xml → upload-artifact → visible in GitHub Actions UI as test report'\n\nTitle: 'CALM Architecture Gate — GitHub Actions flow'\n\nStyle: B&W only. PASS path boxes: heavy solid borders. FAIL path boxes: dashed borders.\nArrows: solid for pass path, dashed for fail path. All labels in sentence case.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — GitHub Actions CI/CD Gate Flow (Chapter 3.7)\n\nLayout: Horizontal flow from left to right, with a branch at the validation step.\n\nMAIN SEQUENCE (left to right, all boxes have heavy solid borders):\n  Step 1: 'PR opened' (document icon with branch arrow). Arrow right →\n  Step 2: 'Checkout + Install CALM CLI' (gear icon, npm install -g @finos/calm-cli). Arrow right →\n  Step 3: 'calm validate -a arch.calm.json' (terminal/box shape, monospace label)\n\nBRANCH FROM Step 3:\n\n  PASS BRANCH (upward arc from Step 3):\n    Check icon (✓) → 'Architecture valid'\n    → 'Output JUnit: -f junit -o results.xml'\n    → 'upload-artifact (if: always())'\n    → 'PR can merge' (heavy border box, merge icon)\n\n  FAIL BRANCH (downward arc from Step 3):\n    X icon → 'Architecture invalid'\n    → 'Pipeline blocked'\n    Caption: 'Engineers see error in Problems panel / CI dashboard'\n    (dashed border box for FAIL path boxes)\n\nBELOW MAIN FLOW (annotation):\n  'calm validate -f junit -o results.xml → upload-artifact → visible in GitHub Actions UI as test report'\n\nTitle: 'CALM Architecture Gate — GitHub Actions flow'\n\nStyle: B&W only. PASS path boxes: heavy solid borders. FAIL path boxes: dashed borders.\nArrows: solid for pass path, dashed for fail path. All labels in sentence case."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

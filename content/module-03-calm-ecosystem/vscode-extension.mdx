@@ -1,0 +1,143 @@
+---
+title: "VSCode extension: CALM in your editor"
+slug: vscode-extension
+module: 3
+chapter: 3.5
+estimated_minutes: 17
+prerequisites:
+  - calm-server-validation-service
+---
+
+## TL;DR
+
+- The extension is called **CALM Tools**, published by FINOS — search that exact name in the VS Code marketplace to install it.
+- The Preview Panel shows a live architecture diagram as you type — no context switch to a browser or terminal.
+- Real-time validation surfaces errors in the VS Code Problems panel on open, save, and file switch — the same schema as `calm validate`, so a file that passes the Problems panel will pass CI.
+- Timeline Navigation lets you explore architecture evolution by milestone — click to open a snapshot of the architecture at any point in its history.
+
+## Why it matters
+
+Every time you leave your editor to run a CLI command, check a diagram, or look up a validation error, you pay a context-switch tax. Multiply that by the number of edits in a session and the overhead becomes real. The CALM Tools extension eliminates that overhead by bringing validation, visualization, and navigation into the editor. You edit a CALM JSON file and the diagram updates beside it. A schema error appears in the Problems panel while you are still on the offending line. You do not need to save, switch, run, read, and navigate back — the feedback loop closes in the editor itself.
+
+## The concept
+
+### Installing the extension
+
+Three install paths, all equivalent:
+
+**Option A — VS Code marketplace search:**
+Open the Extensions sidebar (Cmd/Ctrl+Shift+X), search for **CALM Tools**. The publisher is **FINOS**. Click Install.
+
+**Option B — command-line:**
+```bash
+code --install-extension FINOS.calm-vscode-plugin
+```
+
+**Option C — marketplace URL:**
+Open `https://marketplace.visualstudio.com/items?itemName=FINOS.calm-vscode-plugin` in a browser, then click **Install**.
+
+The extension ID is `FINOS.calm-vscode-plugin`. The version at time of writing is **0.6.0**.
+
+Schema detection: the extension activates automatically for any JSON file whose `$schema` field points to a CALM schema URL (`https://calm.finos.org/...`). You do not need to configure a file association — open a `.calm.json` file with the correct `$schema` and the extension activates.
+
+### Interactive Preview Panel
+
+When you open a file that the extension recognises as a CALM architecture, the Preview Panel opens automatically in a side panel. The panel shows a live diagram of the architecture — nodes and relationships update as you type in the JSON file. No save required.
+
+Click any node or relationship in the diagram to inspect its properties. A detail view shows the node's `unique-id`, `node-type`, `name`, `description`, and any `interfaces` or `metadata`.
+
+Click **Auto Layout** to re-run the ELK hierarchical layout algorithm. Useful after adding several nodes — ELK rearranges the diagram into a clean hierarchy automatically.
+
+The key distinction from CALM Studio: the Preview Panel is **embedded in the editor**. You edit JSON on the left; the diagram updates on the right. There is no browser tab, no context switch, no save-then-refresh loop. Studio is a dedicated tool for visual-first authoring; the Preview Panel is the in-editor companion for text-first authoring.
+
+### Tree View navigation
+
+Open the CALM sidebar icon in the VS Code Activity Bar. The Tree View provides a structured view of your architecture's contents, organized into three expandable sections:
+
+- **Nodes** — grouped by `node-type`. Each node appears as a leaf with its `name` and `unique-id`.
+- **Relationships** — grouped by `relationship-type` (connects, interacts, deployed-in, composed-of, deployed-to).
+- **Flows** — appears only if the architecture file defines a `flows` section.
+
+Use the search and filter controls at the top of the Tree View to find nodes by name or type. Click any node or relationship in the Tree View to jump directly to its definition in the JSON file. Useful for navigating large architectures where the JSON file is hundreds of lines.
+
+### Timeline navigation
+
+If the architecture file includes a `timeline` section with named milestones, the extension provides a Timeline panel. Each milestone appears as a clickable entry. Click a milestone to open a read-only snapshot of the architecture at that point in its history.
+
+Timeline navigation gives reviewers a way to understand architectural evolution without diffing JSON manually. Combined with `calm diff`, which produces a summary of changes between milestones, the workflow is: use the extension to browse and understand what changed visually; use `calm diff` to produce the machine-readable change record.
+
+For architectures without a `timeline` section, the Timeline panel is hidden. See the [CALM CLI: your architecture toolbox](./cli-toolbox.mdx) chapter for how to synthesise a timeline using `calm timeline`.
+
+### Real-time validation (Problems panel)
+
+The extension validates your architecture on three triggers: file open, file save, and file switch. Validation errors and warnings appear in VS Code's Problems panel (View → Problems, or Cmd/Ctrl+Shift+M).
+
+Each error entry shows:
+- The error message (e.g. "Property 'node-type' is required at nodes[2]")
+- A red icon
+- A clickable link that navigates to the offending line in the JSON file
+
+The extension uses **bundled CALM 1.2 schemas** — no network access required at validation time. This means validation works offline and in air-gapped environments. The schemas are the same schemas used by `calm validate`, so passing the Problems panel means passing the CLI command. There is no hidden divergence between editor feedback and CI feedback.
+
+![VSCode window with CALM architecture JSON in center editor, Preview Panel diagram on right, Tree View on left sidebar, Problems panel at bottom](../illustrations/exported/m03-vscode-extension-panels.svg)
+
+### Bundled Schemas
+
+The extension ships with the CALM 1.2 schemas bundled — no network access is required for schema detection or validation. When you open a file with a `$schema` field pointing to `https://calm.finos.org/release/1.2/meta/calm.json`, the extension resolves that URL against the bundled local copy, not by making an HTTP request.
+
+This matters in two situations: offline development (trains, flights, coffee shops without reliable internet) and air-gapped enterprise environments where outbound HTTPS to `calm.finos.org` is blocked by policy. In both cases, validation works exactly as it does with full internet access.
+
+The `calm.urlMapping` configuration key lets you override the default mapping — for example, to point the extension at an internal mirror of the CALM schemas rather than the public FINOS domain.
+
+### Template and documentation mode
+
+The extension includes a live documentation preview mode — the same output as running `calm docify` but updated in real-time as you edit. Open the Documentation Preview panel to see auto-generated HTML or Markdown output for your architecture.
+
+This is useful for reviewing what `calm docify` will produce before committing to the output format. It is also useful for architecture authors who want to see how the documentation will read while still in the editing phase, before running the CLI command.
+
+### Configuration (.vscode/settings.json)
+
+Place the following in `.vscode/settings.json` at the root of your workspace to configure the extension:
+
+```json
+{
+  "calm.urlMapping": "calm-mapping.json",
+  "calm.schemas.additionalFolders": ["./my-schemas"],
+  "calm.files.globs": ["calm/**/*.json", "calm/**/*.y?(a)ml"]
+}
+```
+
+**`calm.urlMapping`** — maps remote schema URLs to local files. Use this for offline or air-gapped environments where `https://calm.finos.org/...` is unreachable. The mapping file (`calm-mapping.json`) is a JSON object from URL to local path:
+
+```json
+{
+  "https://calm.finos.org/release/1.2/meta/calm.json": "./schemas/calm-1.2.json"
+}
+```
+
+**`calm.schemas.additionalFolders`** — adds extra directories to the schema lookup path. Use when your organization defines custom extensions or local schema overrides.
+
+**`calm.files.globs`** — controls which files the extension activates on. The default activates on any JSON or YAML file with a `$schema` field pointing to a CALM schema URL. Override to restrict activation to specific directories or file patterns.
+
+### When the extension catches errors before CI
+
+The preventive validation story: the Problems panel catches schema errors as you type — before you save, before you commit, before the CI pipeline runs. This is significantly cheaper than a CI failure. No wait time, no PR round-trip, no "fix the build" interrupt to someone else's review window.
+
+Because the extension uses the same schemas as `calm validate`, the agreement is bidirectional: a file that passes the Problems panel will pass `calm validate` in CI; a file that fails `calm validate` in CI will show the same error in the Problems panel when you open it. There is no "works on my machine" gap between editor feedback and CI feedback.
+
+## Common mistakes
+
+- **Not knowing the extension auto-activates on `$schema` detection.** Many engineers open a `.calm.json` file expecting nothing to happen, see the Preview Panel appear, and assume it is broken or wrong. The activation is correct — the `$schema` field is the trigger. If the extension is not activating, check that the `$schema` field is present and correctly spelled in your CALM file.
+
+- **Confusing the Preview Panel with CALM Studio.** The Preview Panel is an embedded VS Code panel — it lives inside the editor, updates on every keystroke, and has no URL or browser address bar. CALM Studio is a separate browser-based application at `https://studio.calm.finos.org` with a visual-first authoring canvas. They serve different purposes: use the Preview Panel during text-first editing to keep the diagram visible; use Studio when you want to design the architecture visually before touching JSON.
+
+- **Expecting `calm.files.globs` to enable the extension for non-JSON files without the `$schema` field.** The glob pattern controls *which files* the extension monitors, but the extension still requires the `$schema` field to be present in the file to activate schema validation and the Preview Panel. A file matched by the glob but missing `$schema` is monitored but not validated.
+
+## Knowledge check
+
+Take the quiz: [../quizzes/module-03-ecosystem.yaml](../quizzes/module-03-ecosystem.yaml)
+
+## Further reading
+
+- [CI/CD integration: architecture gates](./cicd-integration.mdx) — Chapter 3.7, automating validation in GitHub Actions pipelines
+- [CALM CLI: your architecture toolbox](./cli-toolbox.mdx) — Chapter 3.1, the `calm validate` and `calm docify` commands the extension wraps

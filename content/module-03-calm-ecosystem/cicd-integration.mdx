@@ -1,0 +1,270 @@
+---
+title: "CI/CD integration: architecture gates"
+slug: cicd-integration
+module: 3
+chapter: 3.7
+estimated_minutes: 25
+prerequisites:
+  - patterns-and-standards
+---
+
+## TL;DR
+
+- Validate on every PR — break the merge if the architecture is invalid; architecture standards only matter if they are enforced.
+- The `-f junit` flag produces JUnit XML output that GitHub Actions, Jenkins, and CircleCI parse as test reports — validation failures appear as named test failures, not just "step failed" messages.
+- `calm diff --exit-code` gates on unexpected architecture changes: use it to compare the PR version against the Hub-published baseline, not to block all commits that touch architecture files.
+- Hub-integrated pipeline: validate against Hub-hosted patterns, publish to Hub on merge, let CALM Guard and Terraform/IaC downstream of Hub do the rest.
+- Lab 3 implements the GitHub Actions workflow from this chapter end-to-end.
+
+## Why it matters
+
+Architecture standards without enforcement are suggestions. A Confluence page that says "all API services must have a WAF in front" is overridden on the first deadline. A GitHub Actions step that fails the PR when the WAF is missing cannot be overridden. The only architecture standard that reliably holds is the one that blocks the merge.
+
+CI/CD integration transforms CALM from documentation into enforcement. The same `calm validate` command that runs in your terminal runs in the pipeline. The same schemas that power the VS Code Problems panel produce the JUnit XML that appears in your GitHub Actions test report. Architecture governance becomes a first-class quality gate — the same category as test coverage, linting, and security scanning.
+
+## The concept
+
+### Why architecture validation in CI
+
+Architecture drift — the gap between the documented architecture and what is actually deployed — starts the moment a developer makes a change without updating the architecture spec. Without a gate, drift accumulates quietly. A quarterly architecture review catches it after months. By then the gap is large enough that fixing it requires a project, not a PR.
+
+CI/CD enforcement closes the drift loop at the point of origin. The architecture spec lives in version control alongside application code. The CI workflow validates the spec against a pattern on every PR. If a developer updates the infrastructure without updating the architecture, the CI step that validates the architecture against the pattern will pass — but the CI step that compares the updated architecture against the previous Hub-published version via `calm diff` will surface the delta. Every PR that touches architecture-related code must touch the architecture spec.
+
+The mental model: treat architecture like a test. If the architecture test fails, the PR does not merge.
+
+### The basic GitHub Actions workflow
+
+The following workflow implements a complete CALM architecture gate. Copy it to `.github/workflows/calm-architecture-gate.yml` in your repository:
+
+```yaml
+name: CALM Architecture Gate
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  validate-architecture:
+    name: Validate CALM Architecture
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install CALM CLI
+        run: npm install -g @finos/calm-cli
+      - name: Validate architecture against schema
+        run: calm validate -a architectures/secure-api.calm.json -f pretty
+      - name: Validate architecture against pattern
+        run: |
+          calm validate \
+            -a architectures/secure-api.calm.json \
+            -p patterns/secure-api-service.pattern.json \
+            -f pretty
+      - name: Output JUnit test report
+        run: |
+          calm validate \
+            -a architectures/secure-api.calm.json \
+            -p patterns/secure-api-service.pattern.json \
+            -f junit \
+            -o calm-validation-results.xml
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: calm-validation-results
+          path: calm-validation-results.xml
+```
+
+![GitHub Actions flow: PR opened → validate step (green/red) → junit output → merge allowed or blocked](../illustrations/exported/m03-cicd-gate-flow.svg)
+
+The workflow has four meaningful steps after checkout and install:
+
+1. **Schema validation** — validates the architecture document against CALM 1.2. Catches structural errors: missing required fields, invalid node types, malformed JSON.
+2. **Pattern validation** — validates the architecture against the org's pattern. Catches topology errors: missing WAF, wrong protocol, absent required relationships.
+3. **JUnit output** — re-runs pattern validation and writes machine-parseable output to an XML file.
+4. **Upload artifact** — stores the JUnit XML regardless of whether the pipeline passed or failed (note `if: always()`).
+
+### JUnit XML output and CI dashboards
+
+The `-f junit` flag produces JUnit XML compatible with GitHub Actions' test reporter, Jenkins, CircleCI, and most other CI platforms. The file contains one test suite per validation run, with one test case per validation check.
+
+```bash
+calm validate -a arch.calm.json -p pattern.json -f junit -o results.xml
+```
+
+When uploaded via `actions/upload-artifact`, most CI platforms parse the JUnit XML automatically and display the results in the PR interface as named test failures — not just "step failed." Engineers see "Validation check: WAF node required — FAILED" rather than reading a wall of terminal output to find out which constraint was violated.
+
+The `if: always()` on the upload step is critical. If you only upload artifacts on success, the JUnit file never gets stored when the pipeline fails — which is exactly the moment you need it. Always store the JUnit output regardless of outcome.
+
+### Two validation levels in one pipeline
+
+Schema validation and pattern validation are not the same check, and they should never be collapsed into a single step. Always run them as separate CI steps:
+
+**Step 1 — Schema validation (structure check):**
+```bash
+calm validate -a arch.calm.json -f pretty
+```
+This validates that the CALM document is structurally valid — all required fields present, all node types from the CALM 1.2 spec, correct JSON structure. If this step fails, the architecture document is malformed. Error messages tell the engineer to fix the JSON structure.
+
+**Step 2 — Pattern validation (conformance check):**
+```bash
+calm validate -a arch.calm.json -p pattern.json -f pretty
+```
+This validates that the architecture satisfies the pattern's topology constraints — the required WAF is present, the database is not exposed directly, the protocol on the API relationship is HTTPS. If this step fails, the architecture is valid CALM but violates the org's standard. Error messages tell the engineer to fix the topology.
+
+Running them separately gives engineers better error messages at each level. A schema error means "fix your JSON structure." A pattern error means "fix your architecture topology." Collapsing both into one step produces ambiguous errors that are harder to act on.
+
+### calm diff as PR review automation
+
+`calm diff` compares two CALM documents and reports what changed:
+
+```bash
+calm diff -a before.calm.json -b after.calm.json -f summary
+```
+
+The `-f summary` flag produces human-readable output listing added nodes, removed nodes, changed relationships, and protocol changes. The `-f json` flag produces machine-readable output for scripted processing.
+
+The `--exit-code` flag makes `calm diff` exit non-zero when **changes are detected**. This is the gate mechanism — but it requires careful use.
+
+**Correct use of `--exit-code`:**
+
+```bash
+calm diff \
+  --exit-code \
+  -a hub-published-version.calm.json \
+  -b pr-version.calm.json
+```
+
+Here `-a` is the current Hub-published version of the architecture (downloaded from Hub at pipeline start), and `-b` is the PR's proposed version. The `--exit-code` flag causes the step to fail if the PR changes the architecture. This is intentional: the pipeline surfaces the change for review. When the PR intentionally updates the architecture, the reviewer approves the diff as part of the PR review. On merge, the new version becomes the Hub baseline.
+
+**Incorrect use (blocks all PRs that update architecture):**
+
+```bash
+# DO NOT do this
+calm diff --exit-code -a architecture-v1.calm.json -b architecture-v1.calm.json
+```
+
+Using `--exit-code` with the same file as both `-a` and `-b` (or with a hardcoded old version) means every legitimate architecture update fails CI. The correct baseline is always the currently-published Hub version — not a historical snapshot or a hardcoded file.
+
+### Installing CALM CLI in CI
+
+Standard pattern — install at pipeline start:
+
+```bash
+npm install -g @finos/calm-cli
+```
+
+For reproducible builds, pin to a specific version:
+
+```bash
+npm install -g @finos/calm-cli@1.45.0
+```
+
+Pinning prevents unexpected behavior when a new CLI version changes output format or validation rules. Unpin deliberately when you choose to upgrade, not on every run.
+
+For Docker-based CI (Jenkins with Docker agents, GitLab CI with Docker executor), add the install to your builder image:
+
+```dockerfile
+RUN npm install -g @finos/calm-cli@1.45.0
+```
+
+This eliminates the npm install step from every pipeline run, reducing build time and removing the dependency on npm availability during the build.
+
+### Hub-integrated pipeline
+
+When CALM Hub is deployed in your organisation, the pipeline expands to a full publish-consume cycle:
+
+1. **PR opened** — developer pushes an architecture update.
+
+2. **calm validate against Hub-hosted pattern:**
+   ```bash
+   calm validate \
+     -a architectures/secure-api.calm.json \
+     -p http://hub:8080/calm/namespaces/myorg/patterns/secure-api \
+     -f pretty
+   ```
+   No local pattern file needed — the pattern is pulled from Hub at validate time. When the platform team updates the pattern in Hub, every downstream pipeline automatically validates against the new version at their next run.
+
+3. **calm diff against Hub-published version:**
+   ```bash
+   # Download current Hub version for comparison
+   calm hub pull architecture myorg/architectures/secure-api \
+     --calm-hub-url http://hub:8080 \
+     -o hub-published-version.calm.json
+   # Compare
+   calm diff \
+     --exit-code \
+     -a hub-published-version.calm.json \
+     -b architectures/secure-api.calm.json \
+     -f summary
+   ```
+   The diff summary appears in the PR comments. Reviewers see exactly what changed in the architecture — new nodes, removed relationships, protocol changes — without reading raw JSON.
+
+4. **Tests pass** — application tests run in parallel with architecture validation.
+
+5. **PR merged** — architecture and application code merge to main.
+
+6. **calm hub push — new version published:**
+   ```bash
+   calm hub push architecture architectures/secure-api.calm.json \
+     --calm-hub-url http://hub:8080
+   ```
+   The new architecture version is now the Hub baseline. Subsequent PRs will diff against this version.
+
+7. **CALM Guard picks up the new version from Hub** — runs a compliance check against org controls and regulations. Raises alerts if the architecture violates a registered control.
+
+8. **Terraform/IaC applies** — infrastructure conforms to the now-validated, Hub-published architecture. The deployment matches the spec.
+
+### The full stack pipeline
+
+![Full pipeline: PR opened → calm validate → calm diff → tests pass → merge → Hub push → CALM Guard compliance → Terraform/IaC apply → Deploy](../illustrations/exported/m03-full-stack-pipeline.svg)
+
+The mental model: architecture is code. It gets the same pipeline treatment as application code. Architecture that fails CI does not merge. Architecture that merges becomes the versioned source of truth in Hub. CALM Guard continuously verifies that running systems match what is in Hub. Terraform applies infrastructure that conforms to the verified architecture.
+
+The pipeline closes the loop between what was designed, what was approved, what was deployed, and what is running. Architecture drift becomes detectable at the PR level — not the quarterly review level.
+
+### Blocking strategy
+
+"Architecture must pass before IaC applies." This is the architectural compliance gate.
+
+The recommended sequence:
+
+```
+calm validate → (if pass) calm diff → (if acceptable) terraform plan → terraform apply
+```
+
+Even if `terraform plan` succeeds, the pipeline should block if the architecture validation failed. A successful Terraform plan against a failing architecture means the infrastructure matches the code, but the code does not match the approved architecture. That is still drift.
+
+The blocking strategy catches the pattern where a developer updates `main.tf` without updating `secure-api.calm.json`. The Terraform step would succeed; the architecture step would fail (or the diff step would show the infrastructure change is not reflected in the architecture). Neither failure mode reaches production.
+
+## Lab
+
+Lab 3 implements the GitHub Actions workflow from this chapter end-to-end. You fork a starter repo, complete the CI workflow stub, and push both a valid and an invalid architecture to watch the gate work.
+
+[Lab 3: CI/CD Gate](../../labs/lab-03-cicd-gate/LAB.md)
+
+## Common mistakes
+
+- **Combining schema validation and pattern validation into a single step.** Running `calm validate -a arch.calm.json -p pattern.json` in a single step that only runs when both pass makes it harder to diagnose failures. Run them as separate steps with separate names so the CI UI shows exactly which check failed.
+
+- **Using `--exit-code` on every commit that touches the architecture file.** If you run `calm diff --exit-code -a v1.calm.json -b v2.calm.json` on a PR that intentionally updates the architecture, the pipeline will always fail. The correct baseline for `--exit-code` is the currently Hub-published version, not a hardcoded historical snapshot.
+
+- **Not using `-f junit` in CI.** Human-readable output (the default or `-f pretty`) is not parseable by CI test reporters. Without `-f junit`, validation failures show as "step failed" in the CI UI — no drill-down, no named test, no direct link to the failing constraint.
+
+- **Omitting `if: always()` on the artifact upload step.** If the upload step only runs on success, the JUnit report is never stored when the pipeline fails — which is exactly when you need it for debugging. Always add `if: always()` to the upload step.
+
+- **Pinning the Hub URL directly in architecture files.** The `--calm-hub-url` flag belongs in the CLI invocation, not in the architecture document. Architecture documents should reference patterns by their canonical ID or by a locally-resolved path. The Hub URL varies by environment (dev hub vs. prod hub); baking it into the architecture file couples the artifact to a specific environment.
+
+## Knowledge check
+
+Take the quiz: [../quizzes/module-03-ecosystem.yaml](../quizzes/module-03-ecosystem.yaml)
+
+## Further reading
+
+- [Patterns and standards: the blueprint system](./patterns-and-standards.mdx) — Chapter 3.6, how CALM patterns are authored and used as the validation target in CI
+- [CALM Hub: the architecture registry](./calm-hub-architecture-registry.mdx) — Chapter 3.3, Hub publish/consume model that powers the Hub-integrated pipeline
+- [Lab 3: CI/CD Gate](../../labs/lab-03-cicd-gate/LAB.md) — hands-on implementation of this chapter's GitHub Actions workflow
