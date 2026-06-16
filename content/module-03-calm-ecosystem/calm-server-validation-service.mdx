@@ -1,0 +1,182 @@
+---
+title: "CALM Server: validation as a service"
+slug: calm-server-validation-service
+module: 3
+chapter: 3.4
+estimated_minutes: 14
+prerequisites:
+  - calm-hub-architecture-registry
+---
+
+## TL;DR
+
+- CALM Server exposes `calm validate` as an HTTP endpoint — POST your architecture JSON to `/calm/validate`, get back `{hasErrors, hasWarnings}`.
+- Platform teams run one central CALM Server; every development team POSTs to it rather than installing the CLI per-team.
+- Rate limiting is built in: 100 requests per 15-minute window per IP address, configurable via flags.
+- CALM Server has no built-in authentication — never expose it directly to the internet; place it behind an authenticated reverse proxy for enterprise use.
+
+## Why it matters
+
+In large organisations, mandating CLI installation on every developer machine is impractical. Security teams resist it. On-boarding becomes a prerequisite list rather than a quick start. Build environments are inconsistent. CALM Server solves this by centralising validation as an HTTP service: the platform team runs one instance, controls the schema version, and exposes a single endpoint that every team calls. Teams need nothing installed — just `curl`.
+
+The platform-team model also gives you a single schema version pin. When CALM updates and you need all teams to validate against the new schema, you update CALM Server's schema once rather than pushing a CLI upgrade to hundreds of machines. This is the same pattern that centralised build tooling (e.g., Jenkins, Buildkite) has used for years — one controlled server, many consumers.
+
+## The concept
+
+### What CALM Server is
+
+CALM Server is a standalone HTTP server that exposes CALM validation as a REST endpoint. It ships with bundled schemas — no external schema downloads required at runtime. The binary is `calm-server`. It starts in seconds and responds immediately to validation requests.
+
+Platform teams run one instance per environment (development, staging, production). All development teams POST their architecture documents to the shared validation API.
+
+![Platform validation pattern: Developer sends POST /calm/validate request to calm-server, server responds with hasErrors and hasWarnings; contrasted with local CLI validate flow](../illustrations/exported/m03-calm-server-platform-pattern.svg)
+
+### Starting the server
+
+CALM Server supports four start modes:
+
+```bash
+# Default: port 3000, localhost only, bundled schemas
+calm-server
+
+# Custom port
+calm-server --port 8080
+
+# Custom schema directory (for pinned or extended schemas)
+calm-server -s /path/to/custom-schemas
+
+# Linked to a CALM Hub instance for remote schema resolution
+calm-server -c http://hub.mybank.internal:8080
+```
+
+By default, CALM Server binds to localhost only. This prevents accidental exposure to the network. For platform-wide deployment, put CALM Server behind a reverse proxy that handles TLS termination and authentication.
+
+The Hub-linked mode (`-c`) is the most powerful for enterprise use: CALM Server fetches schemas from Hub at request time, so updating the canonical schemas in Hub immediately affects all validation without restarting CALM Server.
+
+### Health check
+
+Use the health endpoint for load balancer and orchestrator readiness checks:
+
+```bash
+curl http://localhost:3000/health
+```
+
+Expected response:
+
+```json
+{"status": "OK"}
+```
+
+Use `GET /health` in:
+- Kubernetes liveness and readiness probes
+- Load balancer health checks (HAProxy, nginx, AWS Target Groups)
+- Deployment pipeline smoke tests before routing traffic
+
+A non-OK response or connection failure means the server is not ready to serve validation requests.
+
+### The validate endpoint
+
+Send a CALM architecture document as the request body:
+
+```bash
+curl -X POST http://localhost:3000/calm/validate \
+  -H "Content-Type: application/json" \
+  -d @my-architecture.calm.json
+```
+
+Expected response for a valid architecture:
+
+```json
+{
+  "hasErrors": false,
+  "hasWarnings": false
+}
+```
+
+Response for an invalid architecture:
+
+```json
+{
+  "hasErrors": true,
+  "hasWarnings": false,
+  "jsonSchemaValidationOutputs": [
+    {
+      "message": "must have required property 'unique-id'",
+      "path": "/nodes/0"
+    }
+  ]
+}
+```
+
+**Integrate into CI:**
+
+```bash
+# POST architecture and check for errors
+RESULT=$(curl -s -X POST http://calm-server:3000/calm/validate \
+  -H "Content-Type: application/json" \
+  -d @architectures/my-api.calm.json)
+
+# Fail the pipeline if hasErrors is true
+echo "$RESULT" | python3 -c "import sys, json; d=json.load(sys.stdin); sys.exit(1 if d['hasErrors'] else 0)"
+```
+
+Or use `jq` for the exit code check:
+
+```bash
+echo "$RESULT" | jq -e '.hasErrors == false' > /dev/null || { echo "CALM validation failed"; exit 1; }
+```
+
+### Rate limiting
+
+CALM Server includes built-in rate limiting to prevent accidental or malicious overload of the shared validation endpoint.
+
+Default limits: **100 requests per 15-minute window per IP address**.
+
+Configurable via flags:
+
+```bash
+# Increase to 500 requests per 10-minute window
+calm-server --rate-limit-max 500 --rate-limit-window 600000
+```
+
+The `--rate-limit-window` value is in milliseconds. The default 900000 ms = 15 minutes.
+
+For high-volume CI farms where many jobs run concurrently from a shared NAT IP address, increase both limits or configure per-team IP allocation at the network layer. If you see HTTP 429 responses in CI, the rate limit is the first thing to adjust.
+
+### CLI vs Server: when to use which
+
+| Need | Use |
+|------|-----|
+| Local development, immediate feedback | `calm validate` CLI |
+| CI pipeline, per-repo | `calm validate` CLI (install once in the CI image) |
+| Platform-wide, centralised schema version control | CALM Server (one instance, all teams POST) |
+| Schema version pinning for all teams | CALM Server (platform team controls the schema on the server) |
+| Validate without installing anything locally | CALM Server (just `curl` required) |
+| JUnit XML output for CI test dashboards | `calm validate -f junit` CLI |
+
+The CLI is the right choice for any CI pipeline where you control the build image — install it once in the Docker image and every job has it. CALM Server is the right choice when you cannot or do not want to distribute the CLI to all consumers, or when you need centralised schema governance across many teams.
+
+### Security note
+
+CALM Server has no built-in authentication mechanism. By default it binds to `localhost` only, which prevents accidental network exposure. For enterprise deployments:
+
+- **Internal network only** — bind CALM Server to an internal IP address that is not routable from the public internet.
+- **Authenticated reverse proxy** — place CALM Server behind nginx with OAuth2 Proxy, or behind an API gateway that enforces authentication before forwarding requests.
+- **mTLS** — for high-security environments, terminate mTLS at a sidecar proxy (e.g., Envoy) and allow only authenticated clients to reach CALM Server.
+
+Never expose CALM Server's port directly to the internet. The lack of built-in auth is a deliberate design decision: authentication is better handled by the infrastructure layer (reverse proxy, service mesh) than by the validation tool itself.
+
+## Common mistakes
+
+- **Exposing CALM Server without an auth proxy.** The server has no built-in authentication. Running `calm-server --port 8080` on an internet-facing host allows anyone to POST arbitrary JSON to your validation endpoint. Always place CALM Server behind an authenticated reverse proxy in any shared environment.
+- **Not increasing rate limits for CI farms.** A CI farm with 50 concurrent jobs all originating from a shared NAT IP will hit the default 100 req/15min limit quickly. Increase `--rate-limit-max` before running at scale, or configure per-team IP allocation.
+- **Using `-c` (Hub URL) without Hub running.** If you start CALM Server with `-c http://hub:8080` but Hub is not available, CALM Server returns an HTTP 503 on schema fetch requests. Ensure Hub is healthy before starting CALM Server in Hub-linked mode.
+
+## Knowledge check
+
+Take the quiz for this chapter: [Module 3 Ecosystem Quiz](../quizzes/module-03-ecosystem.yaml)
+
+## Further reading
+
+- [CALM CLI: Your architecture toolbox](./cli-toolbox.mdx) — the CLI tool that CALM Server wraps; use the CLI for local development
+- [CI/CD Integration: Architecture gates](./cicd-integration.mdx) — how to embed CALM Server (or the CLI) in GitHub Actions pipelines

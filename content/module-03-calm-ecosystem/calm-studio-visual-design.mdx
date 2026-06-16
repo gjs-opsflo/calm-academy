@@ -1,0 +1,183 @@
+---
+title: "CALM Studio: visual-first architecture design"
+slug: calm-studio-visual-design
+module: 3
+chapter: 3.2
+estimated_minutes: 20
+prerequisites:
+  - cli-toolbox
+---
+
+## TL;DR
+
+- CALM Studio is at `https://studio.calm.finos.org` — zero install, runs in your browser, nothing to configure.
+- Bidirectional sync means you can edit the canvas or the JSON panel — both stay in sync automatically.
+- ELK.js auto-layout handles large architectures with hundreds of nodes in one click.
+- Studio is for exploration, presentation, and visual editing — the CLI handles automation and CI.
+- Import existing `.calm.json` files from the CLI and explore them visually; export back to JSON when done.
+
+## Why it matters
+
+CALM JSON is precise but it is not visual. When you have 12 nodes and 20 relationships, the JSON is correct but you cannot immediately see whether the payment service is truly isolated from the public internet. Studio solves this by rendering your architecture as an interactive diagram. Visual feedback while editing catches structural problems that humans miss in raw JSON — a `deployed-in` containment error or a missing WAF in front of a public service becomes immediately obvious on the canvas.
+
+Studio is also the tool you use to communicate architecture to non-technical stakeholders. Export to SVG and embed in a document. Export to PNG for a slide deck. The architecture stays the single source of truth; Studio is the rendering layer.
+
+## The concept
+
+### Accessing Studio
+
+The primary way to access Studio is the web application at `https://studio.calm.finos.org`. It requires no installation, no account, and no configuration. Open a browser and start designing.
+
+For CALM contributors who work directly in the `architecture-as-code` monorepo, there is a local development server:
+
+```bash
+npm run dev --workspace=@calmstudio/studio
+# Studio runs at http://localhost:5173
+```
+
+This local mode is for CALM contributors modifying the Studio source code — not for learners using Studio as a tool.
+
+There is no downloadable desktop application currently available. The Studio project has a Tauri desktop wrapper in development but it is not shipping yet. All learners should use the web version at `https://studio.calm.finos.org`.
+
+### Canvas features
+
+The Studio canvas gives you 9 node type shapes — one for each CALM 1.2 core node type. Each shape is visually distinct so you can tell `service` from `database` from `webclient` without reading a label:
+
+| Node type | Canvas shape |
+|-----------|-------------|
+| `actor` | Person silhouette |
+| `ecosystem` | Cloud outline |
+| `system` | Rectangle (bold border) |
+| `service` | Hexagon |
+| `database` | Cylinder |
+| `network` | Shield / filter shape |
+| `webclient` | Monitor screen |
+| `ldap` | Directory stack |
+| `data-asset` | Document stack |
+
+Relationship edges follow the same visual conventions as the CALM spec:
+
+| Relationship type | Edge style |
+|-------------------|-----------|
+| `connects` | Solid arrow |
+| `interacts` | Open arrowhead (no fill) |
+| `deployed-in` | Dashed line with containment panel |
+| `composed-of` | Diamond connector |
+| `options` | Branching fork |
+
+Beyond node and edge placement, the canvas supports:
+
+- **Sub-flow containment panels** — `deployed-in` and `composed-of` relationships render as nested panels that visually contain the inner nodes. If your `service` is deployed in a `network` zone, the service appears inside a dashed container labelled with the network node name.
+- **Drag and drop** — drag nodes from the palette on the left to place them on the canvas. Connect two nodes by hovering over a node edge handle and dragging to another node.
+- **Multi-select** — click and drag to select multiple nodes. Move them together, align them, or delete them as a group.
+- **Dark mode** — toggle from the toolbar for lower-eye-strain sessions.
+- **Keyboard shortcuts** — standard canvas shortcuts (Ctrl+Z for undo, Delete for remove, Ctrl+A to select all).
+
+### Bidirectional sync
+
+Bidirectional sync is the architectural centrepiece of CALM Studio. Every change you make on the canvas instantly updates the JSON code panel on the right. Every change you make in the JSON panel instantly updates the canvas.
+
+The practical implication is that you have two views into the same document at all times. You never have to manually synchronise them. To prevent infinite update loops (canvas triggers JSON update → JSON update triggers canvas update → repeat), Studio uses a mutex that blocks secondary updates while a primary update is processing. One change at a time, in the order you made it.
+
+This enables a very practical workflow:
+
+1. Generate an architecture from a pattern using the CLI (`calm generate -p pattern.json -o arch.calm.json`)
+2. Import the `.calm.json` file into Studio (File → Import CALM JSON)
+3. Explore the canvas — see the structure visually, click nodes to inspect properties
+4. Rearrange nodes for clarity or drag new nodes to extend the architecture
+5. Export the updated JSON (File → Export → CALM JSON)
+6. Validate the exported file (`calm validate -a arch.calm.json`)
+
+The exported JSON is round-trippable with `calm validate` — Studio does not add proprietary fields.
+
+![CALM Studio canvas anatomy: node palette on left, canvas in center, JSON code panel on right, properties panel bottom-right](../illustrations/exported/m03-studio-canvas-anatomy.svg)
+
+### ELK auto-layout
+
+ELK stands for Eclipse Layout Kernel. Studio uses ELK.js, the JavaScript port, to compute hierarchical auto-layout for your diagram. When you click "Auto Layout" in the toolbar, ELK analyses the graph structure (nodes and edges) and computes an optimal hierarchical arrangement that minimises edge crossings.
+
+This is most useful in two scenarios:
+
+1. **Importing a large existing architecture** — a CALM architecture with 50+ nodes will arrive as a pile of overlapping shapes on import. One click of "Auto Layout" makes it readable.
+2. **After adding several nodes manually** — when you have been editing for a while and the canvas has become cluttered, auto-layout resets the arrangement without changing the underlying data.
+
+Auto-layout can be re-applied at any time without data loss. It only affects node positions on the canvas, not any CALM properties.
+
+### Import and export
+
+**Import** — File → Import CALM JSON. Studio accepts either pasted JSON or a file upload. The architecture is parsed, validated for recognisable CALM structure, and rendered on the canvas. The primary lab checkpoint in Lab 3 uses this path: learners import the architecture they built with the CLI and verify it visually.
+
+**Export** — File → Export, then choose a format:
+
+| Format | Use case |
+|--------|----------|
+| CALM JSON | Round-trip back to CLI (`calm validate`, `calm diff`, etc.) |
+| SVG | Embed in documentation, slides, or this course |
+| PNG | Slide decks, wikis, anywhere that does not support SVG |
+
+The CALM JSON export is semantically identical to what you imported — positions are stored in a canvas-specific way but the node and relationship data is unchanged.
+
+### Properties panel
+
+Click any node or relationship on the canvas to open the Properties panel at the bottom right. From the Properties panel you can:
+
+- Edit `name` and `description` inline
+- Change the `node-type` via a dropdown (all 9 core types)
+- Add metadata key-value pairs
+- Add interfaces (formal and freeform)
+- Add controls (security, compliance)
+
+All changes in the Properties panel reflect immediately in the JSON code panel. This is the recommended way to edit node properties when you prefer a form-based UI over editing JSON directly.
+
+### When to use Studio vs CLI
+
+Use this table as your decision guide:
+
+| Task | Use |
+|------|-----|
+| Explore an existing architecture visually | Studio |
+| Generate an architecture from a pattern | CLI (`calm generate`) |
+| Validate in a CI pipeline | CLI (`calm validate`) |
+| Present architecture to non-technical stakeholders | Studio (export SVG/PNG) |
+| Edit node metadata, interfaces, controls | Studio (Properties panel) |
+| Run `calm diff` between two versions | CLI |
+| Create a new architecture from scratch | Either (Studio is more forgiving for first-timers) |
+| Bulk-rename nodes or restructure relationships | CLI (edit JSON directly, then validate) |
+
+The heuristic: Studio for humans, CLI for machines. If a person is making the change, Studio. If a pipeline is making the check, CLI.
+
+### Demo: Import the conference signup architecture
+
+Here is the Studio workflow from start to finish, using the conference signup architecture from Lab 2 as the example.
+
+1. Open `https://studio.calm.finos.org` in your browser.
+2. Click File → Import CALM JSON.
+3. Paste or upload the conference signup `.calm.json` file you worked with in Module 2.
+4. Click "Auto Layout" in the toolbar. Studio arranges the nodes hierarchically.
+5. Explore the canvas — notice that the node shapes match the 9 core types: `actor`, `service`, `database`, `webclient`, and so on. Each shape is visually distinct.
+6. Click the `webclient` node. The Properties panel shows its `name`, `description`, and `node-type`.
+7. Click the edge between `webclient` and the registration service. The Properties panel shows the relationship type (`connects`) and protocol.
+8. Export the diagram as SVG for embedding in a document (File → Export → SVG).
+
+The SVG you just exported is the same format used for all illustrations in this course.
+
+## Code/CALM examples
+
+The conference signup architecture from Lab 2 is the recommended import target for the Studio demo above. You already have it from Module 2. Any `.calm.json` file that passes `calm validate` can be imported into Studio — the tool renders whatever CALM JSON you give it.
+
+## Common mistakes
+
+- **Using `npx` to install calmstudio-mcp as a Studio install step.** The `calmstudio-mcp` package is NOT published to npm — any attempt to install it via npx returns a 404. `calmstudio-mcp` is a separate AI tool that requires a local `.cjs` install (see the calmstudio-mcp setup instructions). The Studio web app at `https://studio.calm.finos.org` needs no install command at all.
+- **Conflating the calmstudio-mcp AI tool with the Studio web app.** They are different things: Studio is the visual design tool you use in a browser; calmstudio-mcp is an MCP server that allows AI agents like Claude to create CALM architectures programmatically. You do not need calmstudio-mcp to use Studio.
+- **Waiting for a Tauri desktop app.** The Tauri desktop wrapper is in development and is not yet available. Do not reference it in documentation, lab instructions, or architecture decisions that depend on a locally installed Studio binary.
+- **Using Studio for CI automation.** Studio is a GUI tool — it cannot be scripted in a CI pipeline. Always use `calm validate` (CLI) for CI gates. Studio is for human review and presentation; the CLI is for automation.
+
+## Knowledge check
+
+Take the quiz for this chapter: [Module 3 Ecosystem Quiz](../quizzes/module-03-ecosystem.yaml)
+
+## Further reading
+
+- [CALM CLI: Your architecture toolbox](./cli-toolbox.mdx) — CLI commands that produce and consume the CALM JSON files you import into Studio
+- [CALM Hub: the architecture registry](./calm-hub-architecture-registry.mdx) — how teams publish and discover CALM architectures at organisational scale
+- [CALM Studio source code](https://github.com/finos/architecture-as-code/tree/main/calm-suite/calm-studio) — for contributors who want to understand how bidirectional sync and ELK layout are implemented

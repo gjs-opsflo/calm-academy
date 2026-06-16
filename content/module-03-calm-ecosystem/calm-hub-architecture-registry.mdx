@@ -1,0 +1,315 @@
+---
+title: "CALM Hub: the architecture registry"
+slug: calm-hub-architecture-registry
+module: 3
+chapter: 3.3
+estimated_minutes: 28
+prerequisites:
+  - calm-studio-visual-design
+---
+
+## TL;DR
+
+- Hub is the "npm registry for architectures" — every CALM architecture, pattern, and standard gets a namespace, version, and owner.
+- `calm hub push/pull/list` ships in CLI 1.45.0 — these are not gaps; treat them as fully available now.
+- Two storage modes: MongoDB for production, NitriteDB embedded for local dev with no external dependencies.
+- Hub exposes a REST API and an MCP endpoint (`http://localhost:8080/mcp`) so AI agents can query the live registry.
+- Lab 3 does NOT require a running Hub — Hub is taught conceptually here; the core lab works entirely with local files and GitHub Actions.
+
+## Why it matters
+
+Architecture files on a developer's laptop do not scale. When 50 teams share a secure-API pattern, the pattern needs to live somewhere with versioning, access control, and discoverability — not as a copy-pasted file in each team's repository. When that pattern changes (say, TLS 1.2 is deprecated and you must enforce TLS 1.3), you need to update one canonical artifact and have all downstream teams know about it. CALM Hub provides all three: every architecture and pattern has a namespace, version, and owner. Hub is to CALM architectures what Artifactory is to JARs, what the npm registry is to packages, and what Terraform Registry is to modules.
+
+In regulated financial services, the audit implications are significant. Hub gives you a versioned, queryable record of which architecture was in use at any point in time — a capability that becomes essential when a regulator asks "what was the architecture of your payment system on 1 January 2025?"
+
+## The concept
+
+### Why a registry exists
+
+Without Hub, architecture governance looks like this: the platform team creates a `secure-api-service.pattern.json` file and publishes it to a shared Git repo. Teams find it via a wiki page. One team copies the file locally. Six months later, the platform team updates the pattern. The team with the local copy never notices. Their architecture drifts from the updated standard. The drift is invisible until an audit or an incident.
+
+Hub solves this at the infrastructure level: every architecture and pattern has a canonical location (namespace + artifact ID + version). Teams reference Hub URLs in their CI pipelines rather than copying files. When the platform team publishes a new version of a pattern, the CI pipeline immediately has access to the updated version on next run. Old consumers continue working against their pinned version.
+
+### Hub architecture
+
+Hub is a namespace-scoped resource tree. Each namespace (e.g., `org.mybank`) contains architectures, patterns, standards, and controls. Each resource carries a version using semantic versioning.
+
+Hub supports two storage backends:
+
+| Mode | Backend | When to use |
+|------|---------|-------------|
+| Default | MongoDB | Production deployments |
+| Standalone | NitriteDB (embedded) | Local development — no MongoDB needed, single process |
+
+The Docker Compose quickstart uses MongoDB. If you want to start Hub without Docker, use the standalone NitriteDB mode — a single process with no external dependencies.
+
+### Namespaces
+
+Namespaces provide organisational isolation. Every resource in Hub lives under a namespace:
+
+- `org.mybank/payments` — all payment architecture artifacts
+- `org.mybank/trading` — trading architecture artifacts
+- `finos/reference` — FINOS published reference patterns
+- `org.mybank/shared` — cross-domain shared components
+
+Namespaces separate concerns and enable access control. A team can be granted read access to `finos/reference` and write access to their own `org.mybank/payments` namespace, but cannot publish to another team's namespace. This is the enterprise governance boundary for architecture artifacts.
+
+![Hub namespace resource tree: root Hub node, two namespace branches (org.mybank, finos), each with architectures/patterns/standards/controls leaves with version numbers](../illustrations/exported/m03-hub-namespace-tree.svg)
+
+### REST API shape
+
+Hub exposes a REST API with a consistent namespace-scoped structure:
+
+```bash
+# List all namespaces
+GET /calm/namespaces
+
+# Publish an architecture to a namespace
+POST /calm/namespaces/{ns}/architectures
+
+# List architectures in a namespace
+GET /calm/namespaces/{ns}/architectures
+
+# List patterns in a namespace
+GET /calm/namespaces/{ns}/patterns
+
+# List standards in a namespace
+GET /calm/namespaces/{ns}/standards
+```
+
+The same shape applies to `controls` and `decorators`. Every resource collection follows `GET` (list), `POST` (create), and `GET /{id}` (fetch by ID) patterns.
+
+The Swagger UI is available when Hub is running locally: `http://localhost:8080/q/swagger-ui/`. Use it to explore all available endpoints interactively.
+
+### Auth profiles (CRITICAL PITFALL)
+
+Hub has three authentication profiles. Getting this wrong is the most common source of confusion when first running Hub locally:
+
+| Profile | Behaviour | When to use |
+|---------|-----------|-------------|
+| `no-auth` | All requests succeed without authentication | Local development only — the Docker Compose quickstart uses this |
+| `secure` | Every request returns HTTP 401 without a valid token | **Default when running Hub without an explicit profile** |
+| `proxy-auth` | Auth is handled upstream by a reverse proxy | Enterprise deployments with an existing identity provider in front |
+
+**The critical pitfall:** If you start Hub via Maven directly without specifying a profile, you get the `secure` profile by default. Every API call returns 401. This is expected behaviour — not a bug. To use Hub locally without authentication:
+
+```bash
+# Docker Compose quickstart (recommended — uses no-auth automatically)
+cd calm-hub/deploy
+docker-compose up
+
+# Maven with explicit no-auth (if you must run without Docker)
+mvn quarkus:dev -Dquarkus.profile=no-auth
+```
+
+The Docker Compose quickstart is the only supported quick-start for local learning. Never use the no-auth profile in a production deployment — treat it as a development convenience only.
+
+### CLI hub commands
+
+All `calm hub` subcommands ship in CLI 1.45.0. They are not gaps. You can use them now:
+
+**Push** — publish a CALM artifact to Hub:
+
+```bash
+# Push an architecture
+calm hub push architecture my-arch.calm.json --calm-hub-url http://localhost:8080
+
+# Push a pattern
+calm hub push pattern secure-api-service.pattern.json --calm-hub-url http://localhost:8080
+
+# Push a standard
+calm hub push standard org-standard.json --calm-hub-url http://localhost:8080
+```
+
+**Pull** — fetch a CALM artifact from Hub:
+
+```bash
+# Pull the latest architecture from Hub
+calm hub pull architecture --calm-hub-url http://localhost:8080
+
+# Pull a pattern
+calm hub pull pattern --calm-hub-url http://localhost:8080
+```
+
+**List** — discover what is in Hub:
+
+```bash
+# List all namespaces
+calm hub list namespaces --calm-hub-url http://localhost:8080
+
+# List architectures in a namespace
+calm hub list architectures --calm-hub-url http://localhost:8080
+
+# List patterns in a namespace
+calm hub list patterns --calm-hub-url http://localhost:8080
+
+# List standards
+calm hub list standards --calm-hub-url http://localhost:8080
+```
+
+**Configure a default Hub URL** — so you do not have to repeat `--calm-hub-url` on every command:
+
+```bash
+calm init-config --calm-hub-url http://localhost:8080
+# Writes to ~/.calm.json — all subsequent calm hub commands use this URL by default
+```
+
+### Hub-integrated validate
+
+The most powerful production use of Hub is pulling patterns at validate time without downloading them locally. Platform teams publish a pattern to Hub once; all teams reference the Hub URL in their CI pipelines:
+
+```bash
+calm validate \
+  -a arch.calm.json \
+  -p http://localhost:8080/calm/namespaces/myorg/patterns/secure-api \
+  --calm-hub-url http://localhost:8080
+```
+
+This is the production workflow. Teams do not copy pattern files locally — they reference Hub URLs in their CI pipeline. When the platform team publishes a new version of the pattern, the CI pipeline immediately validates against it.
+
+### Hub MCP endpoint
+
+Hub exposes an MCP endpoint at `http://localhost:8080/mcp` using Streamable HTTP transport. Enable it by setting the `CALM_MCP_ENABLED=true` environment variable before starting Hub.
+
+When the MCP endpoint is active, AI agents can query Hub like a knowledge base:
+
+- "What patterns exist for secure API services in namespace org.mybank?"
+- "List all architectures in the payments namespace at version 2.x"
+- "What controls apply to the trading architecture?"
+
+Hub returns structured responses — names, versions, descriptions — that an AI assistant can reason over and present to you. This is the foundation for AI-assisted architecture discovery: instead of browsing a registry manually, you ask your AI assistant what is available and it queries Hub in real time.
+
+The MCP endpoint exposes the following tool groups: ArchitectureTools, ControlTools, DecoratorTools, DomainTools, NamespaceTools, and SearchTools.
+
+### Hub local quickstart
+
+To run Hub locally for hands-on exploration:
+
+```bash
+# Clone or navigate to the architecture-as-code repo
+cd /path/to/architecture-as-code/calm-hub/deploy
+
+# Start Hub with Docker Compose (uses no-auth profile)
+docker-compose up
+
+# Hub is now available at:
+# - API: http://localhost:8080
+# - Swagger UI: http://localhost:8080/q/swagger-ui/
+```
+
+The Docker Compose configuration starts Hub plus a MongoDB instance. The no-auth profile is pre-configured so all API requests succeed without a token. This is suitable for local learning only.
+
+Verify Hub is up:
+
+```bash
+curl http://localhost:8080/calm/namespaces
+# [] (empty list on a fresh instance)
+```
+
+### The publish/consume workflow
+
+Here is the end-to-end Hub workflow that platform teams and development teams follow together:
+
+![Architect pushes to Hub, Hub stores versioned artifact, product team pulls via CLI, CI validates against Hub-hosted pattern](../illustrations/exported/m03-hub-publish-consume-flow.svg)
+
+1. **Platform team creates the pattern** — `secure-api-service.pattern.json` defines the required node types and relationship constraints.
+2. **Platform team publishes to Hub** — `calm hub push pattern secure-api-service.pattern.json --calm-hub-url http://hub.mybank.internal:8080`
+3. **Development team generates an architecture** — `calm generate -p http://hub.mybank.internal:8080/calm/namespaces/myorg/patterns/secure-api -o my-api.calm.json`
+4. **CI pipeline validates on every PR** — `calm validate -a my-api.calm.json -p http://hub.mybank.internal:8080/calm/namespaces/myorg/patterns/secure-api`
+5. **On PR merge, the architecture is published** — `calm hub push architecture v2.calm.json --calm-hub-url http://hub.mybank.internal:8080`
+6. **Teams reference namespace + version** — breaking changes require a new version; old consumers continue working against their pinned version
+
+This workflow gives you versioned, auditable architecture governance without manual coordination between teams.
+
+## Code/CALM examples
+
+The file `code-examples/module-03-calm-ecosystem/with-hub-metadata.calm.json` shows how a CALM architecture references its Hub registry location in the `metadata` field:
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "with-hub-metadata",
+  "name": "Order Processing Service (Hub-registered)",
+  "description": "Example architecture showing Hub namespace metadata conventions — org.mybank/order-processing/v1.0.0. Demonstrates how a CALM architecture references its Hub registry location in metadata.",
+  "metadata": [
+    {
+      "namespace": "org.mybank",
+      "artifact": "order-processing",
+      "version": "1.0.0",
+      "hub-url": "http://hub.mybank.internal:8080"
+    }
+  ],
+  "nodes": [
+    {
+      "unique-id": "order-portal",
+      "node-type": "webclient",
+      "name": "Order Portal",
+      "description": "Customer-facing web application for placing and tracking orders."
+    },
+    {
+      "unique-id": "order-service",
+      "node-type": "service",
+      "name": "Order Service",
+      "description": "REST API service that handles order creation, updates, and fulfillment workflow."
+    },
+    {
+      "unique-id": "orders-db",
+      "node-type": "database",
+      "name": "Orders Database",
+      "description": "Relational database storing order records, line items, and fulfillment status."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "portal-to-service",
+      "description": "Order Portal sends order requests to the Order Service over HTTPS",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-portal" },
+          "destination": { "node": "order-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "service-to-db",
+      "description": "Order Service reads and writes order records to the Orders Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-service" },
+          "destination": { "node": "orders-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
+```
+
+The `metadata` array is the key addition. The fields `namespace`, `artifact`, `version`, and `hub-url` are conventions rather than enforced Hub fields — they document the registration location inside the architecture itself. This creates a self-describing artifact: anyone who reads the file can immediately find the canonical Hub location.
+
+### Teaching note for Lab 3
+
+**Lab 3 does NOT require a running Hub instance.** Lab 3 is a CLI and GitHub Actions lab — learners fork a starter repo, add `calm validate` to a GitHub Actions workflow, and observe the gate working. There is no requirement to start Docker or run Hub.
+
+Hub is taught here (Chapter 3.3) at the concept level. The CLI hub commands (`push/pull/list`) are documented above so you know they exist and how they work. If you want to try them hands-on, the Docker Compose quickstart above gives you a local Hub in under a minute.
+
+The Lab 3 stretch goal (optional) shows pushing a validated architecture to a local Hub instance. This is not a required lab step — it is there for learners who have Docker available and want to experience the full workflow.
+
+## Common mistakes
+
+- **Hub auth profile confusion** — starting Hub via Maven without specifying `-Dquarkus.profile=no-auth` and getting 401 on every request. Use the Docker Compose quickstart for local work. If you must use Maven, always add the no-auth profile flag.
+- **Expecting Hub to be required for Lab 3** — it is not. Lab 3 core steps work without Hub. Blocking lab completion on Hub setup means blocking learners who cannot run Docker locally. Use Hub as a stretch goal only.
+- **Omitting `--calm-hub-url` flag** — the hub subcommands need the Hub URL unless you have configured it via `calm init-config`. All example commands above include the flag explicitly.
+- **Using no-auth in a production deployment** — the no-auth profile is for local development only. Never deploy Hub with no-auth to a network-accessible host. Use the secure profile with a proper identity provider, or the proxy-auth profile behind an authenticated reverse proxy.
+
+## Knowledge check
+
+Take the quiz for this chapter: [Module 3 Ecosystem Quiz](../quizzes/module-03-ecosystem.yaml)
+
+## Further reading
+
+- [CALM Studio: visual-first architecture design](./calm-studio-visual-design.mdx) — the visual tool that complements Hub for exploration and presentation
+- [CALM Server: validation as a service](./calm-server-validation-service.mdx) — how platform teams expose CALM validation as an HTTP endpoint
+- [CALM Hub README](https://github.com/finos/architecture-as-code/tree/main/calm-hub) — the source repository with full API documentation and deployment options
+- [CALM Hub Swagger UI](http://localhost:8080/q/swagger-ui/) — interactive API explorer (available when Hub is running locally)

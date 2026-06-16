@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 540,
+      "text": "DIAGRAM SPEC — CALM Server Platform Pattern (Chapter 3.4)\n\nLayout: Two-track horizontal comparison.\n\nTRACK 1 (top half, labelled 'Local CLI'):\n  LEFT: Developer icon (stick figure) with label 'Developer'\n  ARROW pointing right: runs 'calm validate -a arch.calm.json'\n  RIGHT: Terminal output box with tick icon, text '0 errors'\n  Note below track: 'Works on developer machine only. CLI must be installed per machine.'\n\nHORIZONTAL DASHED DIVIDER with centred label 'vs'\n\nTRACK 2 (bottom half, labelled 'CALM Server — Platform Pattern'):\n  LEFT SIDE:\n    Dev Team 1 icon (stick figure) with label 'Dev Team 1'\n    Dev Team 2 icon (stick figure below) with label 'Dev Team 2'\n  ARROWS from each team pointing right: 'POST /calm/validate'\n  CENTRE: calm-server box (server icon / box shape) with label 'calm-server'\n    Sub-label: 'port 3000'\n    Note inside box: 'Platform team controls schema version'\n  ARROWS from calm-server pointing right: '{hasErrors: false}'\n  RIGHT: Response symbol (✓ or JSON box)\n\n  BOTTOM ANNOTATIONS below Track 2:\n    'Rate limiting: 100 req/15min built-in'\n    'No CLI install required per dev team'\n    Platform Admin icon (key/wrench) with arrow to calm-server: 'Platform team manages'\n\nTITLE above everything: 'Validation as a service vs local CLI'\nStyle: B&W only. No colour. Stick figures acceptable. Boxes for server and terminal.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — CALM Server Platform Pattern (Chapter 3.4)\n\nLayout: Two-track horizontal comparison.\n\nTRACK 1 (top half, labelled 'Local CLI'):\n  LEFT: Developer icon (stick figure) with label 'Developer'\n  ARROW pointing right: runs 'calm validate -a arch.calm.json'\n  RIGHT: Terminal output box with tick icon, text '0 errors'\n  Note below track: 'Works on developer machine only. CLI must be installed per machine.'\n\nHORIZONTAL DASHED DIVIDER with centred label 'vs'\n\nTRACK 2 (bottom half, labelled 'CALM Server — Platform Pattern'):\n  LEFT SIDE:\n    Dev Team 1 icon (stick figure) with label 'Dev Team 1'\n    Dev Team 2 icon (stick figure below) with label 'Dev Team 2'\n  ARROWS from each team pointing right: 'POST /calm/validate'\n  CENTRE: calm-server box (server icon / box shape) with label 'calm-server'\n    Sub-label: 'port 3000'\n    Note inside box: 'Platform team controls schema version'\n  ARROWS from calm-server pointing right: '{hasErrors: false}'\n  RIGHT: Response symbol (✓ or JSON box)\n\n  BOTTOM ANNOTATIONS below Track 2:\n    'Rate limiting: 100 req/15min built-in'\n    'No CLI install required per dev team'\n    Platform Admin icon (key/wrench) with arrow to calm-server: 'Platform team manages'\n\nTITLE above everything: 'Validation as a service vs local CLI'\nStyle: B&W only. No colour. Stick figures acceptable. Boxes for server and terminal."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
