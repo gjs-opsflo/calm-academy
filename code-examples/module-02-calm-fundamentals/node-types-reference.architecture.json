@@ -1,0 +1,149 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "node-types-reference",
+  "name": "CALM 1.2 Node Types Reference",
+  "description": "A reference architecture demonstrating all 9 CALM 1.2 core node types using realistic financial services industry (FSI) naming. This file exists to teach the vocabulary — each node illustrates a distinct node-type with a description of its role. Not a production system.",
+  "nodes": [
+    {
+      "unique-id": "trading-analyst",
+      "node-type": "actor",
+      "name": "Trading Analyst",
+      "description": "A human user who initiates trading activity by accessing the trader portal. Represents an external entity whose actions trigger system interactions but who does not own infrastructure."
+    },
+    {
+      "unique-id": "prod-k8s-cluster",
+      "node-type": "ecosystem",
+      "name": "Production Kubernetes Cluster",
+      "description": "The cloud runtime environment (AWS EKS) into which trading services and databases are deployed. Other nodes are deployed-in this ecosystem — it is the platform, not a service."
+    },
+    {
+      "unique-id": "trade-execution-platform",
+      "node-type": "system",
+      "name": "Trade Execution Platform",
+      "description": "The logical system boundary encompassing all services, databases, and components required to process a trade from submission to settlement. Composed-of the services that fulfil trade execution."
+    },
+    {
+      "unique-id": "order-service",
+      "node-type": "service",
+      "name": "Order Service",
+      "description": "A running microservice that receives order submissions, validates them against risk limits, and routes them to the exchange gateway. Exposes a REST API over HTTPS."
+    },
+    {
+      "unique-id": "trades-db",
+      "node-type": "database",
+      "name": "Trades Database",
+      "description": "PostgreSQL relational database persisting submitted trade orders, execution records, and settlement status. Accessed by the Order Service via JDBC."
+    },
+    {
+      "unique-id": "edge-firewall",
+      "node-type": "network",
+      "name": "Edge Firewall",
+      "description": "Layer 4 network infrastructure that inspects and filters inbound traffic from the public internet before it reaches the trader portal. Represents L3/L4 network infrastructure, not a deployment environment."
+    },
+    {
+      "unique-id": "corporate-directory",
+      "node-type": "ldap",
+      "name": "Corporate LDAP Directory",
+      "description": "Active Directory-based identity provider that stores employee authentication credentials and group memberships. Other services depend on this node for identity resolution — it is infrastructure, not an initiating actor."
+    },
+    {
+      "unique-id": "trader-portal",
+      "node-type": "webclient",
+      "name": "Trader Portal",
+      "description": "Browser-based web application through which trading analysts monitor positions, submit orders, and review execution history. Serves as the front-door UI for the trade execution platform."
+    },
+    {
+      "unique-id": "end-of-day-positions",
+      "node-type": "data-asset",
+      "name": "End-of-Day Position File",
+      "description": "Structured CSV data asset containing aggregated end-of-day position snapshots exported for downstream risk and reporting systems. Represents data at rest — a file, not a running service."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "analyst-interacts-portal",
+      "description": "Trading analyst accesses the trader portal to submit and monitor orders",
+      "relationship-type": {
+        "interacts": {
+          "actor": "trading-analyst",
+          "nodes": ["trader-portal"]
+        }
+      }
+    },
+    {
+      "unique-id": "portal-to-order-service",
+      "description": "Trader portal calls the Order Service REST API to submit and retrieve orders — traffic passes through the edge firewall first",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "trader-portal" },
+          "destination": { "node": "order-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "order-service-to-trades-db",
+      "description": "Order Service reads and writes trade records to the Trades Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-service" },
+          "destination": { "node": "trades-db" }
+        }
+      },
+      "protocol": "JDBC"
+    },
+    {
+      "unique-id": "order-service-to-corporate-directory",
+      "description": "Order Service authenticates users and resolves group memberships via the Corporate LDAP Directory",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-service" },
+          "destination": { "node": "corporate-directory" }
+        }
+      },
+      "protocol": "LDAP"
+    },
+    {
+      "unique-id": "order-service-exports-positions",
+      "description": "Order Service writes end-of-day position snapshots to the positions data asset for downstream risk reporting",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-service" },
+          "destination": { "node": "end-of-day-positions" }
+        }
+      },
+      "protocol": "TCP"
+    },
+    {
+      "unique-id": "services-deployed-in-cluster",
+      "description": "The Order Service and Trades Database are deployed-in the Production Kubernetes Cluster — the cluster is the runtime ecosystem",
+      "relationship-type": {
+        "deployed-in": {
+          "container": "prod-k8s-cluster",
+          "nodes": ["order-service", "trades-db"]
+        }
+      }
+    },
+    {
+      "unique-id": "platform-composed-of-services",
+      "description": "The Trade Execution Platform system is structurally composed-of the Order Service — the system boundary wraps its constituent services",
+      "relationship-type": {
+        "composed-of": {
+          "container": "trade-execution-platform",
+          "nodes": ["order-service"]
+        }
+      }
+    },
+    {
+      "unique-id": "portal-through-firewall",
+      "description": "The Trader Portal traffic passes through the Edge Firewall on its way to backend services",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "edge-firewall" },
+          "destination": { "node": "trader-portal" }
+        }
+      },
+      "protocol": "HTTPS"
+    }
+  ]
+}

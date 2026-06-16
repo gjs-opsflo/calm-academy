@@ -1,0 +1,335 @@
+---
+title: "Nodes: modeling system components"
+slug: nodes
+module: 2
+chapter: 2.2
+estimated_minutes: 28
+prerequisites:
+  - calm-specification
+---
+
+## TL;DR
+
+- CALM 1.2 has exactly 9 core node types: `actor`, `ecosystem`, `system`, `service`, `database`, `network`, `ldap`, `webclient`, `data-asset`.
+- The validator accepts arbitrary strings for `node-type` — the 9-type canon is enforced by course discipline and tooling convention, not by the schema.
+- Every node requires four fields: `unique-id`, `node-type`, `name`, `description`.
+- Choosing the wrong node type breaks relationship semantics, control applicability, and tooling inference downstream.
+- `container`, `component`, and `microservice` are not CALM node types — they are Docker/Kubernetes terms that learners frequently attempt to use.
+
+## Why it matters
+
+The node type you assign to a system component is not cosmetic. It determines which relationships are semantically valid (an `actor` initiates, it does not serve), which controls apply (a `database` needs different encryption controls than a `network` node), and which CALM Studio shapes your architecture renders with. When CALM Guard evaluates your architecture, it uses node types to understand deployment context, trust boundaries, and data-flow semantics. Getting node types right is the foundation of everything downstream — relationships, interfaces, controls, governance overlays, and pattern conformance all build on it.
+
+## The concept
+
+### Node required fields
+
+Every node in a CALM architecture must have exactly four required fields:
+
+```json
+{
+  "unique-id": "order-service",
+  "node-type": "service",
+  "name": "Order Service",
+  "description": "Handles order submissions, validates against risk limits, routes to exchange gateway."
+}
+```
+
+- `unique-id` — kebab-case string, unique within this architecture document. Referenced by relationships to identify which nodes they connect. Use a descriptive slug, not a UUID.
+- `node-type` — one of the 9 core types (or a future extension type). Determines the shape in CALM Studio and the semantic role in relationships.
+- `name` — human-readable display name. Used in Studio canvas labels and documentation generation.
+- `description` — one-to-two sentences explaining what this node represents in this architecture. Cannot be empty. Many validators will not catch a blank string, but course discipline requires a meaningful description.
+
+Optional fields available on nodes include `interfaces` (communication contracts), `controls` (compliance assertions), `metadata` (freeform annotations), and `details` (link to a more detailed architecture or required pattern).
+
+### The nine node types
+
+#### actor
+
+An `actor` represents a human user, an external system, or any external entity that initiates interactions with your architecture. The defining characteristic of an actor is that it **pulls the trigger** — it starts things. An actor does not own infrastructure and cannot be the destination of a `connects` relationship in the sense that a service can.
+
+FSI example: `trading-analyst` — a desk trader who accesses the trading portal to submit orders. The analyst is an actor because their action (visiting the portal) initiates the interaction. The portal is the destination.
+
+Anti-pattern: using `actor` for a service that makes outbound calls. A payment processing service that calls an external settlement API is a `service` calling another `service`. Service-to-service communication uses `connects`, not `interacts`. `actor` is for entities outside your system boundary that the system must respond to.
+
+![Close-up of an actor node initiating an interaction with a service node](../illustrations/exported/m02-actor-node.svg)
+
+#### ecosystem
+
+An `ecosystem` is a runtime environment — the platform that other nodes are deployed into. Clusters, VPCs, agent sandboxes, and cloud provider accounts are all ecosystems. The defining question is: "do other nodes live inside this?" If yes, it is likely an `ecosystem`.
+
+FSI example: `prod-k8s-cluster` — the AWS EKS cluster into which the order service and trades database are deployed. The cluster is the ecosystem; the services are nodes that are `deployed-in` it.
+
+Anti-pattern: using `ecosystem` for a logical grouping of services that share a business domain. A "trade execution domain" that logically groups services is a `system`, not an `ecosystem`. `ecosystem` is a runtime concern, not a structural one.
+
+#### system
+
+A `system` is a logical boundary that groups related nodes structurally. It answers "what is logically inside this boundary?" rather than "what runs in this environment?" A system is `composed-of` other nodes (services, databases) that form its constituent parts.
+
+FSI example: `trade-execution-platform` — the logical system boundary encompassing the order service, position service, and execution database that together fulfil trade processing. Other teams reference this boundary as a unit.
+
+Anti-pattern: using `system` for a runtime environment like a Kubernetes cluster. If something can host other nodes at runtime, it is an `ecosystem`. If it is a logical/domain grouping, it is a `system`.
+
+The `system` vs `service` vs `ecosystem` distinction is the most frequently confused trio in CALM. The diagram below summarises the differences.
+
+![Three-panel diagram contrasting system, service, and ecosystem boundaries](../illustrations/exported/m02-system-vs-service-vs-ecosystem.svg)
+
+#### service
+
+A `service` is a running process that exposes capabilities. Microservices, REST APIs, gRPC servers, batch jobs, serverless functions, and message consumers are all services. If something runs, processes requests, and exposes an interface, it is a `service`.
+
+FSI example: `order-service` — a microservice that validates order submissions, applies risk limits, and routes orders to the exchange gateway. It exposes a REST API over HTTPS. Running, processing, exposing — service.
+
+Anti-pattern: using `service` for something that does not run as an active process. A message queue topic is a `data-asset`. A Kubernetes cluster is an `ecosystem`. A settlement system boundary that groups five microservices is a `system`. If it is not running and serving, it is not a `service`.
+
+#### database
+
+A `database` is any persistence technology — relational (PostgreSQL, Oracle), NoSQL (MongoDB, DynamoDB), in-memory cache (Redis), object store (S3), or columnar (Snowflake). If something stores state and is accessed by services to read or write data, it is a `database`.
+
+FSI example: `trades-db` — a PostgreSQL database that persists submitted trade orders, execution records, and settlement confirmations. The Order Service connects to it via JDBC.
+
+Anti-pattern: using `database` for a Kafka topic or event stream. A Kafka topic is a `data-asset` — it is data in motion, not a persistence store. A Kafka broker itself is closer to a `service` (it runs and serves). Use `database` for systems whose primary purpose is stateful data storage and retrieval.
+
+#### network
+
+A `network` node represents L3/L4 infrastructure that sits between other nodes in the data path. Load balancers, firewalls, VPNs, CDN edge nodes, API gateways (when acting as a proxy), and DNS resolvers are all `network` nodes. The defining characteristic: something that routes, filters, or proxies traffic but is not itself the origin or destination of data.
+
+FSI example: `edge-firewall` — a network appliance that inspects inbound traffic from the public internet and enforces ingress rules before it reaches the trader portal. It is infrastructure, not an application.
+
+Anti-pattern: using `network` for a deployment environment. An AWS VPC is an `ecosystem`, not a `network`. The VPC provides the environment; the firewall inside it is the `network` node. Also do not use `network` for a Kafka broker or message queue — those are `service` or `data-asset`.
+
+#### ldap
+
+An `ldap` node represents a directory service or identity provider — Active Directory, LDAP servers, OpenLDAP, or identity platforms that expose directory queries. It is a narrow type with a specific use case: identity infrastructure that other nodes depend on for authentication and group membership resolution.
+
+FSI example: `corporate-directory` — the firm's Active Directory instance that the order service queries to authenticate users and resolve their trading permissions. It is infrastructure that other services depend on, not a service that initiates or a human actor.
+
+Anti-pattern: using `ldap` for a modern OAuth/OIDC identity provider like Keycloak or Auth0 that does not expose LDAP protocol. Those are `service` nodes with authentication interfaces. `ldap` is specifically for directory protocol infrastructure. Also do not use `actor` for an LDAP directory — LDAP directories respond to queries, they do not initiate interactions.
+
+#### webclient
+
+A `webclient` is a browser-based, mobile, or desktop UI application. If it is the front-door interface that a human user interacts with, it is a `webclient`. The defining characteristic: runs on the user's device, renders a UI, and communicates with backend services.
+
+FSI example: `trader-portal` — the browser-based web application through which trading analysts submit orders, monitor positions, and review execution history. The analyst (actor) interacts with the portal (webclient).
+
+Anti-pattern: using `webclient` for a mobile app backend API. The mobile app client is a `webclient`; the API it calls is a `service`. Also do not use `webclient` for a server-side rendered application where the rendering happens on the server — if the final artefact is HTML served to a browser, the browser-facing component is the `webclient`.
+
+#### data-asset
+
+A `data-asset` represents data at rest — files, datasets, object storage buckets, Kafka topics (as data), data lake partitions, or any named data artefact that is produced or consumed by services. The defining characteristic: it is data, not a process.
+
+FSI example: `end-of-day-positions` — a CSV file written by the Order Service at day-end containing aggregated position snapshots. Risk and reporting systems consume it. It exists as a named data artefact, not as a running process.
+
+Anti-pattern: using `data-asset` for a running database. A PostgreSQL instance that services query in real-time is a `database` (active persistence), not a `data-asset` (named data artefact). `data-asset` is for the data itself — files, topics, datasets — not for the infrastructure that stores or serves it.
+
+### Common confusions
+
+#### actor vs ldap
+
+Both `actor` and `ldap` represent entities outside your service boundary that your system interacts with. The distinction is direction and role:
+
+- An `actor` **initiates** interactions. A human trader who visits your portal is an actor. An external system that sends trade confirmations via API call is an actor. Actors appear as the subject of `interacts` relationships.
+- An `ldap` **responds to queries** from your services. Your order service queries the LDAP directory to authenticate a user. The directory does not initiate — it waits for queries. `ldap` is identity infrastructure, not an initiating entity.
+
+#### system vs service vs ecosystem
+
+This is the most common confusion in CALM modelling. The three types answer different questions:
+
+| Type | Question it answers | Relationship type it typically appears in |
+|------|--------------------|--------------------------------------------|
+| `ecosystem` | "Where does this run?" — the runtime environment | `deployed-in` (as the container) |
+| `system` | "What logical boundary is this part of?" — domain grouping | `composed-of` (as the container) |
+| `service` | "What runs and serves requests?" — an active process | `connects`, `deployed-in` (as a contained node) |
+
+An AWS VPC is an `ecosystem` — services are deployed-in it. A trade execution domain is a `system` — services are composed-of it. An order processing REST API is a `service` — it connects to other services and runs in an ecosystem.
+
+### The node types gallery
+
+The diagram below shows all 9 CALM 1.2 core node types with their canonical CALM Studio canvas shapes. When you see these shapes in Studio, you can map them back to the type names immediately.
+
+![Visual gallery of all 9 CALM 1.2 core node types with their CALM Studio canvas shapes](../illustrations/exported/m02-node-types-gallery.svg)
+
+The complete reference file demonstrating all 9 types with realistic FSI names is in `code-examples/module-02-calm-fundamentals/node-types-reference.architecture.json`.
+
+## Code/CALM examples
+
+The following is the complete `node-types-reference.architecture.json` from `code-examples/module-02-calm-fundamentals/`. Every node uses a distinct core type with a realistic FSI name and a meaningful description:
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "node-types-reference",
+  "name": "CALM 1.2 Node Types Reference",
+  "description": "A reference architecture demonstrating all 9 CALM 1.2 core node types using realistic financial services industry (FSI) naming. This file exists to teach the vocabulary — each node illustrates a distinct node-type with a description of its role. Not a production system.",
+  "nodes": [
+    {
+      "unique-id": "trading-analyst",
+      "node-type": "actor",
+      "name": "Trading Analyst",
+      "description": "A human user who initiates trading activity by accessing the trader portal. Represents an external entity whose actions trigger system interactions but who does not own infrastructure."
+    },
+    {
+      "unique-id": "prod-k8s-cluster",
+      "node-type": "ecosystem",
+      "name": "Production Kubernetes Cluster",
+      "description": "The cloud runtime environment (AWS EKS) into which trading services and databases are deployed. Other nodes are deployed-in this ecosystem — it is the platform, not a service."
+    },
+    {
+      "unique-id": "trade-execution-platform",
+      "node-type": "system",
+      "name": "Trade Execution Platform",
+      "description": "The logical system boundary encompassing all services, databases, and components required to process a trade from submission to settlement. Composed-of the services that fulfil trade execution."
+    },
+    {
+      "unique-id": "order-service",
+      "node-type": "service",
+      "name": "Order Service",
+      "description": "A running microservice that receives order submissions, validates them against risk limits, and routes them to the exchange gateway. Exposes a REST API over HTTPS."
+    },
+    {
+      "unique-id": "trades-db",
+      "node-type": "database",
+      "name": "Trades Database",
+      "description": "PostgreSQL relational database persisting submitted trade orders, execution records, and settlement status. Accessed by the Order Service via JDBC."
+    },
+    {
+      "unique-id": "edge-firewall",
+      "node-type": "network",
+      "name": "Edge Firewall",
+      "description": "Layer 4 network infrastructure that inspects and filters inbound traffic from the public internet before it reaches the trader portal. Represents L3/L4 network infrastructure, not a deployment environment."
+    },
+    {
+      "unique-id": "corporate-directory",
+      "node-type": "ldap",
+      "name": "Corporate LDAP Directory",
+      "description": "Active Directory-based identity provider that stores employee authentication credentials and group memberships. Other services depend on this node for identity resolution — it is infrastructure, not an initiating actor."
+    },
+    {
+      "unique-id": "trader-portal",
+      "node-type": "webclient",
+      "name": "Trader Portal",
+      "description": "Browser-based web application through which trading analysts monitor positions, submit orders, and review execution history. Serves as the front-door UI for the trade execution platform."
+    },
+    {
+      "unique-id": "end-of-day-positions",
+      "node-type": "data-asset",
+      "name": "End-of-Day Position File",
+      "description": "Structured CSV data asset containing aggregated end-of-day position snapshots exported for downstream risk and reporting systems. Represents data at rest — a file, not a running service."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "analyst-interacts-portal",
+      "description": "Trading analyst accesses the trader portal to submit and monitor orders",
+      "relationship-type": {
+        "interacts": {
+          "actor": "trading-analyst",
+          "nodes": ["trader-portal"]
+        }
+      }
+    },
+    {
+      "unique-id": "portal-to-order-service",
+      "description": "Trader portal calls the Order Service REST API to submit and retrieve orders — traffic passes through the edge firewall first",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "trader-portal" },
+          "destination": { "node": "order-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "order-service-to-trades-db",
+      "description": "Order Service reads and writes trade records to the Trades Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-service" },
+          "destination": { "node": "trades-db" }
+        }
+      },
+      "protocol": "JDBC"
+    },
+    {
+      "unique-id": "order-service-to-corporate-directory",
+      "description": "Order Service authenticates users and resolves group memberships via the Corporate LDAP Directory",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-service" },
+          "destination": { "node": "corporate-directory" }
+        }
+      },
+      "protocol": "LDAP"
+    },
+    {
+      "unique-id": "order-service-exports-positions",
+      "description": "Order Service writes end-of-day position snapshots to the positions data asset for downstream risk reporting",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-service" },
+          "destination": { "node": "end-of-day-positions" }
+        }
+      },
+      "protocol": "TCP"
+    },
+    {
+      "unique-id": "services-deployed-in-cluster",
+      "description": "The Order Service and Trades Database are deployed-in the Production Kubernetes Cluster — the cluster is the runtime ecosystem",
+      "relationship-type": {
+        "deployed-in": {
+          "container": "prod-k8s-cluster",
+          "nodes": ["order-service", "trades-db"]
+        }
+      }
+    },
+    {
+      "unique-id": "platform-composed-of-services",
+      "description": "The Trade Execution Platform system is structurally composed-of the Order Service — the system boundary wraps its constituent services",
+      "relationship-type": {
+        "composed-of": {
+          "container": "trade-execution-platform",
+          "nodes": ["order-service"]
+        }
+      }
+    },
+    {
+      "unique-id": "portal-through-firewall",
+      "description": "The Trader Portal traffic passes through the Edge Firewall on its way to backend services",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "edge-firewall" },
+          "destination": { "node": "trader-portal" }
+        }
+      },
+      "protocol": "HTTPS"
+    }
+  ]
+}
+```
+
+This file validates against CALM 1.2 with `hasErrors: false` and `hasWarnings: false`. Run `npx @finos/calm-cli validate -a code-examples/module-02-calm-fundamentals/node-types-reference.architecture.json` to confirm.
+
+## Common mistakes
+
+**Inventing node types because the validator does not stop you.** `container`, `component`, `microservice`, `pod`, `lambda`, `topic` — none of these are CALM node types. The schema's open extension hook accepts them syntactically. CALM Studio, CALM Guard, and pattern matchers do not understand them semantically. Use the 9 canonical types. If you want to model a Lambda function, it is a `service`. If you want to model an S3 bucket, it is a `database` (if it is active storage) or `data-asset` (if it is a named data artefact).
+
+**Missing `description`.** Every node requires a `description`. The validator will reject files where `description` is absent. A blank string `""` passes schema validation but violates course discipline — every description should be one-to-two meaningful sentences explaining the node's role in this specific architecture.
+
+**Using `system` where `service` is correct.** A "payment system" that runs as a process and serves API requests is a `service`. Reserve `system` for logical boundaries that group multiple services — the kind of thing you'd draw as a bounded context in a DDD diagram, not as a hexagon in a service diagram.
+
+**Using `ecosystem` for a logical boundary that should be `system`.** If your boundary is about logical ownership, domain, or structural grouping (not runtime deployment), use `system`. An `ecosystem` is a platform — other things run on it. A `system` is a boundary — other things are logically part of it.
+
+**Treating `network` as another kind of `ecosystem`.** A firewall or load balancer is `network` infrastructure. A Kubernetes cluster or AWS VPC is an `ecosystem`. Both are infrastructure, but they play different roles. `network` nodes typically appear in `connects` relationships in the data path; `ecosystem` nodes appear as containers in `deployed-in` relationships.
+
+**Using `actor` for a service that makes outbound calls.** A payment service that calls an external settlement API is not an actor — it is a `service` making a `connects` call. `actor` is for external entities (humans, partner systems) that initiate interactions with your architecture, not for services within your boundary that make outbound connections.
+
+**Using `ldap` for an OAuth/OIDC identity provider.** If your identity platform exposes OAuth 2.0 or OIDC endpoints rather than LDAP protocol, it is a `service` with authentication interfaces. `ldap` is specifically for directory protocol infrastructure.
+
+## Knowledge check
+
+[Take the Module 2 quiz](../quizzes/module-02-calm-fundamentals.yaml)
+
+## Further reading
+
+- [Relationships: connecting the dots](./relationships.mdx) — the next chapter: all 5 relationship types and why node types matter for relationship semantics
+- [The CALM specification](./calm-specification.mdx) — the previous chapter: schema conformance, `$schema` URL, and what `calm validate` checks

@@ -1,0 +1,364 @@
+---
+title: "Relationships: connecting the dots"
+slug: relationships
+module: 2
+chapter: 2.3
+estimated_minutes: 25
+prerequisites:
+  - nodes
+---
+
+## TL;DR
+
+- CALM 1.2 has exactly 5 relationship types: `connects`, `interacts`, `deployed-in`, `composed-of`, `options`.
+- `protocol` is a **top-level field** on `connects` relationships — it is a sibling of `relationship-type`, never nested inside the `connects` sub-object. This is the most common CALM authoring mistake.
+- `interacts.actor` must reference a node whose `node-type` is `actor`.
+- `deployed-in` is a runtime concern (where does this run?); `composed-of` is a structural concern (what is this made of?).
+- `options` is an ADR-in-spec pattern for architectural decision branches — it is in the 1.2 schema but has a known limitation in CALM CLI 1.44.1 (see the options section below).
+
+## Why it matters
+
+An arrow on a slide can mean anything — data flow, ownership, deployment, user interaction, or a confused mix of all four. CALM relationship types encode meaning that tools can act on. When you write `deployed-in`, CALM Guard knows this is a runtime containment relationship and can evaluate whether the container meets the compliance requirements for what is deployed-in it. When you write `connects` with `protocol: "JDBC"`, the Studio canvas can warn you if the destination is not a `database`. When you write `interacts`, the pattern matcher knows the `actor` field must reference a human or external entity, not a service. The semantics are not decorative — they drive every downstream tooling capability.
+
+## The concept
+
+### Relationship required fields
+
+Every relationship in a CALM architecture must have at least two required fields:
+
+```json
+{
+  "unique-id": "portal-to-payments-service",
+  "relationship-type": {
+    "connects": {
+      "source": { "node": "payments-portal" },
+      "destination": { "node": "payments-service" }
+    }
+  }
+}
+```
+
+- `unique-id` — kebab-case string, unique within this architecture. Referenced by `options` relationships and flow definitions.
+- `relationship-type` — a one-key object whose key is the relationship type name and whose value is the type-specific sub-object.
+
+Optional fields on relationships include `protocol`, `description`, `metadata`, and `controls`. `description` is not required by the schema but is required by course discipline — always add a one-sentence description of what this connection represents.
+
+### connects
+
+A `connects` relationship describes a node-to-node data flow with a wire protocol. It has a `source` and a `destination`, each of which is a node reference.
+
+```json
+{
+  "unique-id": "portal-to-payments-service",
+  "description": "Payments portal calls the Payments Service API over HTTPS.",
+  "relationship-type": {
+    "connects": {
+      "source": { "node": "payments-portal" },
+      "destination": { "node": "payments-service" }
+    }
+  },
+  "protocol": "HTTPS"
+}
+```
+
+**The protocol placement rule — read this twice.** The `protocol` field is a **top-level sibling of `relationship-type`**, not a nested property inside the `connects` sub-object. This is the single most common CALM authoring mistake.
+
+Correct — `protocol` at the relationship level:
+
+```json
+{
+  "unique-id": "service-to-db",
+  "relationship-type": {
+    "connects": {
+      "source": { "node": "payments-service" },
+      "destination": { "node": "payments-db" }
+    }
+  },
+  "protocol": "JDBC"
+}
+```
+
+Wrong — `protocol` nested inside `connects`:
+
+```json
+{
+  "unique-id": "service-to-db",
+  "relationship-type": {
+    "connects": {
+      "source": { "node": "payments-service" },
+      "destination": { "node": "payments-db" },
+      "protocol": "JDBC"
+    }
+  }
+}
+```
+
+The wrong form does not cause a schema validation error (the schema uses `additionalProperties: true` on most objects), but it produces a file where `protocol` is invisible to tools that read the top-level field. The CALM CLI, CALM Studio, and pattern matchers all read `protocol` at the relationship level.
+
+![Side-by-side diagram contrasting connects (node-to-node with protocol) and interacts (actor-initiates-to-node)](../illustrations/exported/m02-connects-vs-interacts.svg)
+
+### Protocol enum
+
+CALM 1.2 defines exactly 12 valid protocol values. Using any other string will cause a schema validation error:
+
+| Protocol | When to use |
+|----------|-------------|
+| `HTTP` | Unencrypted web traffic — internal services in a trusted network, legacy systems |
+| `HTTPS` | TLS-encrypted web traffic — the default for any public or cross-boundary API call |
+| `FTP` | Unencrypted file transfer — legacy batch file exchange |
+| `SFTP` | SSH-encrypted file transfer — secure batch file exchange, regulatory report delivery |
+| `JDBC` | Java database connectivity — service-to-database connections from JVM runtimes |
+| `WebSocket` | Persistent bidirectional web connections — real-time feeds, market data |
+| `SocketIO` | WebSocket + polling fallback — web UI real-time updates |
+| `LDAP` | Directory service queries — LDAP protocol to an `ldap` node |
+| `AMQP` | Advanced Message Queuing Protocol — message queues (RabbitMQ, Azure Service Bus) |
+| `TLS` | Raw TLS (no application protocol) — encrypted sockets between infrastructure components |
+| `mTLS` | Mutual TLS — zero-trust service mesh connections where both sides authenticate |
+| `TCP` | Raw TCP — non-HTTP sockets, proprietary protocols, internal file writes |
+
+If a protocol is not in this list, do not invent a string. Use the closest matching enum value and add a `description` to the relationship explaining the actual protocol. In a future CALM version or a pattern, the extension mechanism allows additional protocol values — but in 1.2, you must use one of these twelve.
+
+### interacts
+
+An `interacts` relationship describes an actor initiating contact with one or more nodes. It has an `actor` field (a single node reference) and a `nodes` field (an array of node references).
+
+```json
+{
+  "unique-id": "analyst-interacts-portal",
+  "description": "Payments analyst accesses the payments portal to submit and track payment instructions.",
+  "relationship-type": {
+    "interacts": {
+      "actor": "payments-analyst",
+      "nodes": ["payments-portal"]
+    }
+  }
+}
+```
+
+The `actor` field must reference a node whose `node-type` is `actor`. This is a semantic constraint that the schema does not enforce but that tooling depends on. CALM Studio renders `interacts` relationships differently from `connects` — it shows the actor as the initiating entity. Pattern matchers use the `actor` field to identify trust boundaries. If you put a `service` node in the `actor` field, tools will misinterpret the relationship.
+
+`interacts` has no `protocol` field. Actors interact at the application level — the underlying protocol is irrelevant to the semantic (the actor initiates; the system responds). If you need to model the protocol of a specific human-to-UI interaction, document it in the relationship `description`.
+
+![Close-up of an actor node initiating an interaction with a service node](../illustrations/exported/m02-actor-node.svg)
+
+### deployed-in
+
+A `deployed-in` relationship expresses a **runtime containment**: these nodes run inside this container. The `container` field references the ecosystem or system node that hosts the contained nodes; `nodes` is an array of the contained node unique-ids.
+
+```json
+{
+  "unique-id": "services-deployed-in-vpc",
+  "description": "The Payments Service, Notifications Service, and Payments Database are deployed-in the AWS VPC.",
+  "relationship-type": {
+    "deployed-in": {
+      "container": "aws-vpc",
+      "nodes": ["payments-service", "notifications-service", "payments-db"]
+    }
+  }
+}
+```
+
+The `container` field can reference any node type — the schema does not restrict it. In practice, `ecosystem` and `system` are the most common choices. Use `ecosystem` for cloud platforms and provider accounts (AWS VPCs, Azure subscriptions, Kubernetes clusters). Use `system` for cluster-level runtimes within an ecosystem (a Kubernetes `system` inside an AWS `ecosystem`). The conference signup architecture in [Building your first architecture](./building-your-first-architecture.mdx) uses a `system`-typed k8s-cluster as its container — this is valid.
+
+Do not state "the container must be an ecosystem" — it is not a schema requirement, and the `system` type is frequently the correct choice.
+
+### composed-of
+
+A `composed-of` relationship expresses **structural composition**: this container is logically made up of these nodes. It has the same `container` and `nodes` fields as `deployed-in`, but the semantics differ.
+
+```json
+{
+  "unique-id": "platform-composed-of-services",
+  "description": "The Payments Platform system is structurally composed-of the Payments Service and Notifications Service.",
+  "relationship-type": {
+    "composed-of": {
+      "container": "payments-platform",
+      "nodes": ["payments-service", "notifications-service"]
+    }
+  }
+}
+```
+
+The distinction between `deployed-in` and `composed-of` is the question each answers:
+
+| Relationship | Question | Typical container type |
+|-------------|----------|------------------------|
+| `deployed-in` | Where does this run? | `ecosystem` (runtime platform) |
+| `composed-of` | What is this made of? | `system` (logical boundary) |
+
+A payment processing `system` is `composed-of` a payments service and a notifications service — that is a structural/domain statement. Those same services are `deployed-in` an AWS VPC — that is a runtime/infrastructure statement. Both relationships can coexist in the same architecture, describing orthogonal views of the same nodes.
+
+### options
+
+The `options` relationship type is CALM 1.2's mechanism for embedding an Architectural Decision Record (ADR) directly in the spec. It captures a decision point where the architecture has two or more valid branches, each with a different set of nodes and relationships.
+
+```json
+{
+  "unique-id": "messaging-architecture-options",
+  "description": "Decision: synchronous HTTPS callbacks vs asynchronous AMQP message queue for downstream notifications.",
+  "relationship-type": {
+    "options": [
+      {
+        "description": "Synchronous: Payments Service calls downstream consumers directly over HTTPS. Simpler but tightly coupled.",
+        "nodes": ["payments-service", "notifications-service"],
+        "relationships": []
+      },
+      {
+        "description": "Asynchronous: Payments Service publishes to a message queue; Notifications Service consumes independently. Decoupled but adds a broker dependency.",
+        "nodes": ["payments-service", "notifications-service"],
+        "relationships": []
+      }
+    ]
+  }
+}
+```
+
+Each item in the `options` array is a decision branch with:
+- `description` — what this branch means and its trade-off
+- `nodes` — array of node unique-ids involved in this branch
+- `relationships` — array of relationship unique-ids relevant to this branch (can be empty)
+
+**CLI limitation:** CALM CLI 1.44.1 crashes with a runtime error when it encounters an `options` relationship. The `options` type is fully defined in the 1.2 schema and is structurally correct in the code above, but the validator code has a bug that prevents it from processing this type. The `relationship-types-reference.architecture.json` code example in this chapter excludes `options` for this reason. Track the CALM CLI GitHub issues for the fix. When the CLI is updated, `options` relationships will validate normally.
+
+### All five at a glance
+
+![All 5 CALM relationship types in a single diagram with example arrows and one-line definitions](../illustrations/exported/m02-relationship-types.svg)
+
+The complete validated reference file demonstrating four of the five relationship types is in `code-examples/module-02-calm-fundamentals/relationship-types-reference.architecture.json`.
+
+## Code/CALM examples
+
+The following is the complete `relationship-types-reference.architecture.json`, demonstrating `interacts`, `connects` (with HTTPS and JDBC), `deployed-in`, and `composed-of`:
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "relationship-types-reference",
+  "name": "CALM 1.2 Relationship Types Reference",
+  "description": "A reference architecture demonstrating four of the five CALM 1.2 relationship types using an FSI payments platform scenario: interacts, connects (with HTTPS and JDBC), deployed-in, and composed-of. The protocol field on connects relationships is always at the TOP LEVEL of the relationship object — never nested inside the connects sub-object.",
+  "nodes": [
+    {
+      "unique-id": "payments-analyst",
+      "node-type": "actor",
+      "name": "Payments Analyst",
+      "description": "Human user who initiates payment instructions and monitors settlement status via the payments portal."
+    },
+    {
+      "unique-id": "payments-portal",
+      "node-type": "webclient",
+      "name": "Payments Portal",
+      "description": "Browser-based web application providing the UI for submitting and tracking payment instructions."
+    },
+    {
+      "unique-id": "payments-service",
+      "node-type": "service",
+      "name": "Payments Service",
+      "description": "Core backend service responsible for validating, routing, and processing payment instructions."
+    },
+    {
+      "unique-id": "notifications-service",
+      "node-type": "service",
+      "name": "Notifications Service",
+      "description": "Service that sends payment status notifications to downstream consumers."
+    },
+    {
+      "unique-id": "payments-db",
+      "node-type": "database",
+      "name": "Payments Database",
+      "description": "PostgreSQL database storing payment instructions, routing decisions, and settlement confirmations."
+    },
+    {
+      "unique-id": "aws-vpc",
+      "node-type": "ecosystem",
+      "name": "AWS VPC (Production)",
+      "description": "AWS Virtual Private Cloud forming the production runtime environment. Services and databases are deployed-in this ecosystem."
+    },
+    {
+      "unique-id": "payments-platform",
+      "node-type": "system",
+      "name": "Payments Platform",
+      "description": "The logical system boundary that structurally encompasses the Payments Service and Notifications Service as its composed parts."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "analyst-interacts-portal",
+      "description": "Payments analyst accesses the payments portal to submit and track payment instructions.",
+      "relationship-type": {
+        "interacts": {
+          "actor": "payments-analyst",
+          "nodes": ["payments-portal"]
+        }
+      }
+    },
+    {
+      "unique-id": "portal-to-payments-service",
+      "description": "Payments portal calls the Payments Service API over HTTPS. Protocol is at the top level of this relationship, not inside connects.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "payments-portal" },
+          "destination": { "node": "payments-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "payments-service-to-db",
+      "description": "Payments Service reads and writes payment records via JDBC. Protocol is a top-level sibling of relationship-type.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "payments-service" },
+          "destination": { "node": "payments-db" }
+        }
+      },
+      "protocol": "JDBC"
+    },
+    {
+      "unique-id": "services-deployed-in-vpc",
+      "description": "The Payments Service, Notifications Service, and Payments Database are deployed-in the AWS VPC runtime ecosystem.",
+      "relationship-type": {
+        "deployed-in": {
+          "container": "aws-vpc",
+          "nodes": ["payments-service", "notifications-service", "payments-db"]
+        }
+      }
+    },
+    {
+      "unique-id": "platform-composed-of-services",
+      "description": "The Payments Platform system is structurally composed-of the Payments Service and Notifications Service.",
+      "relationship-type": {
+        "composed-of": {
+          "container": "payments-platform",
+          "nodes": ["payments-service", "notifications-service"]
+        }
+      }
+    }
+  ]
+}
+```
+
+## Common mistakes
+
+**Nesting `protocol` inside `connects`.** This is the most common CALM authoring error. The schema does not reject it (additionalProperties is true on the connects sub-object), but tools read `protocol` at the relationship level. Putting it inside `connects` makes the protocol invisible to validators, CALM Studio, and pattern matchers.
+
+**Using a non-enum value for `protocol`.** `protocol: "REST"`, `protocol: "gRPC"`, `protocol: "Kafka"` — none of these are in the CALM 1.2 enum. Use `HTTPS` for REST over TLS, `AMQP` for Kafka-style messaging, `mTLS` for gRPC with mutual TLS. The validator will reject any string not in the 12-value enum.
+
+**Pointing `interacts.actor` at a non-actor node.** If the `actor` field references a `service` node, CALM Studio and pattern matchers will misinterpret the relationship. `interacts.actor` must reference a node of `node-type: actor`.
+
+**Using `deployed-in` where `composed-of` is correct.** If the relationship is about logical structure (this system is made of these services), use `composed-of`. If it is about runtime containment (these services run in this cluster), use `deployed-in`. The two often coexist for the same nodes viewed from different angles.
+
+**Omitting `description` from relationships.** The schema requires only `unique-id` and `relationship-type`. `description` is optional per schema but required per course discipline. A relationship without a description is opaque to anyone reading the architecture document who was not in the design meeting.
+
+**Missing `unique-id` on relationships.** Relationships require `unique-id` just like nodes. Forgetting it is the second most common validation error (after wrong `$schema`).
+
+**Confusing `options` schema validity with CLI support.** The `options` type is schema-valid in CALM 1.2 but causes a runtime crash in CALM CLI 1.44.1. Including `options` in a file you plan to validate with the current CLI will cause the validator to exit with an error, blocking CI. Teach it via inline code snippets and defer validated file use until the CLI bug is fixed.
+
+## Knowledge check
+
+[Take the Module 2 quiz](../quizzes/module-02-calm-fundamentals.yaml)
+
+## Further reading
+
+- [Interfaces: defining communication contracts](./interfaces.mdx) — the next chapter: how interfaces add precision to what nodes expose and what connects relationships carry
+- [Nodes: modeling system components](./nodes.mdx) — the previous chapter: all 9 node types and why node-type choice determines relationship semantics
+- [CALM 1.2 core schema](https://calm.finos.org/release/1.2/meta/core.json) — the authoritative relationship type definitions, including the full protocol enum

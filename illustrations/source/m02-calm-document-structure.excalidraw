@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — CALM document top-level structure (Chapter 2.1)\n\nLayout: Outer rounded rectangle labelled '.architecture.json' at the top.\nInside, list 7 top-level field names stacked vertically:\n  $schema      (REQUIRED — heavy border, bold label)\n  unique-id    (REQUIRED — heavy border, bold label)\n  name         (REQUIRED — heavy border, bold label)\n  description  (REQUIRED — heavy border, bold label)\n  nodes[]      (optional — normal border)\n  relationships[] (optional — normal border)\n  metadata     (optional — normal border, faded)\n\nTo the right of 'nodes[]': small expanded callout showing one node object:\n  { unique-id, node-type, name, description } all marked REQUIRED.\n\nTo the right of 'relationships[]': small expanded callout showing one connects relationship:\n  { unique-id, relationship-type: { connects: {...} }, protocol: 'HTTPS' }\n  Arrow pointing at protocol field with annotation: 'TOP LEVEL — not inside connects'\n\nTitle above outer rectangle: 'Anatomy of a CALM 1.2 Architecture Document'\n\nBottom annotation: 'Four fields are required. Everything else is optional but recommended.'\n\nStyle: B&W only. Required fields use heavier stroke weight. No colour fills.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — CALM document top-level structure (Chapter 2.1)\n\nLayout: Outer rounded rectangle labelled '.architecture.json' at the top.\nInside, list 7 top-level field names stacked vertically:\n  $schema      (REQUIRED — heavy border, bold label)\n  unique-id    (REQUIRED — heavy border, bold label)\n  name         (REQUIRED — heavy border, bold label)\n  description  (REQUIRED — heavy border, bold label)\n  nodes[]      (optional — normal border)\n  relationships[] (optional — normal border)\n  metadata     (optional — normal border, faded)\n\nTo the right of 'nodes[]': small expanded callout showing one node object:\n  { unique-id, node-type, name, description } all marked REQUIRED.\n\nTo the right of 'relationships[]': small expanded callout showing one connects relationship:\n  { unique-id, relationship-type: { connects: {...} }, protocol: 'HTTPS' }\n  Arrow pointing at protocol field with annotation: 'TOP LEVEL — not inside connects'\n\nTitle above outer rectangle: 'Anatomy of a CALM 1.2 Architecture Document'\n\nBottom annotation: 'Four fields are required. Everything else is optional but recommended.'\n\nStyle: B&W only. Required fields use heavier stroke weight. No colour fills."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

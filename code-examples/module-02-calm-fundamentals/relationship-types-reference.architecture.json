@@ -1,0 +1,104 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "relationship-types-reference",
+  "name": "CALM 1.2 Relationship Types Reference",
+  "description": "A reference architecture demonstrating four of the five CALM 1.2 relationship types using an FSI payments platform scenario: interacts, connects (with HTTPS and JDBC), deployed-in, and composed-of. The protocol field on connects relationships is always at the TOP LEVEL of the relationship object — never nested inside the connects sub-object. The fifth type, options, is demonstrated in Chapter 2.3 via an inline code snippet; it is excluded here due to a known CALM CLI 1.44.1 limitation where the validator crashes on options relationships.",
+  "nodes": [
+    {
+      "unique-id": "payments-analyst",
+      "node-type": "actor",
+      "name": "Payments Analyst",
+      "description": "Human user who initiates payment instructions and monitors settlement status via the payments portal."
+    },
+    {
+      "unique-id": "payments-portal",
+      "node-type": "webclient",
+      "name": "Payments Portal",
+      "description": "Browser-based web application providing the UI for submitting and tracking payment instructions."
+    },
+    {
+      "unique-id": "payments-service",
+      "node-type": "service",
+      "name": "Payments Service",
+      "description": "Core backend service responsible for validating, routing, and processing payment instructions."
+    },
+    {
+      "unique-id": "notifications-service",
+      "node-type": "service",
+      "name": "Notifications Service",
+      "description": "Service that sends payment status notifications to downstream consumers."
+    },
+    {
+      "unique-id": "payments-db",
+      "node-type": "database",
+      "name": "Payments Database",
+      "description": "PostgreSQL database storing payment instructions, routing decisions, and settlement confirmations."
+    },
+    {
+      "unique-id": "aws-vpc",
+      "node-type": "ecosystem",
+      "name": "AWS VPC (Production)",
+      "description": "AWS Virtual Private Cloud forming the production runtime environment. Services and databases are deployed-in this ecosystem."
+    },
+    {
+      "unique-id": "payments-platform",
+      "node-type": "system",
+      "name": "Payments Platform",
+      "description": "The logical system boundary that structurally encompasses the Payments Service and Notifications Service as its composed parts."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "analyst-interacts-portal",
+      "description": "Payments analyst accesses the payments portal to submit and track payment instructions. The actor field must reference a node of node-type actor.",
+      "relationship-type": {
+        "interacts": {
+          "actor": "payments-analyst",
+          "nodes": ["payments-portal"]
+        }
+      }
+    },
+    {
+      "unique-id": "portal-to-payments-service",
+      "description": "Payments portal calls the Payments Service API over HTTPS to submit payment instructions and retrieve status. Note: protocol is at the top level of this relationship object, not inside the connects sub-object.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "payments-portal" },
+          "destination": { "node": "payments-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "payments-service-to-db",
+      "description": "Payments Service reads and writes payment records to the Payments Database using JDBC. Protocol is at the top level — a sibling of relationship-type, not nested inside connects.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "payments-service" },
+          "destination": { "node": "payments-db" }
+        }
+      },
+      "protocol": "JDBC"
+    },
+    {
+      "unique-id": "services-deployed-in-vpc",
+      "description": "The Payments Service, Notifications Service, and Payments Database are deployed-in the AWS VPC. The container field references the ecosystem node that acts as the runtime environment.",
+      "relationship-type": {
+        "deployed-in": {
+          "container": "aws-vpc",
+          "nodes": ["payments-service", "notifications-service", "payments-db"]
+        }
+      }
+    },
+    {
+      "unique-id": "platform-composed-of-services",
+      "description": "The Payments Platform system is structurally composed-of the Payments Service and Notifications Service. This is a logical/structural boundary, not a runtime deployment relationship.",
+      "relationship-type": {
+        "composed-of": {
+          "container": "payments-platform",
+          "nodes": ["payments-service", "notifications-service"]
+        }
+      }
+    }
+  ]
+}
