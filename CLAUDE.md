@@ -217,7 +217,9 @@ Scopes: `module-NN`, `lab-NN`, `curriculum`, `roadmap`, `site`, `scripts`, `ci`,
 
 ### File naming
 - All Markdown: kebab-case (`why-it-matters.mdx`, not `WhyItMatters.mdx`)
-- CALM JSON: `<system-slug>.architecture.json` (e.g. `wealth-management.architecture.json`) — canonical FINOS convention per `architecture-as-code` repo
+- CALM JSON: two conventions in use:
+  - Modules 0–2 (legacy): `<system-slug>.architecture.json` (e.g. `wealth-management.architecture.json`)
+  - Module 3+ (FINOS canonical): `<system-slug>.calm.json` (e.g. `cli-demo.calm.json`) — matches CI glob `*.calm.json`
 - Excalidraw: kebab-case (`gemara-7-layers.excalidraw`)
 
 ## Critical reminders for any agent session
