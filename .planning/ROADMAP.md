@@ -196,7 +196,7 @@ Plans:
 | 1 | 3/3 | Complete   | 2026-06-15 |
 | 2 | 2/2 | Complete   | 2026-06-15 |
 | 3 | 4/4 | Complete   | 2026-06-16 |
-| 4 | 5/5 | Complete   | 2026-06-16 |
+| 4 | 5/5 | Complete    | 2026-06-16 |
 | 5 | Site Launch Prep | SITE-01 | 1 week |
 | 6 | Polish + Milestone Close | (all 21) | 1 week |
 

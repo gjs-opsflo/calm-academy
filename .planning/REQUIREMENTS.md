@@ -12,33 +12,33 @@ Milestone 1 scope: Modules 0–3 delivered end-to-end (text + labs + quizzes + i
 - [ ] **MOD-01**: Module 0 has 5 fully-authored MDX chapters covering the three paths to first CALM doc, live demo walkthrough, why the AI approach works, environment setup, and hands-on exercise
 - [ ] **MOD-02**: Module 1 has 5 fully-authored MDX chapters covering architecture debt crisis, lessons from IaC adoption, CALM introduction and positioning, FINOS ecosystem overview, and governance landscape
 - [ ] **MOD-03**: Module 2 has 7 fully-authored MDX chapters covering all CALM language constructs: nodes (9 core types), relationships, interfaces, controls, decorators, metadata, and building a first full architecture
-- [ ] **MOD-04**: Module 3 has 7 fully-authored MDX chapters covering the full CALM toolchain: CLI, CALM Studio, CALM Hub, CALM Server, VSCode extension, pattern library, and CI/CD integration
+- [x] **MOD-04**: Module 3 has 7 fully-authored MDX chapters covering the full CALM toolchain: CLI, CALM Studio, CALM Hub, CALM Server, VSCode extension, pattern library, and CI/CD integration
 
 ### Labs
 
 - [ ] **LAB-01**: Lab 0 is a Docker-free 15-minute on-ramp where learner describes a system in 3 sentences, gets a `.calm.json`, runs `calm validate`, and visualizes in CALM Studio — no prior spec knowledge required
 - [ ] **LAB-02**: Lab 2 (conference signup architecture) is a cumulative hands-on lab where learner writes a complete valid CALM JSON document by hand from a spec description, passes `calm validate`, and reviews it in Studio
-- [ ] **LAB-03**: Lab 3 (CI/CD gate) adds `calm validate` to a GitHub Actions pipeline and demonstrates a passing and failing architecture check — lab runs end-to-end without external dependencies
+- [x] **LAB-03**: Lab 3 (CI/CD gate) adds `calm validate` to a GitHub Actions pipeline and demonstrates a passing and failing architecture check — lab runs end-to-end without external dependencies
 
 ### Quizzes
 
 - [ ] **QUIZ-01**: Module 0 quiz (YAML format, auto-gradeable) — tests: setup completed, first CALM doc produced, three AI paths understood
 - [ ] **QUIZ-02**: Module 1 quiz — tests: AaC value proposition, CALM vs static diagrams, FINOS ecosystem relationships, Gemara/AIGF/SAIF at a glance
 - [ ] **QUIZ-03**: Module 2 quiz — comprehensive vocabulary coverage: all 9 core node types, relationship types, interface shapes, control patterns, decorator syntax
-- [ ] **QUIZ-04**: Module 3 quiz — tests: CLI commands, Studio workflow, Hub publish/consume, CI/CD gate pattern, pattern reuse concepts
+- [x] **QUIZ-04**: Module 3 quiz — tests: CLI commands, Studio workflow, Hub publish/consume, CI/CD gate pattern, pattern reuse concepts
 
 ### Illustrations
 
 - [ ] **ILL-01**: Module 0 has 3–5 Excalidraw B&W illustrations exported as SVG: three paths diagram, CALM Studio screenshot mock, architecture-as-the-prompt concept
 - [ ] **ILL-02**: Module 1 has 8–10 Excalidraw B&W illustrations: architecture drift timeline, IaC analogy diagram, FINOS ecosystem map, Gemara 7-layer overview, CALM as Layer 4
 - [ ] **ILL-03**: Module 2 has 10–15 Excalidraw B&W illustrations: all 9 node types, relationship types, interface patterns, control decorator flow, sample architecture build-up sequence
-- [ ] **ILL-04**: Module 3 has 8–10 Excalidraw B&W illustrations: CLI workflow, Studio canvas overview, Hub publish/consume flow, CI/CD pipeline gate, pattern inheritance
+- [x] **ILL-04**: Module 3 has 8–10 Excalidraw B&W illustrations: CLI workflow, Studio canvas overview, Hub publish/consume flow, CI/CD pipeline gate, pattern inheritance
 
 ### Slide Decks
 
 - [ ] **SLIDE-01**: Module 1 slide deck (Marp/Reveal.js) — 20–30 slides covering module chapters, inline illustrations, speaker notes matching text chapters
 - [ ] **SLIDE-02**: Module 2 slide deck — 30–40 slides with all node types and relationship visual examples
-- [ ] **SLIDE-03**: Module 3 slide deck — 25–35 slides covering toolchain demos and CI/CD examples
+- [x] **SLIDE-03**: Module 3 slide deck — 25–35 slides covering toolchain demos and CI/CD examples
 
 ### Code Examples
 
@@ -115,14 +115,15 @@ Updated by roadmapper. Each requirement maps to exactly one phase.
 | SLIDE-02 | Phase 4 | Pending |
 | CODE-01 | Phase 4 | Pending |
 | CODE-02 | Phase 4 | Pending |
-| MOD-04 | Phase 5 | Pending |
-| LAB-03 | Phase 5 | Pending |
-| QUIZ-04 | Phase 5 | Pending |
-| ILL-04 | Phase 5 | Pending |
-| SLIDE-03 | Phase 5 | Pending |
+| MOD-04 | Phase 5 | Complete |
+| LAB-03 | Phase 5 | Complete |
+| QUIZ-04 | Phase 5 | Complete |
+| ILL-04 | Phase 5 | Complete |
+| SLIDE-03 | Phase 5 | Complete |
 | SITE-01 | Phase 6 | Pending |
 
 **Coverage:**
+
 - v1 requirements: 21 total
 - Mapped to phases: 21
 - Unmapped: 0 ✓
