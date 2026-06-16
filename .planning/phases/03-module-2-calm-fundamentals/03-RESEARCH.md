@@ -453,7 +453,7 @@ docs-meta/cheatsheets/
 - All 5 types with examples:
   - `connects`: the workhorse. ALWAYS between two SPECIFIC nodes. Add `protocol` (HTTPS, JDBC, etc.)
   - `interacts`: actor-initiated. The `actor` field is a string (unique-id of an actor node)
-  - `deployed-in`: runtime. The `container` must be an `ecosystem` (usually). `nodes[]` are what's inside.
+  - `deployed-in`: runtime. The `container` field references the unique-id of the node acting as the runtime environment — most commonly `ecosystem` or `system` type, but the schema does not restrict it. (`ecosystem` for cloud platforms and provider accounts; `system` for cluster-level runtimes — e.g. Chapter 2.7 uses a `system`-typed k8s-cluster as its container.) `nodes[]` are what's inside.
   - `composed-of`: structural. The `container` is usually a `system`. Models logical grouping.
   - `options`: decision points. Rarely used; models "this could be A OR B". Each option has nodes[] and relationships[]
 - Protocol taxonomy: when to use HTTPS vs mTLS vs AMQP vs JDBC vs TCP
@@ -762,27 +762,31 @@ Parallel tracks within Wave 2:
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Conference signup actor node: include or omit?**
    - What we know: The original pattern has no actor — it starts at the webclient. Real learners need to see an actor.
    - What's unclear: Adding an actor means the lab architecture doesn't match the pattern exactly (extra node outside pattern scope).
    - Recommendation: Add `conference-attendee` (actor) to the MODULE 2 code example and Lab 2, with a note that patterns define minimum structure and architectures can extend them.
+   - **RESOLVED:** Include `conference-attendee` as an actor node in `conference-signup.architecture.json`. The architecture has 6 nodes (5 from pattern + actor). Implemented in plan 03-02 Task 1 and Lab 2 solution (03-03 Task 1).
 
 2. **`with-interfaces.architecture.json` — should it use definition-url form or freeform?**
    - What we know: The 1.2 schema supports both. The trading-system uses freeform. The 1.0-rc1 pattern references now-removed built-in types.
    - What's unclear: Whether definition-url example requires pointing at an actual resolvable URL or can use a local file.
    - Recommendation: Use freeform form as primary (simpler, matches real-world examples); show definition-url form as secondary in the chapter prose only.
+   - **RESOLVED:** `with-interfaces.architecture.json` demonstrates BOTH forms — freeform (interface-type) as the primary example and the definition-url (interface-definition) form as the secondary. Implemented in plan 03-02 Task 1.
 
 3. **Should `flows` be in Lab 2 or deferred?**
    - What we know: Flows exist in 1.2 and the trading-system example uses them extensively. The conference signup is simple enough that flows add complexity without much value.
    - What's unclear: Whether learners need to understand flows to use `calm validate` successfully.
    - Recommendation: Flows are optional in Lab 2. Introduce flows conceptually in Chapter 2.7 as a "bonus" section. Full flow authoring is Module 3 (CLI chapter: `calm docify` generates flow diagrams).
+   - **RESOLVED:** Flows deferred from Lab 2. Mentioned as a bonus concept at the end of Chapter 2.7 only. No flow steps in the lab walkthrough. Implemented in plan 03-02 Task 2 (Chapter 2.7).
 
 4. **Does the `options` relationship type need a code example?**
    - What we know: `options` is rarely used in practice. It requires an array of `decision` objects.
    - What's unclear: Whether omitting it from code examples creates a gap in QUIZ-03.
    - Recommendation: Cover `options` in Chapter 2.3 prose and one quiz question, but do NOT include it in Lab 2 or the code examples. A learner who understands the other 4 relationship types can infer `options`.
+   - **RESOLVED:** `options` included in `relationship-types-reference.architecture.json` (Chapter 2.3 teaching reference) but omitted from Lab 2 starter/solution (too abstract for a first lab). One quiz question (q2.3.x) covers the options type conceptually. Implemented in plans 03-01 Task 1 and 03-03 Task 2.
 
 ---
 

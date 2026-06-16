@@ -80,6 +80,23 @@ Plans:
 **Requirements:** MOD-03, LAB-02, QUIZ-03, ILL-03, SLIDE-02, CODE-01, CODE-02
 **Dependencies:** Phase 2 complete; all 9 core node types confirmed from CALM 1.2 spec
 
+**Plans:** 4 plans
+
+Plans:
+
+**Wave 1**
+
+- [ ] 03-01-PLAN.md — Foundational vocabulary slice: Ch 2.1 spec + Ch 2.2 nodes + Ch 2.3 relationships + 2 code examples (node-types-reference, relationship-types-reference) + 6 illustration stubs
+
+**Wave 2** *(blocked on Wave 1)*
+
+- [ ] 03-02-PLAN.md — Advanced vocabulary slice: Ch 2.4 interfaces + Ch 2.5 controls + Ch 2.6 decorators + Ch 2.7 first architecture + 3 code examples (with-interfaces, with-controls, conference-signup) + 7 illustration stubs
+
+**Wave 3** *(blocked on Wave 2; 03-03 and 03-04 run in parallel)*
+
+- [ ] 03-03-PLAN.md — Hands-on: Lab 2 (LAB-02 conference signup) + Module 2 quiz (QUIZ-03, 18-21 questions across all 7 chapters)
+- [ ] 03-04-PLAN.md — Derived artifacts: Module 2 slide deck (SLIDE-02, 30-40 Marp slides) + 1-page cheatsheet (CODE-02)
+
 **Success Criteria:**
 
 1. All 7 Module 2 chapters authored — covers all 9 core node types, relationship types, interface shapes, controls, decorators, metadata, and building a first full architecture
