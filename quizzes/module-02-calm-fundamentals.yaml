@@ -1,0 +1,434 @@
+module: 2
+title: "Module 2: CALM Fundamentals"
+
+chapters:
+  - chapter: 2.1
+    slug: calm-specification
+    title: "The CALM specification"
+    questions:
+      - id: q2.1.1
+        type: multiple_choice
+        prompt: |
+          Which $schema URL identifies a CALM 1.2 document?
+        options:
+          - label: "https://calm.finos.org/release/1.2/meta/calm.json"
+            correct: true
+            explanation: "Correct. The exact URL https://calm.finos.org/release/1.2/meta/calm.json identifies CALM 1.2 — the current stable release. The validator uses this URL to locate the correct JSON Schema for validation."
+          - label: "https://calm.finos.org/release/1.0-rc1/meta/calm.json"
+            correct: false
+            explanation: "This URL identifies the CALM 1.0 release candidate (1.0-rc1), which used different interface schemas and is now deprecated. Documents targeting 1.0-rc1 may use interface types that have been removed in 1.2."
+          - label: "https://calm.io/schema/v1.1/calm.json"
+            correct: false
+            explanation: "This is a fabricated URL — calm.io is not the canonical domain for the CALM specification. The canonical domain is calm.finos.org."
+          - label: "https://finos.org/calm/latest/calm.json"
+            correct: false
+            explanation: "CALM schema URLs are versioned and point to a specific release path under calm.finos.org/release/, not a 'latest' alias. Always pin to an explicit release version."
+        reference_section: "../content/module-02-calm-fundamentals/calm-specification.mdx#the-schema-url-and-spec-versioning"
+
+      - id: q2.1.2
+        type: multiple_choice
+        prompt: |
+          Which four fields are required on every CALM node?
+        options:
+          - label: "unique-id, node-type, name, description"
+            correct: true
+            explanation: "Correct. All four fields are mandatory on every CALM node. unique-id identifies the node for cross-reference in relationships. node-type constrains the kind of system component. name is a human-readable label. description explains the node's role in the architecture."
+          - label: "unique-id, node-type, name, interfaces"
+            correct: false
+            explanation: "interfaces is optional — not every node exposes a defined interface. Only description is required in place of interfaces. A node with no explicit interfaces (e.g. an actor or a simple database) is perfectly valid."
+          - label: "id, type, label, description"
+            correct: false
+            explanation: "The CALM field names are unique-id (not id), node-type (not type), and name (not label). Using non-canonical field names will cause validation errors."
+          - label: "unique-id, node-type, name, metadata"
+            correct: false
+            explanation: "metadata is an optional top-level array on the architecture document, not a required field on individual nodes. The required node fields are unique-id, node-type, name, and description."
+        reference_section: "../content/module-02-calm-fundamentals/calm-specification.mdx#the-calm-document-anatomy"
+
+      - id: q2.1.3
+        type: short_answer
+        prompt: |
+          What CLI command validates a CALM architecture file against the CALM 1.2 schema?
+          (Give the npx form or the short form — either is accepted.)
+        accepted_answers:
+          - "npx @finos/calm-cli validate"
+          - "npx @finos/calm-cli validate -a"
+          - "calm validate"
+          - "calm validate -a"
+        case_sensitive: false
+        explanation: "The command is npx @finos/calm-cli validate -a <file>. When the FINOS CALM CLI is installed globally, the short form calm validate works too. The -a flag specifies the architecture file to validate."
+        reference_section: "../content/module-02-calm-fundamentals/calm-specification.mdx#what-calm-validate-actually-checks"
+
+  - chapter: 2.2
+    slug: nodes
+    title: "Nodes: modeling system components"
+    questions:
+      - id: q2.2.1
+        type: multiple_choice
+        prompt: |
+          Which of these is NOT a CALM 1.2 core node type?
+        options:
+          - label: "container"
+            correct: true
+            explanation: "Correct — 'container' does not exist in CALM 1.2. The nine core node types are: actor, ecosystem, system, service, database, network, ldap, webclient, and data-asset. If you use 'container', the validator will report an enum violation."
+          - label: "actor"
+            correct: false
+            explanation: "'actor' is a valid CALM 1.2 core node type. It models human users and any human-operated client (browser, mobile app, CLI tool). It is one of the nine core types."
+          - label: "service"
+            correct: false
+            explanation: "'service' is a valid CALM 1.2 core node type. It models autonomous backend services, APIs, or microservices that process requests without direct human operation."
+          - label: "database"
+            correct: false
+            explanation: "'database' is a valid CALM 1.2 core node type. It models relational databases, NoSQL stores, and other persistence systems that store and retrieve structured data."
+        reference_section: "../content/module-02-calm-fundamentals/nodes.mdx#the-nine-node-types"
+
+      - id: q2.2.2
+        type: multiple_choice
+        prompt: |
+          A financial services platform uses a Kafka topic where event payloads are persisted
+          and consumed by multiple downstream services. Which CALM 1.2 node type best models
+          this Kafka topic?
+        options:
+          - label: "data-asset"
+            correct: true
+            explanation: "Correct. data-asset models named collections of data — including Kafka topics, S3 buckets, event streams, and data lakes — where the key concern is the data itself, its governance, and its lineage. This is distinct from the service or database that manages the infrastructure."
+          - label: "database"
+            correct: false
+            explanation: "database models the persistence engine (PostgreSQL, MongoDB, Cassandra). A Kafka topic is a data asset — a named, governed stream of events — not the Kafka broker infrastructure itself. Use data-asset for the topic, and service for the Kafka broker if you need to model it."
+          - label: "service"
+            correct: false
+            explanation: "service models autonomous processing components — APIs, workers, microservices. A Kafka topic is not a processor; it is a governed data stream. The Kafka consumer and producer are services; the topic is a data-asset."
+          - label: "ecosystem"
+            correct: false
+            explanation: "ecosystem models external systems or organisations that your architecture interacts with but does not own — payment networks, third-party APIs, regulatory bodies. A Kafka topic is an internal data asset, not an external ecosystem."
+        reference_section: "../content/module-02-calm-fundamentals/nodes.mdx#the-nine-node-types"
+
+      - id: q2.2.3
+        type: code_completion
+        prompt: |
+          Complete the missing node-type field. The node represents a corporate
+          Active Directory that services query for identity and access information.
+        snippet: |
+          {
+            "unique-id": "corporate-directory",
+            "node-type": "<BLANK>",
+            "name": "Corporate Active Directory",
+            "description": "Centralised LDAP directory service providing identity and group membership for internal services."
+          }
+        accepted_answers:
+          - "ldap"
+        explanation: "ldap is the dedicated CALM node type for directory services — LDAP, Active Directory, and similar identity stores. Using 'service' would be imprecise and would lose the semantic signal that this is a directory protocol endpoint."
+        reference_section: "../content/module-02-calm-fundamentals/nodes.mdx#the-nine-node-types"
+
+      - id: q2.2.4
+        type: multiple_choice
+        prompt: |
+          A mobile app that human users launch to submit loan applications. Which CALM 1.2
+          node type best models this mobile app?
+        options:
+          - label: "actor"
+            correct: true
+            explanation: "Correct. actor models any human-operated client — web browsers, mobile apps, CLI tools, and desktop applications. The key distinction is that a human is at the wheel. webclient is specifically for browser-based frontends; for a native iOS or Android app, actor is the correct type."
+          - label: "webclient"
+            correct: false
+            explanation: "webclient is specifically for browser-based frontends — applications that run inside a web browser. A native mobile app (iOS, Android) runs directly on the device OS, not inside a browser. Use actor for any human-operated client that is not a web browser."
+          - label: "service"
+            correct: false
+            explanation: "service models components that run autonomously and process requests without direct human operation. A mobile app is human-operated — the user drives every action — so actor is the correct type, not service."
+          - label: "system"
+            correct: false
+            explanation: "system models a logical boundary or deployment environment (like a Kubernetes cluster or an AWS account) that groups other nodes. A mobile app is a direct client operated by a human, making actor the correct choice."
+        reference_section: "../content/module-02-calm-fundamentals/nodes.mdx#common-confusions"
+
+  - chapter: 2.3
+    slug: relationships
+    title: "Relationships: connecting the dots"
+    questions:
+      - id: q2.3.1
+        type: multiple_choice
+        prompt: |
+          In a CALM `connects` relationship, where must the `protocol` field be placed?
+        options:
+          - label: "As a top-level sibling of `relationship-type` (not inside the `connects` object)"
+            correct: true
+            explanation: "Correct. protocol is a top-level field on the relationship object, at the same level as unique-id, description, and relationship-type. If you nest it inside the connects object, the validator will reject the document because connects only accepts source and destination."
+          - label: "Inside the `connects` object, alongside `source` and `destination`"
+            correct: false
+            explanation: "This is the most common CALM mistake (RESEARCH.md pitfall 2). The connects object only accepts source and destination. protocol must be a sibling of relationship-type at the relationship's top level. Nesting it inside connects will cause a validation error."
+          - label: "On the destination node's interface, not on the relationship at all"
+            correct: false
+            explanation: "While an interface on the destination node may declare a protocol, the protocol field on a relationship independently declares the wire protocol used for that specific connection. These are separate concepts."
+          - label: "In the `source` sub-object of the `connects` block"
+            correct: false
+            explanation: "The source sub-object accepts only a node field (and optionally an interface field) identifying the source node. Protocol is not a property of the source — it is a property of the relationship as a whole."
+        reference_section: "../content/module-02-calm-fundamentals/relationships.mdx#connects"
+
+      - id: q2.3.2
+        type: code_completion
+        prompt: |
+          Complete the missing `actor` field in this `interacts` relationship. The
+          snippet context shows a human analyst who runs reports against a data warehouse.
+        snippet: |
+          {
+            "unique-id": "analyst-uses-warehouse",
+            "description": "Business analyst queries the data warehouse to run reports.",
+            "relationship-type": {
+              "interacts": {
+                "actor": "<BLANK>",
+                "nodes": ["data-warehouse"]
+              }
+            }
+          }
+        accepted_answers:
+          - "analyst"
+          - "business-analyst"
+        explanation: "The actor field must reference the unique-id of a node with node-type: actor. In this context, the analyst node (or business-analyst node, depending on how it was defined) is the human-operated client initiating the interaction."
+        reference_section: "../content/module-02-calm-fundamentals/relationships.mdx#interacts"
+
+      - id: q2.3.3
+        type: short_answer
+        prompt: |
+          List any 3 valid CALM 1.2 protocol enum values, comma-separated.
+          (The full enum has 12 values: HTTP, HTTPS, FTP, SFTP, JDBC, WebSocket, SocketIO, LDAP, AMQP, TLS, mTLS, TCP)
+        accepted_answers:
+          - "HTTPS, mTLS, JDBC"
+          - "HTTPS, JDBC, mTLS"
+          - "mTLS, HTTPS, JDBC"
+          - "JDBC, mTLS, HTTPS"
+          - "JDBC, HTTPS, mTLS"
+          - "mTLS, JDBC, HTTPS"
+          - "HTTP, HTTPS, JDBC"
+          - "HTTPS, TCP, AMQP"
+          - "HTTP, HTTPS, TLS"
+          - "FTP, SFTP, TLS"
+          - "WebSocket, AMQP, mTLS"
+          - "LDAP, AMQP, TLS"
+          - "HTTP, HTTPS, AMQP"
+          - "TCP, TLS, mTLS"
+          - "HTTPS, WebSocket, TCP"
+          - "SocketIO, WebSocket, HTTPS"
+        case_sensitive: false
+        explanation: "The 12 valid CALM 1.2 protocol enum values are: HTTP, HTTPS, FTP, SFTP, JDBC, WebSocket, SocketIO, LDAP, AMQP, TLS, mTLS, TCP. Any three valid values from this list are a correct answer. Using a protocol not in this list (e.g. gRPC, REST) will cause a validation error."
+        reference_section: "../content/module-02-calm-fundamentals/relationships.mdx#protocol-enum"
+
+  - chapter: 2.4
+    slug: interfaces
+    title: "Interfaces: describing communication contracts"
+    questions:
+      - id: q2.4.1
+        type: multiple_choice
+        prompt: |
+          What is the key difference between an interface and a relationship in CALM?
+        options:
+          - label: "An interface describes the technical contract on a node (what it exposes); a relationship describes logical connectivity between nodes (who talks to whom)"
+            correct: true
+            explanation: "Correct. An interface is a property of a node — it declares the protocol, port, or schema that node exposes. A relationship is a separate top-level object that connects two nodes. You can have an interface without a relationship, and a relationship without an explicit interface."
+          - label: "An interface connects two nodes; a relationship describes the protocol used between them"
+            correct: false
+            explanation: "This reverses the definitions. Relationships connect nodes (they are top-level objects with source and destination). Interfaces describe the technical contract on a single node — not the connection itself."
+          - label: "Interfaces and relationships are interchangeable — both model the same concept"
+            correct: false
+            explanation: "They are distinct concepts. Interfaces are node-level properties describing what a node exposes. Relationships are architecture-level objects connecting two or more nodes. Using them interchangeably leads to invalid CALM documents."
+          - label: "A relationship must always reference an interface; an interface cannot exist without a relationship"
+            correct: false
+            explanation: "Both claims are false. A relationship's source/destination can optionally reference an interface (using the interface field), but it is not required. And a node can declare interfaces that no existing relationship currently references — useful when modeling intended contracts."
+        reference_section: "../content/module-02-calm-fundamentals/interfaces.mdx#interface-vs-relationship--the-distinction"
+
+      - id: q2.4.2
+        type: multiple_choice
+        prompt: |
+          In CALM 1.2, which of these interface forms is NO LONGER valid (it was deprecated
+          when the 1.0-rc1 spec was superseded)?
+        options:
+          - label: "url-interface"
+            correct: true
+            explanation: "Correct. url-interface (and host-port-interface) were interface type strings from CALM 1.0-rc1. They were removed in CALM 1.2. The 1.2 spec replaces them with two forms: the freeform interface (any fields alongside unique-id) and the formal interface-definition with a definition-url."
+          - label: "A freeform interface with unique-id and any additional properties"
+            correct: false
+            explanation: "Freeform interfaces are valid in CALM 1.2. They require only a unique-id and accept any additional properties (name, protocol, port, etc.). This is the simpler of the two current interface forms."
+          - label: "An interface-definition with a definition-url pointing to a JSON Schema"
+            correct: false
+            explanation: "This is a valid CALM 1.2 interface form. The formal interface-definition uses a definition-url to point to an external JSON Schema that describes the exact configuration object any connecting relationship must provide."
+          - label: "An interface with both a unique-id and a name property"
+            correct: false
+            explanation: "Adding a name property alongside unique-id is perfectly valid in a freeform interface. CALM 1.2 places no restrictions on additional properties in the freeform interface form."
+        reference_section: "../content/module-02-calm-fundamentals/interfaces.mdx#why-10-rc1-interface-types-are-gone"
+
+      - id: q2.4.3
+        type: short_answer
+        prompt: |
+          In a formal CALM interface (interface-definition), what does the `definition-url`
+          field point to?
+        accepted_answers:
+          - "JSON Schema"
+          - "JSON schema"
+          - "a JSON Schema"
+          - "a JSON schema"
+          - "external schema"
+          - "an external schema"
+          - "a schema that defines what config must look like"
+          - "a schema defining the configuration object"
+        case_sensitive: false
+        explanation: "definition-url points to an external JSON Schema document that defines the exact shape of the configuration object any relationship referencing this interface must supply. This enables machine-validated contracts: the CALM CLI can fetch the schema and verify that connection config conforms."
+        reference_section: "../content/module-02-calm-fundamentals/interfaces.mdx#the-formal-form-interface-definition"
+
+  - chapter: 2.5
+    slug: controls
+    title: "Controls: encoding non-functional requirements"
+    questions:
+      - id: q2.5.1
+        type: multiple_choice
+        prompt: |
+          Where can a CALM control be attached in a CALM 1.2 architecture document?
+        options:
+          - label: "At the top-level architecture, on an individual node, on a relationship, or on a flow"
+            correct: true
+            explanation: "Correct. CALM controls attach at multiple granularities: top-level (applies to the whole architecture), on a specific node (e.g. a database with encryption-at-rest), on a specific relationship (e.g. mTLS required on this particular service-to-service link), or on a flow. This flexibility is what makes CALM controls policy-as-code."
+          - label: "Only at the top level of the architecture document"
+            correct: false
+            explanation: "Top-level controls are valid but they are not the only attachment point. Controls can also attach to individual nodes and relationships, allowing fine-grained policy targeting."
+          - label: "Only on individual nodes, not on relationships or top-level"
+            correct: false
+            explanation: "Node-level controls are valid but not the only option. Top-level controls apply architecture-wide; relationship controls apply to a specific connection; flow controls apply to a sequence of interactions."
+          - label: "Only on nodes that have at least one interface defined"
+            correct: false
+            explanation: "Controls attach to nodes regardless of whether those nodes have interfaces. A database node without any interfaces can still have an encryption-at-rest control."
+        reference_section: "../content/module-02-calm-fundamentals/controls.mdx#where-controls-attach"
+
+      - id: q2.5.2
+        type: multiple_choice
+        prompt: |
+          In a CALM control's `requirements[]` array, what is the role of `requirement-url`?
+        options:
+          - label: "It points to a JSON Schema that defines what the requirement expects — the machine-readable contract"
+            correct: true
+            explanation: "Correct. requirement-url points to an external JSON Schema that describes the exact config object the requirement expects. This is the mechanism that makes CALM controls machine-validatable: CALM Guard fetches the schema and checks that the supplied config conforms to it."
+          - label: "It links to the implementation code that satisfies the requirement"
+            correct: false
+            explanation: "requirement-url does not point to implementation code. It points to a JSON Schema defining the requirement contract. The implementation lives in your system's runtime configuration, not in the CALM document."
+          - label: "It provides a URL where the audit log for this requirement is stored"
+            correct: false
+            explanation: "requirement-url is a schema pointer, not an audit log location. Audit artifacts are separate — they are generated by CALM Guard after it evaluates the architecture against the requirements."
+          - label: "It registers the requirement in the FINOS CCC catalog"
+            correct: false
+            explanation: "requirement-url does not register anything — it references an existing schema, typically from the FINOS CCC catalog or a custom schema you define. The catalog already exists; the URL is how you reference it."
+        reference_section: "../content/module-02-calm-fundamentals/controls.mdx#the-requirement-url--config-pattern"
+
+      - id: q2.5.3
+        type: short_answer
+        prompt: |
+          Name the FINOS catalog that provides canonical `requirement-url` schemas
+          for security and operational controls.
+        accepted_answers:
+          - "FINOS CCC"
+          - "FINOS Common Controls Catalog"
+          - "Common Controls Catalog"
+          - "CCC"
+        case_sensitive: false
+        explanation: "FINOS CCC (Common Controls Catalog) is the canonical source for requirement-url schemas. It provides machine-readable JSON Schemas for common security and operational controls (encryption in transit, rate limiting, authentication, etc.) that CALM architectures can reference directly."
+        reference_section: "../content/module-02-calm-fundamentals/controls.mdx#finos-ccc-at-a-glance"
+
+  - chapter: 2.6
+    slug: decorators
+    title: "Decorators: cross-cutting concerns as separate documents"
+    questions:
+      - id: q2.6.1
+        type: multiple_choice
+        prompt: |
+          Which statement about decorators in CALM 1.2 is TRUE?
+        options:
+          - label: "Decorators are separate JSON documents that reference an architecture via a `target[]` array"
+            correct: true
+            explanation: "Correct. A decorator is an entirely separate JSON file — it is not embedded inside the architecture document. It references the architecture(s) it applies to via the target[] array. This separation is what makes decorators composable: the same decorator can target multiple architectures, and an architecture can have multiple independent decorators applied."
+          - label: "Decorators are inline properties added to individual node objects in the architecture"
+            correct: false
+            explanation: "Decorators are external documents — they live in separate files. Embedding decorator data inline in nodes would couple governance concerns to the architecture document, making it harder to update policies independently of the architecture."
+          - label: "Decorators replace the controls block for architecture-wide non-functional requirements"
+            correct: false
+            explanation: "Controls and decorators serve different purposes. Controls are part of the architecture document and encode specific, measurable non-functional requirements. Decorators are external overlays for cross-cutting governance concerns (threat models, AIGF, deployment info). They complement, not replace, each other."
+          - label: "Every CALM architecture must have at least one decorator attached"
+            correct: false
+            explanation: "Decorators are optional. A CALM architecture is valid without any decorators. Decorators become important when adding governance overlays (like AIGF for AI systems) or threat models, but their absence does not make an architecture invalid."
+        reference_section: "../content/module-02-calm-fundamentals/decorators.mdx#why-decorators-exist"
+
+      - id: q2.6.2
+        type: multiple_choice
+        prompt: |
+          What is the difference between a decorator's `target[]` and `applies-to[]` fields?
+        options:
+          - label: "`target[]` lists the architecture document(s) the decorator points at; `applies-to[]` lists specific node or relationship unique-ids within those documents"
+            correct: true
+            explanation: "Correct. target[] is the coarse-grained pointer — which architecture file(s) does this decorator apply to. applies-to[] is the fine-grained pointer — which specific nodes, relationships, or flows within those architectures does this decorator annotate. Together they allow precise surgical targeting."
+          - label: "`target[]` lists specific nodes; `applies-to[]` lists the architecture documents"
+            correct: false
+            explanation: "This is reversed. target[] is the document-level pointer (the architecture files). applies-to[] is the element-level pointer (specific unique-ids within those documents)."
+          - label: "`target[]` and `applies-to[]` are interchangeable — both list architecture documents"
+            correct: false
+            explanation: "They are not interchangeable. target[] always points to architecture documents. applies-to[] always points to elements (node/relationship unique-ids) within those documents. Using them interchangeably would make the decorator semantics ambiguous."
+          - label: "`applies-to[]` is required on every decorator; `target[]` is optional"
+            correct: false
+            explanation: "target[] is the required field that identifies which architecture the decorator applies to. applies-to[] is optional — omitting it means the decorator applies to the whole architecture rather than specific elements."
+        reference_section: "../content/module-02-calm-fundamentals/decorators.mdx#target-vs-applies-to"
+
+      - id: q2.6.3
+        type: short_answer
+        prompt: |
+          Give one example of a real-world decorator `type` value (lowercase,
+          single word or hyphen-separated). Example types include those used for
+          threat modeling and governance overlays.
+        accepted_answers:
+          - "threat"
+          - "governance"
+          - "aigf"
+          - "saif"
+          - "pattern"
+          - "deployment-info"
+          - "threat-model"
+        case_sensitive: false
+        explanation: "Decorator type values are lowercase strings identifying the kind of cross-cutting concern. Common examples: 'threat' or 'threat-model' (threat model annotations), 'aigf' (FINOS AI Governance Framework overlay), 'saif' (Google SAIF mapping), 'governance' (general governance metadata), 'pattern' (pattern conformance), 'deployment-info' (deployment configuration). The type field is a free string — these are conventions, not an enum."
+        reference_section: "../content/module-02-calm-fundamentals/decorators.mdx#common-decorator-types"
+
+  - chapter: 2.7
+    slug: building-your-first-architecture
+    title: "Building your first architecture in CALM"
+    questions:
+      - id: q2.7.1
+        type: multiple_choice
+        prompt: |
+          What does `npx @finos/calm-cli validate -a` check?
+        options:
+          - label: "JSON Schema conformance — that the document's shape, required fields, and enum values match the CALM 1.2 specification"
+            correct: true
+            explanation: "Correct. calm validate performs JSON Schema validation: it checks that every required field is present, that node-type values are in the valid enum, that relationship-type structure matches the spec, and that $schema URL is recognized. It does not test network reachability or runtime behavior."
+          - label: "Network reachability of all nodes and services listed in the architecture"
+            correct: false
+            explanation: "calm validate is a static analysis tool — it reads the JSON file and checks its structure. It does not make any network connections or check whether the described systems are actually running or reachable."
+          - label: "Whether the described deployment is actually running in the target environment"
+            correct: false
+            explanation: "calm validate is a schema check, not a runtime check. It verifies the CALM document conforms to the spec. CALM Guard (not calm validate) performs compliance evaluation against running systems."
+          - label: "Whether the architecture is semantically correct and logically consistent"
+            correct: false
+            explanation: "calm validate checks schema conformance, not semantic correctness. A valid CALM document might still have a load balancer pointing to itself, which is semantically wrong but schema-valid. Schema validation is a necessary but not sufficient check for a good architecture."
+        reference_section: "../content/module-02-calm-fundamentals/building-your-first-architecture.mdx#the-concept"
+
+      - id: q2.7.2
+        type: code_completion
+        prompt: |
+          In this `connects` relationship, the `protocol` field must be placed at
+          the correct level. Complete the field name (the key for "HTTPS") so that
+          the relationship passes `calm validate`.
+        snippet: |
+          {
+            "unique-id": "website-to-load-balancer",
+            "description": "Website sends requests to the load balancer.",
+            "<BLANK>": "HTTPS",
+            "relationship-type": {
+              "connects": {
+                "source": { "node": "conference-website" },
+                "destination": { "node": "load-balancer" }
+              }
+            }
+          }
+        accepted_answers:
+          - "protocol"
+        explanation: "The field name is 'protocol'. It must be a top-level sibling of relationship-type, NOT nested inside the connects object. This is the canonical pitfall in CALM 1.2 — the connects object only accepts source and destination. Placing protocol inside connects causes a validation error."
+        reference_section: "../content/module-02-calm-fundamentals/building-your-first-architecture.mdx#the-concept"

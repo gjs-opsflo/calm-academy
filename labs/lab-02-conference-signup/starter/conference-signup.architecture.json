@@ -1,0 +1,32 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "conference-signup",
+  "name": "Conference Signup System",
+  "description": "Registration site where attendees sign up for a conference. STARTER — extend this file to match the spec described in LAB.md.",
+  "nodes": [
+    {
+      "unique-id": "conference-attendee",
+      "node-type": "actor",
+      "name": "Conference Attendee",
+      "description": "Person registering for the conference"
+    },
+    {
+      "unique-id": "conference-website",
+      "node-type": "webclient",
+      "name": "Conference Website",
+      "description": "Browser-based signup portal"
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "attendee-interacts-website",
+      "description": "Conference attendee visits the signup site",
+      "relationship-type": {
+        "interacts": {
+          "actor": "conference-attendee",
+          "nodes": ["conference-website"]
+        }
+      }
+    }
+  ]
+}

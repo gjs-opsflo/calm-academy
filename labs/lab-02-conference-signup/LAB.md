@@ -1,0 +1,350 @@
+---
+id: lab-02-conference-signup
+title: "Write Your First CALM 1.2 Architecture by Hand"
+module: 2
+chapter: 2.7
+estimated_minutes: 35
+difficulty: 2
+prerequisites:
+  - lab-00-on-ramp
+requires_docker: false
+workspace:
+  cumulative: false
+  base_dir: lab-02-conference-signup
+  creates:
+    - conference-signup.architecture.json
+objectives:
+  - "Extend a CALM 1.2 starter file by adding 4 nodes and 4 relationships from a written spec"
+  - "Add a freeform interface to a service node"
+  - "Add an encryption-in-transit control at the architecture top level"
+  - "Validate the final document with `npx @finos/calm-cli validate -a`"
+  - "Visualize the result in CALM Studio web"
+  - "Compare your result against the provided reference solution"
+steps:
+  - id: step-1
+    title: "Inspect the starter file"
+    check:
+      kind: file_state
+      path: conference-signup.architecture.json
+      exists: true
+    hints:
+      - "Open conference-signup.architecture.json in your editor — it should have 2 nodes and 1 relationship"
+      - "Verify the $schema URL is https://calm.finos.org/release/1.2/meta/calm.json"
+
+  - id: step-2
+    title: "Add the load-balancer (network), attendees (service), attendees-store (database), and k8s-cluster (system) nodes"
+    check:
+      kind: command_regex
+      command: "jq -r '.nodes | length' conference-signup.architecture.json"
+      pattern: "^6$"
+    hints:
+      - "Each node needs all 4 required fields: unique-id, node-type, name, description"
+      - "Node-type strings: network, service, database, system — exact spellings"
+      - "Use kebab-case unique-ids (e.g. load-balancer, attendees-store)"
+
+  - id: step-3
+    title: "Add 4 more relationships: connects HTTPS (website to load-balancer), connects mTLS (load-balancer to attendees), connects JDBC (attendees to attendees-store), and deployed-in (k8s-cluster contains the 3 non-actor nodes)"
+    check:
+      kind: command_regex
+      command: "jq -r '.relationships | length' conference-signup.architecture.json"
+      pattern: "^5$"
+    hints:
+      - "protocol is a TOP-LEVEL field on the relationship, NOT inside the connects object"
+      - "deployed-in uses `container: \"k8s-cluster\"` and `nodes: [...]` of unique-ids"
+      - "Each relationship needs a unique-id and a description"
+
+  - id: step-4
+    title: "Add a freeform interface to the attendees service: unique-id attendees-api, name 'Attendees REST API', protocol HTTPS, port 8443"
+    check:
+      kind: command_regex
+      command: "jq -r '.nodes[] | select(.\"unique-id\" == \"attendees\") | .interfaces | length' conference-signup.architecture.json"
+      pattern: "^[1-9]"
+    hints:
+      - "Interfaces live in the node's `interfaces[]` array"
+      - "Freeform interface = unique-id plus any additional properties (name, protocol, port)"
+
+  - id: step-5
+    title: "Add a top-level encryption-in-transit control"
+    check:
+      kind: command_regex
+      command: "jq -r '.controls | keys[]' conference-signup.architecture.json"
+      pattern: "encryption-in-transit"
+    hints:
+      - "controls is a keyed object at the top level of the architecture document"
+      - "Each control has a description and a requirements[] array"
+      - "Each requirement needs a requirement-url plus config or config-url"
+
+  - id: step-6
+    title: "Validate the final architecture"
+    check:
+      kind: command_regex
+      command: "npx @finos/calm-cli validate -a conference-signup.architecture.json -f pretty"
+      pattern: "No issues found|hasErrors.*false"
+    hints:
+      - "Run: npx @finos/calm-cli validate -a conference-signup.architecture.json -f pretty"
+      - "If you see errors: read the error path and field — the validator names the exact problem"
+      - "Common causes: invented node-type (use only actor/ecosystem/system/service/database/network/ldap/webclient/data-asset), protocol nested inside connects instead of top-level, missing description on a node"
+
+  - id: step-7
+    title: "Visualize in CALM Studio"
+    check:
+      kind: ai_judge
+      prompt: "The learner opened https://studio.calm.finos.org and imported their conference-signup.architecture.json. Ask: 'How many nodes do you see in the canvas? What relationships are visible?' A passing answer mentions seeing 6 nodes and at least mentions interacts, connects, and deployed-in by name."
+    hints:
+      - "Open https://studio.calm.finos.org"
+      - "Use the Import button and select your conference-signup.architecture.json"
+      - "You should see 6 boxes with arrows between them"
+
+resources:
+  - title: "Chapter 2.7 — Building your first architecture"
+    url: "../../content/module-02-calm-fundamentals/building-your-first-architecture.mdx"
+  - title: "Chapter 2.2 — Nodes"
+    url: "../../content/module-02-calm-fundamentals/nodes.mdx"
+  - title: "Chapter 2.3 — Relationships"
+    url: "../../content/module-02-calm-fundamentals/relationships.mdx"
+  - title: "Chapter 2.4 — Interfaces"
+    url: "../../content/module-02-calm-fundamentals/interfaces.mdx"
+  - title: "Chapter 2.5 — Controls"
+    url: "../../content/module-02-calm-fundamentals/controls.mdx"
+  - title: "CALM 1.2 spec"
+    url: "https://calm.finos.org/release/1.2/"
+---
+
+# Lab 2: Write Your First CALM 1.2 Architecture by Hand
+
+## Goal
+
+Extend the conference signup starter into a complete, validated CALM 1.2 architecture by hand — covering nodes, relationships, interfaces, and controls.
+
+## Setup
+
+No Docker required. Prerequisites:
+- Node.js with npx available (`node --version` should show v18+)
+- A text editor
+
+Copy the starter file into your working directory:
+
+```bash
+cp labs/lab-02-conference-signup/starter/conference-signup.architecture.json ./conference-signup.architecture.json
+```
+
+Or work directly inside `labs/lab-02-conference-signup/starter/` — all `jq` and `npx` commands below assume you are in the directory containing `conference-signup.architecture.json`.
+
+## Walkthrough
+
+### Step 1: Inspect the starter file
+
+Open `conference-signup.architecture.json` in your editor. You should see:
+- `$schema` set to `https://calm.finos.org/release/1.2/meta/calm.json`
+- 2 nodes: `conference-attendee` (actor) and `conference-website` (webclient)
+- 1 relationship: `attendee-interacts-website` (interacts)
+
+This is a valid CALM 1.2 document — minimal, but correct. Your task is to extend it.
+
+### Step 2: Add the 4 missing nodes
+
+The conference signup system also has:
+- A **load balancer** that routes traffic from the website to the backend service
+- An **attendees service** — the REST API handling registrations
+- An **attendees store** — the database persisting registration records
+- A **k8s-cluster** — the deployment environment for the backend components
+
+Add each as a new entry in the `"nodes"` array. Each node needs exactly 4 fields:
+
+```json
+{
+  "unique-id": "load-balancer",
+  "node-type": "network",
+  "name": "Load Balancer",
+  "description": "Routes incoming HTTPS traffic from the conference website to the attendees service."
+}
+```
+
+Node-type strings to use (exact spelling matters):
+- `network` — for the load balancer
+- `service` — for the attendees backend
+- `database` — for the attendees store
+- `system` — for the k8s cluster
+
+When done, verify:
+```bash
+jq -r '.nodes | length' conference-signup.architecture.json
+# expected: 6
+```
+
+### Step 3: Add the 4 missing relationships
+
+The architecture needs 4 more relationships:
+
+**3 `connects` relationships** (each with `protocol` at the top level, NOT inside the `connects` object):
+
+```json
+{
+  "unique-id": "website-to-load-balancer",
+  "description": "Conference website sends signup requests to the load balancer over HTTPS.",
+  "relationship-type": {
+    "connects": {
+      "source": { "node": "conference-website" },
+      "destination": { "node": "load-balancer" }
+    }
+  },
+  "protocol": "HTTPS"
+}
+```
+
+Use protocol values: `HTTPS` (website to load-balancer), `mTLS` (load-balancer to attendees), `JDBC` (attendees to attendees-store).
+
+**1 `deployed-in` relationship** declaring which nodes run inside the k8s cluster:
+
+```json
+{
+  "unique-id": "deployed-in-k8s-cluster",
+  "description": "The load balancer, attendees service, and attendees store are deployed in the Kubernetes cluster.",
+  "relationship-type": {
+    "deployed-in": {
+      "container": "k8s-cluster",
+      "nodes": ["load-balancer", "attendees", "attendees-store"]
+    }
+  }
+}
+```
+
+Pitfall: `protocol` must be a sibling of `relationship-type`, not a child of `connects`. If you put it inside the `connects` object, validation will fail.
+
+When done, verify:
+```bash
+jq -r '.relationships | length' conference-signup.architecture.json
+# expected: 5
+```
+
+### Step 4: Add an interface to the attendees service
+
+Interfaces describe the technical contract for how other components call this node. Add an `interfaces` array to the `attendees` node:
+
+```json
+{
+  "unique-id": "attendees",
+  "node-type": "service",
+  "name": "Attendees Service",
+  "description": "Backend service handling signup requests: validates input, persists registrations, and returns confirmation responses.",
+  "interfaces": [
+    {
+      "unique-id": "attendees-api",
+      "name": "Attendees REST API",
+      "protocol": "HTTPS",
+      "port": 8443
+    }
+  ]
+}
+```
+
+This is a freeform interface — it uses `unique-id` plus any additional fields you need. No `interface-type` or `definition-url` required for freeform.
+
+Verify:
+```bash
+jq -r '.nodes[] | select(."unique-id" == "attendees") | .interfaces | length' conference-signup.architecture.json
+# expected: 1 (or more)
+```
+
+### Step 5: Add the top-level encryption-in-transit control
+
+Controls encode non-functional requirements. Add a `"controls"` object at the top level of the architecture (as a sibling of `"nodes"` and `"relationships"`):
+
+```json
+"controls": {
+  "encryption-in-transit": {
+    "description": "All data transmitted between system components must be encrypted using TLS 1.3 or higher.",
+    "requirements": [
+      {
+        "requirement-url": "https://example.com/security/encryption-in-transit.json",
+        "config": {
+          "protocol": "TLS",
+          "minimumVersion": "1.3",
+          "certificateValidation": "required"
+        }
+      }
+    ]
+  }
+}
+```
+
+Verify:
+```bash
+jq -r '.controls | keys[]' conference-signup.architecture.json
+# expected: encryption-in-transit
+```
+
+### Step 6: Validate the final architecture
+
+Run the FINOS CALM CLI validator:
+
+```bash
+npx @finos/calm-cli validate -a conference-signup.architecture.json -f pretty
+```
+
+Expected output (success):
+```
+No issues found.
+```
+
+Or in JSON output: `hasErrors: false`.
+
+If the validator reports errors, read the error path carefully — it names the exact field causing the problem. The most common errors:
+- **Invented node-type**: use only `actor`, `ecosystem`, `system`, `service`, `database`, `network`, `ldap`, `webclient`, `data-asset`
+- **Protocol nested inside connects**: `protocol` must be at the same level as `relationship-type`, not inside it
+- **Missing description**: every node requires `unique-id`, `node-type`, `name`, and `description`
+
+Fix any errors and run validate again until you see `No issues found.`
+
+### Step 7: Visualize in CALM Studio
+
+Open CALM Studio in your browser: https://studio.calm.finos.org
+
+1. Click **Import** (or drag-and-drop your file onto the canvas)
+2. Select your `conference-signup.architecture.json`
+3. You should see 6 boxes (nodes) connected by arrows (relationships)
+
+Look for:
+- The `interacts` arrow from the actor to the webclient
+- Three `connects` arrows through the backend
+- A `deployed-in` boundary around the k8s cluster nodes
+
+What you are seeing is a direct visual rendering of the JSON you just wrote. Every property you set appears in the diagram or the inspector panel.
+
+## Stretch goals (optional)
+
+**A — Add a second interface using the formal form:**
+Add a `definition-url` interface to the attendees service that points to an OpenAPI schema:
+```json
+{
+  "unique-id": "attendees-openapi",
+  "interface-type": "interface-definition",
+  "definition-url": "https://example.com/api/attendees-openapi.json"
+}
+```
+Run validate again to confirm the definition-url form is also accepted.
+
+**B — Add a per-relationship control:**
+Add a `controls` block directly on the `load-balancer-to-attendees` relationship to enforce mTLS specifically on that link:
+```json
+"controls": {
+  "mutual-tls": {
+    "description": "Service-to-service communication must use mutual TLS.",
+    "requirements": [
+      {
+        "requirement-url": "https://example.com/security/mtls.json",
+        "config": { "protocol": "mTLS", "certificateRotation": "automated" }
+      }
+    ]
+  }
+}
+```
+
+**C — Draft a threat-model decorator:**
+Create a separate file `conference-signup.threat-model.decorator.json` that references your architecture using the `target[]` field. Add one threat entry in `applies-to[]` pointing at the `load-balancer-to-attendees` relationship.
+
+## Solution
+
+See `solution/conference-signup.architecture.json`. Resist the urge to peek until you have tried building the architecture yourself — the learning comes from working through the JSON structure by hand.
+
+When you are done, compare your file with the solution. Both should pass `calm validate` with zero errors.
