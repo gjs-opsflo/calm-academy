@@ -1,0 +1,187 @@
+---
+title: "Decorators: cross-cutting concerns as separate documents"
+slug: decorators
+module: 2
+chapter: 2.6
+estimated_minutes: 20
+prerequisites:
+  - controls
+---
+
+## TL;DR
+
+- Decorators are **new in CALM 1.2** and they are **separate documents** — not fields inside an architecture file.
+- A decorator points *at* an architecture file (via `target[]`) and at specific nodes or relationships within it (via `applies-to[]`).
+- They enable governance overlays (threat models, deployment metadata, AIGF) without modifying the architecture file itself.
+- Different teams can own different decorator overlays of the same architecture — security adds threat decorators, ops adds deployment decorators, governance adds regulatory decorators — without any team stepping on another.
+- The most common mistake is embedding decorator-shaped data inside an architecture's `metadata` field. That defeats the purpose.
+
+## Why it matters
+
+A single architecture file can be read and evaluated by multiple teams: security wants to attach threat model annotations, ops wants to attach deployment environment metadata, governance wants to attach regulatory mapping. If all of that lives inside the architecture file, you have a coordination problem: every team needs write access, every change triggers review from every other team, and the file becomes a catch-all.
+
+Decorators solve this by making cross-cutting enrichment a separate concern. The architecture file stays clean and owned by the system team. Decorators are separate documents owned by the teams that produce them. Each decorator references the specific architecture and the specific nodes it applies to. The architecture file does not need to know decorators exist — but tools that consume the full artifact bundle (architecture + decorators) get the complete enriched view.
+
+This is the same insight that made CSS a separate language from HTML. Content and presentation belong in separate documents so different people can own them.
+
+## The concept
+
+### Why decorators exist
+
+Consider a conference signup architecture that three teams need to annotate:
+
+- The **security team** wants to attach STRIDE threat classifications to the `attendees` service and `attendees-store` database.
+- The **operations team** wants to record which Kubernetes namespace each service runs in.
+- The **governance team** wants to flag which nodes fall under GDPR Article 30 processing activity records.
+
+Without decorators, all three teams would be editing the same architecture file. With decorators, each team owns a separate document that points at the architecture and annotates it. The architecture stays authoritative for what exists; the decorators are authoritative for what each team's overlay says about what exists.
+
+### Decorator anatomy
+
+A decorator is a JSON document with five fields:
+
+```json
+{
+  "unique-id": "conference-signup-threat-model",
+  "type": "threat",
+  "target": ["conference-signup.architecture.json"],
+  "applies-to": ["attendees", "attendees-store"],
+  "data": {
+    "stride": {
+      "spoofing": "Attendee identity not verified before write — mitigate with pre-registration token",
+      "tampering": "DB write path not idempotent — mitigate with transaction IDs"
+    }
+  }
+}
+```
+
+| Field | Type | Required | What it means |
+|---|---|---|---|
+| `unique-id` | string | yes | Unique identifier for this decorator document |
+| `type` | string | yes | Free-form label for the decorator category (`threat`, `governance`, `deployment-info`, `pattern`, etc.) |
+| `target[]` | array of strings | yes | File paths or URLs of the architecture document(s) this decorator applies to |
+| `applies-to[]` | array of strings | no | `unique-id` values of specific nodes or relationships within the targeted architecture |
+| `data` | object | yes | The actual payload — at least one property required; schema is free-form |
+
+The `data` object has `minProperties: 1` — it cannot be empty. Beyond that constraint, it accepts any structure you need.
+
+![Decorator separation diagram: architecture file on the left, decorator file on the right, arrows pointing target at the file and applies-to at specific node unique-ids](../illustrations/exported/m02-decorator-external-overlay.svg)
+
+### Target vs applies-to
+
+These two fields address different levels of specificity:
+
+- **`target[]`** is the architecture document. It answers: "which file does this decorator annotate?" Use a relative file path or a CALM Hub URL.
+- **`applies-to[]`** is a subset of nodes or relationships within that file. It answers: "within that architecture, which specific elements does this decorator apply to?" Leave `applies-to` empty to annotate the entire architecture.
+
+```json
+{
+  "unique-id": "conference-signup-k8s-metadata",
+  "type": "deployment-info",
+  "target": ["conference-signup.architecture.json"],
+  "applies-to": ["load-balancer", "attendees", "attendees-store"],
+  "data": {
+    "kubernetes": {
+      "namespace": "conference",
+      "cluster": "prod-k8s-cluster",
+      "helmRelease": "conference-signup-v1.4.2"
+    }
+  }
+}
+```
+
+If `applies-to` references a `unique-id` that does not exist in the target architecture, that is a semantic error. Tools like CALM Guard will flag it as a broken reference. Always verify that `applies-to` values match actual node or relationship `unique-id` values in the target file.
+
+### Common decorator types
+
+CALM 1.2 does not enumerate decorator types — `type` is a free-form string. The following types are used by convention across FINOS tooling:
+
+**`threat`** — STRIDE or ATT&CK annotations. Used by CALM Guard's threat analysis agent to evaluate threat posture. The `data` object typically carries threat categories per node or relationship.
+
+```json
+{
+  "type": "threat",
+  "data": {
+    "stride": { "spoofing": "...", "elevation-of-privilege": "..." },
+    "mitre-attack": { "technique": "T1190", "description": "Exploit public-facing application" }
+  }
+}
+```
+
+**`governance`** — Regulatory or framework overlays. The AIGF (AI Governance Framework) auto-attaches as a decorator when an architecture contains `ai:*` node types. The decorator records which governance framework applies and which articles map to which nodes. Module 5 covers the AIGF decorator pattern in detail — for now, understand that governance decorators are how frameworks attach without touching the architecture file.
+
+**`deployment-info`** — Operational metadata: release tags, repository URLs, Kubernetes namespaces, environment labels. Useful for CALM Hub to track deployment state over time.
+
+**`pattern`** — Marks a node or architecture as an instance of a known CALM Pattern. Useful when you want tools to verify that an instantiated architecture conforms to the pattern it claims to be an instance of.
+
+### Pitfall: embedding decorator data inline
+
+The architecture's `metadata` field accepts a free-form array of objects. It is tempting to embed threat model fields or deployment info there:
+
+```json
+{
+  "unique-id": "attendees",
+  "node-type": "service",
+  "name": "Attendees Service",
+  "metadata": {
+    "threat-classification": "high",
+    "stride-spoofing": "possible — no pre-registration token",
+    "kubernetes-namespace": "conference"
+  }
+}
+```
+
+This technically validates against the CALM 1.2 schema. But it conflates architecture authorship with security analysis and operations enrichment. The three teams are now all editing the same node object. The security team's threat data is not portable to other architectures. CALM Guard cannot distinguish between threat annotations and operational annotations. The `metadata` field becomes a dumping ground.
+
+Decorators belong in **separate documents**. The architecture file answers: "what exists?" The decorator files answer: "what do we say about what exists?" Keep those two concerns in separate files, owned by separate teams, with separate review cycles.
+
+## Code/CALM examples
+
+The following is an example decorator document. Note that this is a standalone JSON file — not nested inside an architecture file. You might name it `conference-signup.threat-model.decorator.json`:
+
+```json
+{
+  "unique-id": "conference-signup-threat-model",
+  "type": "threat",
+  "target": ["conference-signup.architecture.json"],
+  "applies-to": ["attendees", "attendees-store"],
+  "data": {
+    "stride": {
+      "spoofing": "Attendee identity is not verified before registration write. Mitigate with email confirmation token or OAuth signup.",
+      "tampering": "Registration endpoint lacks idempotency key. A retry could create duplicate records. Mitigate with idempotency tokens on the POST /register endpoint.",
+      "information-disclosure": "attendees-store contains PII (name, email). Ensure column-level encryption for email and enforce SELECT access via service account only.",
+      "denial-of-service": "The load balancer does not rate-limit signup requests. An automated bot can exhaust the database connection pool. Add rate limiting at the load balancer level."
+    },
+    "risk-owner": "security-architecture@example.com",
+    "reviewed-on": "2026-06-01"
+  }
+}
+```
+
+This document:
+
+1. Has its own `unique-id` — it is a first-class CALM artifact
+2. Points at `conference-signup.architecture.json` via `target[]`
+3. Limits its scope to `attendees` and `attendees-store` via `applies-to[]`
+4. Carries free-form STRIDE data in `data` — at least one property, any shape
+
+To annotate the whole architecture (not just specific nodes), omit `applies-to` or set it to an empty array.
+
+## Common mistakes
+
+- **Embedding decorator-shaped data in the architecture's `metadata` field.** This is the most common mistake. It conflates two different authorship concerns and prevents cross-team decoupling. Decorator data belongs in a separate file.
+- **Missing `target[]`.** Without `target`, the decorator has no reference to an architecture. CALM Guard cannot match it to any artifact and the decorator is effectively orphaned.
+- **Using `applies-to` to reference `unique-id` values that do not exist in the target architecture.** If the target architecture has `"unique-id": "attendees"` but your decorator has `"applies-to": ["attendee-service"]`, that is a broken reference. Always match the exact `unique-id` strings from the target architecture.
+- **Confusing `target` and `applies-to`.** `target` is the *file*, `applies-to` is *nodes within the file*. Putting a node `unique-id` in `target` or a file path in `applies-to` will cause CALM Guard to fail silently or error.
+- **Empty `data` object.** The `data` field requires at least one property (`minProperties: 1`). An empty `data: {}` fails schema validation.
+
+## Knowledge check
+
+Review the questions for this chapter in [`quizzes/module-02-calm-fundamentals.yaml`](../../quizzes/module-02-calm-fundamentals.yaml).
+
+## Further reading
+
+- [Controls: encoding non-functional requirements](./controls.mdx) — controls are per-architecture; decorators add overlays from outside
+- [Building your first architecture in CALM](./building-your-first-architecture.mdx) — assembles everything from this module into a validated architecture
+- [CALM 1.2 decorators schema](https://calm.finos.org/release/1.2/meta/decorators.json) — the authoritative JSON Schema for decorator documents
+- [Introducing CALM](../module-01-case-for-aac/introducing-calm.mdx) — the strategic context for why governance overlays (including AIGF) matter

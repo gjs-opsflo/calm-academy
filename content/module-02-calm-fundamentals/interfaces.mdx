@@ -1,0 +1,285 @@
+---
+title: "Interfaces: describing communication contracts"
+slug: interfaces
+module: 2
+chapter: 2.4
+estimated_minutes: 20
+prerequisites:
+  - relationships
+---
+
+## TL;DR
+
+- Interfaces are **technical contracts** that live on a **node**, not on a relationship.
+- CALM 1.2 has two interface forms: freeform (`interface-type`) and formal (`interface-definition` with `definition-url` + `config`).
+- The old `url-interface` and `host-port-interface` types from 1.0-rc1 are gone in 1.2 — do not copy them from old examples.
+- Relationships reference interfaces via `source.interfaces` and `destination.interfaces` — arrays of interface `unique-id` strings.
+- Interfaces enable automated tooling: port scanning, schema validation, and security surface mapping.
+
+## Why it matters
+
+A `connects` relationship tells you that node A communicates with node B. That is useful, but it does not tell you *how*. Is it HTTP? HTTPS? gRPC? On which port? With what schema? Interfaces answer those questions.
+
+More than documentation, interfaces are machine-readable contracts. CALM Guard can compare an interface's declared `protocol` against a `mutual-tls` control and flag non-compliance. A network scanner can verify that the declared port is actually open. A schema validator can confirm that the payload matches the declared OpenAPI spec. None of that is possible without the interface.
+
+If you want CALM to be more than a diagram, interfaces are where you start adding the precision that makes it so.
+
+## The concept
+
+### Interface vs relationship — the distinction
+
+The distinction is direct: **interfaces describe where and how to reach a node; relationships describe whether two nodes are connected**.
+
+| Thing | Where it lives | What it answers |
+|---|---|---|
+| Interface | On a **node** | How do you reach me? (port, protocol, schema, URL) |
+| Relationship | In the `relationships[]` array | Are these two nodes connected? Via which mechanism? |
+
+A `connects` relationship can exist with no interface references — it just says "these nodes talk". Add interfaces and the relationship becomes auditable: "they talk, and we know exactly which interface on each side participates in the connection."
+
+### The freeform form (interface-type)
+
+The freeform interface form is a JSON object with `unique-id` plus any additional properties you choose. The schema allows `additionalProperties: true` for this form. Use it when you do not have a canonical external schema to reference, or when the protocol is simple enough that free-form fields suffice.
+
+```json
+{
+  "unique-id": "orders-api-rest",
+  "name": "Orders REST API",
+  "protocol": "HTTPS",
+  "port": 8443
+}
+```
+
+You can add whatever fields make the interface useful: `url`, `schema`, `description`, `specification`, `operations`. The only field required by the schema is `unique-id`.
+
+Common additional fields you will see in production CALM files:
+
+```json
+{
+  "unique-id": "trade-feed-websocket",
+  "name": "Trade Feed WebSocket API",
+  "protocol": "WebSocket",
+  "port": 18086,
+  "schema": {
+    "specification": "SocketIO",
+    "operations": [
+      { "event": "subscribe", "direction": "inbound" },
+      { "event": "publish", "direction": "outbound" }
+    ]
+  }
+}
+```
+
+Use freeform interfaces in most cases. They are easy to read, easy to extend, and sufficient for the majority of architectural documentation needs.
+
+### The formal form (interface-definition)
+
+The formal interface form uses `definition-url` to reference an external JSON Schema and `config` to provide the configuration that satisfies that schema. Use this when you need machine-validated, cross-team-compatible interface definitions — for example, when your platform team has published canonical schema definitions that all services must conform to.
+
+```json
+{
+  "unique-id": "orders-api-host-port",
+  "definition-url": "https://calm.finos.org/release/1.2/prototype/interface/tcp-host-port.json",
+  "config": {
+    "host": "orders-api.internal",
+    "port": 8443
+  }
+}
+```
+
+All three fields are required for the formal form: `unique-id`, `definition-url`, and `config`. The schema does not allow `additionalProperties` on this form — the shape is strictly governed by the external schema referenced at `definition-url`.
+
+FINOS provides example interface schemas for common patterns:
+
+| Schema | What it describes |
+|---|---|
+| `calm/interfaces/example/url.json` | A service reachable by URL |
+| `calm/interfaces/example/tcp-host-port.json` | A TCP endpoint (host + port) |
+| `calm/interfaces/example/tcp-port.json` | A port-only TCP interface |
+| `calm/interfaces/example/container-image.json` | A container image interface |
+
+When to use the formal form:
+
+- Your organisation has published internal canonical interface schemas
+- You are contributing to a CALM Pattern that must be instantiated by downstream architectures
+- You want a CALM Guard rule to verify that the `config` matches the referenced schema
+- You are federating architectures across teams and need a common interface vocabulary
+
+![Interface anatomy: a node with both a freeform interface and a definition-url interface, showing how a connects relationship references them via source.interfaces and destination.interfaces](../illustrations/exported/m02-interface-anatomy.svg)
+
+### How relationships reference interfaces
+
+An interface living on a node is not automatically "activated" by every relationship involving that node. You must explicitly reference it from the relationship using `source.interfaces` and `destination.interfaces` — both are arrays of interface `unique-id` strings.
+
+```json
+{
+  "unique-id": "portal-to-orders-api",
+  "description": "Analyst portal calls the Orders API over HTTPS.",
+  "relationship-type": {
+    "connects": {
+      "source": {
+        "node": "analyst-portal",
+        "interfaces": ["analyst-portal-url"]
+      },
+      "destination": {
+        "node": "orders-api",
+        "interfaces": ["orders-api-rest"]
+      }
+    }
+  },
+  "protocol": "HTTPS"
+}
+```
+
+Why arrays? A node can expose multiple interfaces (REST API + WebSocket + health-check endpoint). A single `connects` relationship might involve more than one of them — for example, a load balancer that connects via both a primary HTTPS interface and a separate health-check port. The arrays let you be specific.
+
+If you do not provide `source.interfaces` or `destination.interfaces`, the relationship still validates — but downstream tooling cannot determine which specific interface is involved.
+
+### Why 1.0-rc1 interface types are gone
+
+CALM 1.0-rc1 had built-in interface type definitions with string constants: `url-interface`, `host-port-interface`, `container-image-interface`, and `port-interface`. These were embedded directly in the CALM schema as named types.
+
+In CALM 1.1+, this approach was replaced with the more flexible `definition-url` pattern. Instead of baking interface types into the CALM core schema, you reference external schemas. This allows the interface library to grow without modifying the CALM core spec, and allows organisations to publish their own interface schemas.
+
+If you copy a pre-1.1 CALM example, you will encounter:
+
+```json
+{
+  "$ref": "https://calm.finos.org/release/1.0-rc1/meta/interface.json#/defs/url-interface"
+}
+```
+
+This does not exist in CALM 1.2. Your file will fail `calm validate`. Replace these with either the freeform form or the `definition-url` form using the FINOS 1.2 example schemas.
+
+## Code/CALM examples
+
+The full reference architecture below is from `code-examples/module-02-calm-fundamentals/with-interfaces.architecture.json`. It demonstrates:
+
+- A freeform interface on `analyst-portal` (single field beyond `unique-id`: `url`)
+- A freeform interface on `orders-api` (port + protocol)
+- A formal interface-definition on `orders-api` (definition-url + config pointing at the tcp-host-port schema)
+- A `connects` relationship that references `analyst-portal-url` as `source.interfaces` and `orders-api-rest` as `destination.interfaces`
+
+```json
+// from code-examples/module-02-calm-fundamentals/with-interfaces.architecture.json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "with-interfaces",
+  "name": "CALM 1.2 Interfaces Reference",
+  "description": "A reference architecture demonstrating both interface forms available in CALM 1.2: the freeform interface-type (no definition-url) and the formal interface-definition (definition-url + config). Interfaces live on NODES, not on relationships. Relationships reference interface unique-ids via source.interfaces and destination.interfaces arrays. No 1.0-rc1 url-interface or host-port-interface types are used here.",
+  "nodes": [
+    {
+      "unique-id": "analyst",
+      "node-type": "actor",
+      "name": "Analyst",
+      "description": "Human user who queries the orders system via the analyst portal."
+    },
+    {
+      "unique-id": "analyst-portal",
+      "node-type": "webclient",
+      "name": "Analyst Portal",
+      "description": "Browser-based web application through which the analyst accesses the orders system.",
+      "interfaces": [
+        {
+          "unique-id": "analyst-portal-url",
+          "name": "Portal URL",
+          "protocol": "HTTPS",
+          "url": "https://orders.example.com"
+        }
+      ]
+    },
+    {
+      "unique-id": "orders-api",
+      "node-type": "service",
+      "name": "Orders API",
+      "description": "Backend REST service exposing order management operations. Demonstrates two interface forms: a freeform interface-type (unique-id + free properties) and a formal interface-definition (definition-url + config).",
+      "interfaces": [
+        {
+          "unique-id": "orders-api-rest",
+          "name": "Orders REST API",
+          "protocol": "HTTPS",
+          "port": 8443
+        },
+        {
+          "unique-id": "orders-api-host-port",
+          "definition-url": "https://calm.finos.org/release/1.2/prototype/interface/tcp-host-port.json",
+          "config": {
+            "host": "orders-api.internal",
+            "port": 8443
+          }
+        }
+      ]
+    },
+    {
+      "unique-id": "orders-db",
+      "node-type": "database",
+      "name": "Orders Database",
+      "description": "Relational database storing order records, accessible only by the Orders API via JDBC."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "analyst-to-portal",
+      "description": "Analyst accesses the orders portal to submit and monitor order activity.",
+      "relationship-type": {
+        "interacts": {
+          "actor": "analyst",
+          "nodes": ["analyst-portal"]
+        }
+      }
+    },
+    {
+      "unique-id": "portal-to-orders-api",
+      "description": "Analyst portal calls the Orders API over HTTPS. The source.interfaces references the freeform interface on analyst-portal; destination.interfaces references the freeform REST interface on orders-api. This demonstrates how relationships reference interface unique-ids to specify which interfaces participate in the connection.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "analyst-portal",
+            "interfaces": ["analyst-portal-url"]
+          },
+          "destination": {
+            "node": "orders-api",
+            "interfaces": ["orders-api-rest"]
+          }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "orders-api-to-db",
+      "description": "Orders API reads and writes order records to the Orders Database via JDBC.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "orders-api"
+          },
+          "destination": {
+            "node": "orders-db"
+          }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
+```
+
+## Common mistakes
+
+- **Putting interface details on the relationship.** The `connects` relationship already has `protocol` at the top level. If you find yourself adding `port` or `url` to the relationship sub-object rather than to a node's `interfaces[]`, stop. Interfaces live on the node.
+- **Using `url-interface` from 1.0-rc1 in a 1.2 file.** If your file has `"$ref": "...1.0-rc1/meta/interface.json#/defs/url-interface"`, it will fail CALM CLI 1.2 validation. Replace it with a freeform interface-type object or a 1.2 `definition-url` reference.
+- **Confusing `protocol` on the relationship vs `protocol` on the interface.** The `protocol` on a `connects` relationship (e.g. `"protocol": "HTTPS"`) describes the wire protocol for that specific connection. The `protocol` field inside an interface object describes the protocol that interface supports. Both can exist and they should agree, but they are not the same field.
+- **Forgetting `unique-id` on the interface object.** Every interface must have `unique-id`. Without it, you cannot reference the interface from a relationship's `source.interfaces` or `destination.interfaces` array, and the file will fail schema validation.
+- **Naming two interfaces the same `unique-id` on the same node.** Interface unique-ids must be unique within the architecture (not just within the node). If two different nodes both have an interface with the same `unique-id`, you will get unexpected behavior when relationships try to reference them.
+- **Omitting `config` from a formal interface-definition.** The formal form requires exactly three fields: `unique-id`, `definition-url`, and `config`. If you omit `config`, validation fails even if `definition-url` is present.
+
+## Knowledge check
+
+Review the questions for this chapter in [`quizzes/module-02-calm-fundamentals.yaml`](../../quizzes/module-02-calm-fundamentals.yaml).
+
+## Further reading
+
+- [Relationships: connecting the dots](./relationships.mdx) — how `connects` relationships use interface references
+- [Controls: encoding non-functional requirements](./controls.mdx) — the next layer of precision after interfaces
+- [CALM 1.2 interface schema](https://calm.finos.org/release/1.2/meta/interface.json) — the authoritative schema for both interface forms
+- [FINOS CALM prototype interfaces](https://github.com/finos/architecture-as-code/tree/main/calm/interfaces/example) — canonical example schemas (url, tcp-host-port, tcp-port, container-image)

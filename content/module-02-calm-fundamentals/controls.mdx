@@ -1,0 +1,305 @@
+---
+title: "Controls: encoding non-functional requirements"
+slug: controls
+module: 2
+chapter: 2.5
+estimated_minutes: 22
+prerequisites:
+  - interfaces
+---
+
+## TL;DR
+
+- Controls are **testable compliance requirements** — not prose policies. Each control is a JSON object that automation can read, evaluate, and enforce.
+- Controls attach at four scopes: **top-level** (system-wide), **per-node**, **per-relationship**, and **per-flow** (flows are covered in Module 3).
+- Each control entry has a **control-key** (kebab-case), a `description`, and a `requirements[]` array.
+- Each requirement has a `requirement-url` (the schema that defines what the requirement expects) and a `config` (what this architecture provides to satisfy it).
+- FINOS Common Controls Catalog (CCC) is a canonical source of `requirement-url` schemas for FSI use cases.
+
+## Why it matters
+
+A compliance policy written in a Word document does not help a deployment pipeline. A CALM control does. When you encode "all connections must use TLS 1.3" as a CALM control on the architecture, CALM Guard can evaluate every `connects` relationship against that control and flag non-compliant connections. The control becomes executable: a machine can check it, a CI gate can enforce it, and an auditor can see that it was checked.
+
+This is the bridge from governance frameworks — DORA, SR 11-7, MiFID II, NIST AI RMF — to the actual systems those frameworks govern. A control is not a paragraph. It is a JSON object with a schema URL and a configuration that says: *here is what the standard requires, and here is exactly how this architecture meets it*. That precision is what makes CALM more than a diagramming tool.
+
+## The concept
+
+### Control anatomy
+
+Every control entry follows the same structure. The control is keyed by a `control-key` string (kebab-case, matching `^[a-zA-Z0-9-]+$`), and has two required fields: `description` and `requirements[]`.
+
+```json
+{
+  "encryption-in-transit": {
+    "description": "All data transmitted between system components must be encrypted using TLS 1.3 or higher.",
+    "requirements": [
+      {
+        "requirement-url": "https://example.com/security/encryption-in-transit.json",
+        "config": {
+          "protocol": "TLS",
+          "minimumVersion": "1.3",
+          "certificateValidation": "required"
+        }
+      }
+    ]
+  }
+}
+```
+
+The `requirements[]` array can contain multiple requirement objects — one for each distinct standard or control catalog entry that this control must satisfy. Each requirement object needs a `requirement-url` plus either `config` (inline) or `config-url` (external reference).
+
+![Control anatomy diagram: control-key → description → requirements → requirement-url → config](../illustrations/exported/m02-control-anatomy.svg)
+
+### Where controls attach
+
+Controls can attach at four different scopes. Use the scope that matches the policy's reach.
+
+**Top-level controls** — attach directly to the architecture document as a sibling of `nodes` and `relationships`. These express system-wide policies that apply to the entire architecture.
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "with-controls",
+  "controls": {
+    "encryption-in-transit": {
+      "description": "All data transmitted between system components must be encrypted using TLS 1.3 or higher.",
+      "requirements": [
+        {
+          "requirement-url": "https://example.com/security/encryption-in-transit.json",
+          "config": { "protocol": "TLS", "minimumVersion": "1.3" }
+        }
+      ]
+    }
+  },
+  "nodes": [...],
+  "relationships": [...]
+}
+```
+
+**Per-node controls** — attach to a specific node inside its node object. Use these for policies that apply to a specific component but not all components — for example, data classification on a database node, or isolation requirements on a specific service.
+
+```json
+{
+  "unique-id": "kyc-records-db",
+  "node-type": "database",
+  "name": "KYC Records Database",
+  "description": "...",
+  "controls": {
+    "data-classification": {
+      "description": "KYC records contain PII subject to GDPR retention limits.",
+      "requirements": [
+        {
+          "requirement-url": "https://finos.org/ccc/controls/data-classification.requirement.json",
+          "config": {
+            "classification": "PII",
+            "retention-days": 2555
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+**Per-relationship controls** — attach to a specific relationship. Use these for connection-specific policies such as mTLS on a service-to-service call, or permitted-connection validation on a firewall traversal.
+
+```json
+{
+  "unique-id": "kyc-firewall-to-kyc-service",
+  "relationship-type": { "connects": { ... } },
+  "protocol": "mTLS",
+  "controls": {
+    "mutual-tls": {
+      "description": "Both parties must present valid certificates. Rotate every 90 days.",
+      "requirements": [
+        {
+          "requirement-url": "https://example.com/security/mutual-tls.requirement.json",
+          "config": { "certificate-rotation-days": 90 }
+        }
+      ]
+    }
+  }
+}
+```
+
+**Per-flow controls** — attach to a flow definition. Flows are covered in Module 3; this scope lets you attach controls to a specific multi-step transaction sequence rather than a single connection.
+
+### The requirement-url + config pattern
+
+`requirement-url` is a URI that points to a JSON Schema describing what a conformant `config` must look like. Think of it as: `requirement-url` is *the standard*, `config` is *this system's answer to the standard*.
+
+```
+requirement-url: https://example.com/security/encryption-in-transit.json
+               ↓
+               Schema says: config must have "protocol" and "minimumVersion" fields
+               ↓
+config: { "protocol": "TLS", "minimumVersion": "1.3" }
+               ↓
+               Validator checks: does this config satisfy the schema?
+```
+
+This separation is deliberate. The requirement-url schema is authored by a control framework team (your security team, FINOS CCC, a regulator). The config is authored by the system team building this specific architecture. The validator connects the two.
+
+One requirement can reference multiple standards. If the same "encrypt everything" policy maps to both an internal security standard and a FINOS CCC requirement, add two requirement objects in the `requirements[]` array.
+
+### FINOS CCC at a glance
+
+FINOS Common Controls Catalog (CCC) is a canonical library of control schemas designed for FSI architectures. Each CCC control has a stable `requirement-url` you can reference directly in your CALM controls. Module 4 covers CCC in depth — see [governance-frameworks-and-aac](../module-01-case-for-aac/introducing-calm.mdx) for the strategic context on why governance frameworks matter.
+
+For now, the practical takeaway: when you need a `requirement-url` for a real FSI control (encryption, access control, data retention, network segmentation), check the FINOS CCC library before inventing a private URL. A shared `requirement-url` means tooling from multiple vendors can evaluate the same control.
+
+### Control key naming
+
+Control keys follow a simple convention:
+
+- kebab-case (`encryption-in-transit`, not `encryptionInTransit` or `EncryptionInTransit`)
+- Descriptive — name the requirement, not the technology (`encryption-in-transit` not `tls-config`)
+- Unique within the `controls` object at that attachment scope
+- Pattern: `^[a-zA-Z0-9-]+$` — no spaces, no underscores, no dots
+
+Keys that match in the same scope are merged in CALM Guard evaluation. If a top-level control and a per-node control both have the key `encryption-in-transit`, they are evaluated as separate controls at their respective scopes — they do not override each other.
+
+## Code/CALM examples
+
+The full reference architecture below is from `code-examples/module-02-calm-fundamentals/with-controls.architecture.json`. It demonstrates all three attachment scopes:
+
+- Top-level `controls` (encryption-in-transit — system-wide TLS requirement)
+- Per-node `controls` on `kyc-records-db` (data-classification — PII retention)
+- Per-relationship `controls` on the `kyc-firewall → kyc-service` edge (mutual-tls — certificate rotation)
+
+```json
+// from code-examples/module-02-calm-fundamentals/with-controls.architecture.json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "with-controls",
+  "name": "CALM 1.2 Controls Reference",
+  "description": "A reference architecture demonstrating controls at three attachment scopes in CALM 1.2: top-level (system-wide policies), per-node (data classification on a specific node), and per-relationship (mTLS enforcement on a specific connection). The scenario is a KYC (Know Your Customer) compliance service used in FSI onboarding workflows.",
+  "controls": {
+    "encryption-in-transit": {
+      "description": "All data transmitted between system components must be encrypted using TLS 1.3 or higher with validated certificates. This control applies system-wide to every connection in this architecture.",
+      "requirements": [
+        {
+          "requirement-url": "https://example.com/security/encryption-in-transit.json",
+          "config": {
+            "protocol": "TLS",
+            "minimumVersion": "1.3",
+            "certificateValidation": "required"
+          }
+        }
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "unique-id": "compliance-officer",
+      "node-type": "actor",
+      "name": "Compliance Officer",
+      "description": "Human reviewer responsible for approving KYC checks and monitoring compliance status."
+    },
+    {
+      "unique-id": "kyc-firewall",
+      "node-type": "network",
+      "name": "KYC Firewall",
+      "description": "Network perimeter control that restricts inbound traffic to authorised sources and enforces mTLS for internal service calls."
+    },
+    {
+      "unique-id": "kyc-service",
+      "node-type": "service",
+      "name": "KYC Service",
+      "description": "Backend service that executes identity verification checks, risk scoring, and regulatory lookups for customer onboarding."
+    },
+    {
+      "unique-id": "kyc-records-db",
+      "node-type": "database",
+      "name": "KYC Records Database",
+      "description": "Persistent store for KYC verification results, identity documents, and audit trails. Contains PII and is subject to GDPR and FCA data retention rules.",
+      "controls": {
+        "data-classification": {
+          "description": "KYC records contain Personally Identifiable Information (PII) subject to GDPR Article 5 retention limitations and FCA SYSC 9.1 recordkeeping requirements. Data must be classified and retention enforced.",
+          "requirements": [
+            {
+              "requirement-url": "https://finos.org/ccc/controls/data-classification.requirement.json",
+              "config": {
+                "classification": "PII",
+                "retention-days": 2555,
+                "encryptionAtRest": true,
+                "accessControl": "role-based"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "compliance-officer-to-kyc-service",
+      "description": "Compliance officer reviews KYC results and triggers manual overrides via the KYC service interface.",
+      "relationship-type": {
+        "interacts": {
+          "actor": "compliance-officer",
+          "nodes": ["kyc-service"]
+        }
+      }
+    },
+    {
+      "unique-id": "kyc-firewall-to-kyc-service",
+      "description": "The KYC firewall forwards validated requests to the KYC service using mutual TLS. This relationship carries a per-relationship control enforcing certificate rotation.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "kyc-firewall" },
+          "destination": { "node": "kyc-service" }
+        }
+      },
+      "protocol": "mTLS",
+      "controls": {
+        "mutual-tls": {
+          "description": "Both the firewall and the KYC service must present valid certificates for this connection. Certificates must be rotated regularly to limit the blast radius of a key compromise.",
+          "requirements": [
+            {
+              "requirement-url": "https://example.com/security/mutual-tls.requirement.json",
+              "config": {
+                "certificate-rotation-days": 90,
+                "caBundle": "internal-ca-bundle",
+                "clientCertRequired": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "unique-id": "kyc-service-to-records-db",
+      "description": "KYC service reads and writes verification results and identity records to the KYC records database via JDBC.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "kyc-service" },
+          "destination": { "node": "kyc-records-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
+```
+
+## Common mistakes
+
+- **Writing controls as prose instead of encoding them.** "Encrypt all traffic with TLS" in a `description` field is not a control — it is commentary. The control is the `requirements[]` array with a `requirement-url` and `config`. Tools can only act on the structured part.
+- **Using `requirements: []` (empty array).** An empty requirements array passes schema validation but carries no information. If a control exists, it must have at least one requirement specifying what conformance looks like. An empty array is a placeholder, not a control.
+- **Inventing `requirement-url` values that do not exist.** The URL in `requirement-url` is supposed to point to a real JSON Schema. If you invent `https://example.com/my-security-team/controls/mycontrol.json` and no schema exists there, CALM Guard cannot evaluate the control. Use real URLs from FINOS CCC or your organisation's published control library.
+- **Control key with spaces, uppercase, or underscores.** The key must match `^[a-zA-Z0-9-]+$`. Keys like `Encryption In Transit` or `encryption_in_transit` will fail schema validation.
+- **Attaching a top-level control when a per-relationship control is more appropriate.** A top-level `encryption-in-transit` control means all connections must satisfy it. If only one specific connection requires mTLS (not all), attach the `mutual-tls` control to that relationship — not at the top level.
+- **Confusing `config` and `config-url`.** The `requirements[]` schema requires exactly one of `config` (inline object) or `config-url` (external URL to a JSON file satisfying the schema). You cannot include both. Pick the one that fits your workflow.
+
+## Knowledge check
+
+Review the questions for this chapter in [`quizzes/module-02-calm-fundamentals.yaml`](../../quizzes/module-02-calm-fundamentals.yaml).
+
+## Further reading
+
+- [Interfaces: describing communication contracts](./interfaces.mdx) — the prerequisite layer before controls
+- [Decorators: cross-cutting concerns as separate documents](./decorators.mdx) — how AIGF and threat models attach to architectures without modifying them
+- [CALM 1.2 control schema](https://calm.finos.org/release/1.2/meta/control.json) — the authoritative JSON Schema for the controls structure
+- [FINOS Common Controls Catalog](https://github.com/finos/common-controls-catalog) — canonical FSI control schema library
+- [FINOS CALM trading-system example](https://github.com/finos/architecture-as-code/blob/main/docs/static/calm-example/trading-system.architecture.json) — real-world controls in a production CALM architecture

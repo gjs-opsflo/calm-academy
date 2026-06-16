@@ -1,0 +1,455 @@
+---
+title: "Building your first architecture in CALM"
+slug: building-your-first-architecture
+module: 2
+chapter: 2.7
+estimated_minutes: 30
+prerequisites:
+  - decorators
+---
+
+## TL;DR
+
+- You have the vocabulary from chapters 2.1–2.6. This chapter assembles it into a complete, validated architecture from a blank document.
+- The system is the conference signup architecture: 6 nodes, 5 relationships, 1 interface, 1 control.
+- Seven build steps: skeleton → nodes → relationships → interface → control → validate → visualise.
+- After this chapter, you have everything you need to complete Lab 2 from a blank skeleton.
+- The completed file is at `code-examples/module-02-calm-fundamentals/conference-signup.architecture.json` — run `npx @finos/calm-cli validate` against it and the output should be `No issues found`.
+
+## Why it matters
+
+Chapters 2.1–2.6 taught the vocabulary. This chapter shows how the vocabulary composes. You have learned what nodes, relationships, interfaces, controls, and decorators are — now you build something with all of them.
+
+The conference signup system is small enough to build in one sitting but complex enough to exercise every concept from this module: all core node types you need, four relationship types, the interface contract on the service endpoint, and a system-wide security control. Walk through each step and you will have muscle memory for the CALM authoring workflow that every more complex architecture is built on.
+
+## The concept
+
+The conference signup system lets conference attendees sign up via a browser portal. Their registration is handled by a backend service that stores records in a database. The whole thing runs in a Kubernetes cluster. This is a real-world architecture pattern — you have probably built something like it.
+
+Here is what you are building:
+
+| Node | Type | Role |
+|---|---|---|
+| `conference-attendee` | actor | Person signing up |
+| `conference-website` | webclient | Browser portal |
+| `load-balancer` | network | Routes traffic into the cluster |
+| `attendees` | service | Backend handling registrations |
+| `attendees-store` | database | Persistent storage for registrations |
+| `k8s-cluster` | system | Kubernetes deployment environment |
+
+Five relationships connect them: one `interacts`, three `connects`, one `deployed-in`.
+
+### Step 1: Create the skeleton
+
+Every CALM architecture starts with the same four required fields plus two empty arrays.
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "conference-signup",
+  "name": "Conference Signup System",
+  "description": "A registration system where conference attendees sign up via a browser-based portal backed by a REST service and a database. The service and database are deployed in a Kubernetes cluster.",
+  "nodes": [],
+  "relationships": []
+}
+```
+
+`$schema` is the CALM 1.2 schema URL. It must be exactly `https://calm.finos.org/release/1.2/meta/calm.json` — not 1.0-rc1, not 1.0-rc2, not a local path. The CALM CLI uses this URL to select the right validator.
+
+`unique-id` is the machine identity for this architecture. It is what other CALM artifacts (decorators, patterns, CALM Hub entries) reference when pointing at this document.
+
+Save this as `conference-signup.architecture.json`. If you run `npx @finos/calm-cli validate -a conference-signup.architecture.json` now, it should return `No issues found` — an empty architecture with the four required fields is valid.
+
+![Conference signup step 1 — 6 nodes laid out with labels, pre-relationships](../illustrations/exported/m02-conference-signup-step1-nodes.svg)
+
+### Step 2: Add the 6 nodes
+
+Add the six nodes to the `nodes[]` array. Every node needs `unique-id`, `node-type`, `name`, and `description`.
+
+```json
+"nodes": [
+  {
+    "unique-id": "conference-attendee",
+    "node-type": "actor",
+    "name": "Conference Attendee",
+    "description": "Person registering for the conference via the signup portal."
+  },
+  {
+    "unique-id": "conference-website",
+    "node-type": "webclient",
+    "name": "Conference Website",
+    "description": "Browser-based signup portal where attendees complete and submit their registration details."
+  },
+  {
+    "unique-id": "load-balancer",
+    "node-type": "network",
+    "name": "Load Balancer",
+    "description": "Routes incoming HTTPS traffic from the conference website to the attendees service."
+  },
+  {
+    "unique-id": "attendees",
+    "node-type": "service",
+    "name": "Attendees Service",
+    "description": "Backend service handling signup requests: validates input, persists registrations, and returns confirmation responses."
+  },
+  {
+    "unique-id": "attendees-store",
+    "node-type": "database",
+    "name": "Attendees Store",
+    "description": "Persistent storage for registered attendees. Holds registration records including name, email, and session preferences."
+  },
+  {
+    "unique-id": "k8s-cluster",
+    "node-type": "system",
+    "name": "Kubernetes Cluster",
+    "description": "Production Kubernetes deployment environment hosting the load balancer, attendees service, and attendees store."
+  }
+]
+```
+
+Note `k8s-cluster` uses `node-type: "system"` — not `"ecosystem"`. The original FINOS conference signup pattern file asserts `system` for this node and that is correct for 1.2: an ecosystem is a large, uncontrolled external environment (like AWS, the internet). A Kubernetes cluster that you control and operate is a system.
+
+### Step 3: Add relationships in order
+
+Add the five relationships. The order in the JSON array does not affect validation, but adding them in data-flow order makes the file more readable.
+
+```json
+"relationships": [
+  {
+    "unique-id": "attendee-to-website",
+    "description": "Conference attendee uses the conference website to complete and submit the signup form.",
+    "relationship-type": {
+      "interacts": {
+        "actor": "conference-attendee",
+        "nodes": ["conference-website"]
+      }
+    }
+  },
+  {
+    "unique-id": "website-to-load-balancer",
+    "description": "Conference website sends signup requests to the load balancer over HTTPS.",
+    "relationship-type": {
+      "connects": {
+        "source": { "node": "conference-website" },
+        "destination": { "node": "load-balancer" }
+      }
+    },
+    "protocol": "HTTPS"
+  },
+  {
+    "unique-id": "load-balancer-to-attendees",
+    "description": "Load balancer forwards requests to the attendees service using mutual TLS for service-to-service authentication.",
+    "relationship-type": {
+      "connects": {
+        "source": { "node": "load-balancer" },
+        "destination": { "node": "attendees" }
+      }
+    },
+    "protocol": "mTLS"
+  },
+  {
+    "unique-id": "attendees-to-store",
+    "description": "Attendees service reads and writes registration records to the attendees store via JDBC.",
+    "relationship-type": {
+      "connects": {
+        "source": { "node": "attendees" },
+        "destination": { "node": "attendees-store" }
+      }
+    },
+    "protocol": "JDBC"
+  },
+  {
+    "unique-id": "deployed-in-k8s-cluster",
+    "description": "The load balancer, attendees service, and attendees store are deployed-in the Kubernetes cluster.",
+    "relationship-type": {
+      "deployed-in": {
+        "container": "k8s-cluster",
+        "nodes": ["load-balancer", "attendees", "attendees-store"]
+      }
+    }
+  }
+]
+```
+
+**Protocol placement reminder:** `protocol` is always a sibling of `relationship-type` at the top level of the relationship object — never nested inside the `connects` sub-object. This is the most common CALM authoring mistake. Every `connects` relationship that carries a wire protocol needs `"protocol": "..."` at the same level as `"relationship-type"`. See [relationships](./relationships.mdx) for a detailed explanation.
+
+![Conference signup step 2 — same 6 nodes with all 5 relationship types drawn](../illustrations/exported/m02-conference-signup-step2-relationships.svg)
+
+The `deployed-in` relationship declares runtime containment. The `k8s-cluster` node is the container; `load-balancer`, `attendees`, and `attendees-store` are the nodes deployed within it. The `conference-attendee` actor and `conference-website` webclient are not deployed-in the cluster — they exist outside it.
+
+![Side-by-side: deployed-in (runtime containment) vs composed-of (structural boundary)](../illustrations/exported/m02-deployed-in-composed-of.svg)
+
+Compare `deployed-in` to `composed-of`: `deployed-in` is a runtime concern ("these components are running inside this environment"); `composed-of` is a structural concern ("this system is logically defined by these components"). The conference signup system uses `deployed-in` because we are describing where things run, not defining a logical system boundary.
+
+### Step 4: Add an interface to the attendees service
+
+Add a freeform interface to the `attendees` node. Interfaces live in the node's `interfaces[]` array.
+
+```json
+{
+  "unique-id": "attendees",
+  "node-type": "service",
+  "name": "Attendees Service",
+  "description": "Backend service handling signup requests...",
+  "interfaces": [
+    {
+      "unique-id": "attendees-api",
+      "name": "Attendees REST API",
+      "protocol": "HTTPS",
+      "port": 8443
+    }
+  ]
+}
+```
+
+This interface says: "the attendees service is reachable at port 8443 over HTTPS." Tools can use this to check that port 8443 is open in the cluster's network policy, or that the TLS certificate on that port is valid. The interface makes the claim checkable.
+
+You could optionally update the `load-balancer-to-attendees` relationship to reference `attendees-api` via `destination.interfaces: ["attendees-api"]`. For this tutorial we keep the relationship interface-reference optional to match the canonical conference-signup example — but adding it would make the connection more precise.
+
+### Step 5: Add an encryption-in-transit control
+
+Add a top-level `controls` block. Top-level controls express system-wide policies.
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "conference-signup",
+  "controls": {
+    "encryption-in-transit": {
+      "description": "All data transmitted between system components must be encrypted using TLS 1.3 or higher with validated certificates. This control applies system-wide to every connection in this architecture.",
+      "requirements": [
+        {
+          "requirement-url": "https://example.com/security/encryption-in-transit.json",
+          "config": {
+            "protocol": "TLS",
+            "minimumVersion": "1.3",
+            "certificateValidation": "required",
+            "mutualTLS": "recommended"
+          }
+        }
+      ]
+    }
+  },
+  "nodes": [...],
+  "relationships": [...]
+}
+```
+
+The `controls` block is a sibling of `nodes` and `relationships` at the top level of the architecture document. The control key `encryption-in-transit` follows the kebab-case naming convention. The `requirement-url` points at the schema that defines what a compliant configuration looks like; the `config` provides the values this architecture commits to.
+
+Also add `metadata` at this point:
+
+```json
+"metadata": [
+  {
+    "name": "conference-signup",
+    "version": "1.0.0",
+    "created-by": "calm-academy module-02"
+  }
+]
+```
+
+### Step 6: Validate
+
+Run the CALM CLI validator against your completed file:
+
+```bash
+$ npx @finos/calm-cli validate -a conference-signup.architecture.json -f pretty
+```
+
+Expected output:
+
+```
+No issues found
+```
+
+If you see errors, the most common causes are:
+
+| Error | Likely cause |
+|---|---|
+| `undefined is not an object` or `Cannot read properties of undefined` | File is missing a required field or has a typo in a field name |
+| `node-type must be one of...` | You used an invented node type (`container`, `component`, `microservice`) that does not exist in CALM 1.2 |
+| `protocol is not a valid enum value` (if shown) | The `protocol` string is not in the allowed set — double-check exact capitalisation (`HTTPS`, `mTLS`, `JDBC`, `WebSocket`) |
+| `url-interface is not defined` | You copied from a 1.0-rc1 example — replace with freeform or definition-url interface forms |
+| `config: required` on interface-definition | You have a `definition-url` but forgot the required `config` field |
+
+If the validator crashes with a `TypeError` mentioning `nodes`, you may have an `options` relationship in your file. This is a known CALM CLI 1.44.1 limitation — avoid `options` relationships in files you plan to validate locally.
+
+### Step 7: Visualise in CALM Studio
+
+Open [CALM Studio](https://studio.calm.finos.org) in your browser. Click **Import** and paste or upload your `conference-signup.architecture.json`. The canvas will render:
+
+- 6 nodes in their canonical shapes (stick figure for actor, browser window for webclient, cloud/pipe for network, hexagon for service, cylinder for database, rounded rectangle for system)
+- 5 relationship edges with labels showing relationship type and protocol
+- The `attendees` node with an interface callout
+- The `k8s-cluster` system shown as a container around the deployed-in nodes
+
+You can click any node to see its properties, drag to rearrange the layout, and export the canvas as an SVG.
+
+![Conference signup step 3 — full diagram with interface callout and control badge](../illustrations/exported/m02-conference-signup-step3-complete.svg)
+
+## Code/CALM examples
+
+The complete architecture below is from `code-examples/module-02-calm-fundamentals/conference-signup.architecture.json`. This is the canonical reference for Lab 2. Every step in the lab asks you to reproduce a piece of this file from a blank skeleton.
+
+```json
+// from code-examples/module-02-calm-fundamentals/conference-signup.architecture.json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "conference-signup",
+  "name": "Conference Signup System",
+  "description": "A registration system where conference attendees sign up via a browser-based portal backed by a REST service and a database. The service and database are deployed in a Kubernetes cluster.",
+  "controls": {
+    "encryption-in-transit": {
+      "description": "All data transmitted between system components must be encrypted using TLS 1.3 or higher with validated certificates. This control applies system-wide to every connection in this architecture.",
+      "requirements": [
+        {
+          "requirement-url": "https://example.com/security/encryption-in-transit.json",
+          "config": {
+            "protocol": "TLS",
+            "minimumVersion": "1.3",
+            "certificateValidation": "required",
+            "mutualTLS": "recommended"
+          }
+        }
+      ]
+    }
+  },
+  "metadata": [
+    {
+      "name": "conference-signup",
+      "version": "1.0.0",
+      "created-by": "calm-academy module-02"
+    }
+  ],
+  "nodes": [
+    {
+      "unique-id": "conference-attendee",
+      "node-type": "actor",
+      "name": "Conference Attendee",
+      "description": "Person registering for the conference via the signup portal."
+    },
+    {
+      "unique-id": "conference-website",
+      "node-type": "webclient",
+      "name": "Conference Website",
+      "description": "Browser-based signup portal where attendees complete and submit their registration details."
+    },
+    {
+      "unique-id": "load-balancer",
+      "node-type": "network",
+      "name": "Load Balancer",
+      "description": "Routes incoming HTTPS traffic from the conference website to the attendees service. Terminates TLS from the public internet."
+    },
+    {
+      "unique-id": "attendees",
+      "node-type": "service",
+      "name": "Attendees Service",
+      "description": "Backend service handling signup requests: validates input, persists registrations, and returns confirmation responses.",
+      "interfaces": [
+        {
+          "unique-id": "attendees-api",
+          "name": "Attendees REST API",
+          "protocol": "HTTPS",
+          "port": 8443
+        }
+      ]
+    },
+    {
+      "unique-id": "attendees-store",
+      "node-type": "database",
+      "name": "Attendees Store",
+      "description": "Persistent storage for registered attendees. Holds registration records including name, email, and session preferences."
+    },
+    {
+      "unique-id": "k8s-cluster",
+      "node-type": "system",
+      "name": "Kubernetes Cluster",
+      "description": "Production Kubernetes deployment environment hosting the load balancer, attendees service, and attendees store."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "attendee-to-website",
+      "description": "Conference attendee uses the conference website to complete and submit the signup form.",
+      "relationship-type": {
+        "interacts": {
+          "actor": "conference-attendee",
+          "nodes": ["conference-website"]
+        }
+      }
+    },
+    {
+      "unique-id": "website-to-load-balancer",
+      "description": "Conference website sends signup requests to the load balancer over HTTPS.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "conference-website" },
+          "destination": { "node": "load-balancer" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "load-balancer-to-attendees",
+      "description": "Load balancer forwards requests to the attendees service using mutual TLS for service-to-service authentication within the cluster.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "load-balancer" },
+          "destination": { "node": "attendees" }
+        }
+      },
+      "protocol": "mTLS"
+    },
+    {
+      "unique-id": "attendees-to-store",
+      "description": "Attendees service reads and writes registration records to the attendees store via JDBC.",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "attendees" },
+          "destination": { "node": "attendees-store" }
+        }
+      },
+      "protocol": "JDBC"
+    },
+    {
+      "unique-id": "deployed-in-k8s-cluster",
+      "description": "The load balancer, attendees service, and attendees store are deployed-in the Kubernetes cluster. The k8s-cluster node is the runtime container for these three components.",
+      "relationship-type": {
+        "deployed-in": {
+          "container": "k8s-cluster",
+          "nodes": ["load-balancer", "attendees", "attendees-store"]
+        }
+      }
+    }
+  ]
+}
+```
+
+## Now you do it
+
+Lab 2 gives you a blank skeleton and step-by-step instructions to reproduce this architecture from scratch. After each step the lab validator checks your file against the expected state.
+
+[Lab 2: Build the conference signup architecture](../../labs/lab-02-conference-signup/LAB.md)
+
+## Common mistakes
+
+- **Missing `$schema`.** Without the `$schema` field, the CALM CLI cannot select the right validator and may refuse to validate the file or evaluate it against the wrong schema. Always include the exact 1.2 URL.
+- **Missing `description` on nodes.** Description is not required by the schema, but it is required by course discipline and CALM Guard's completeness rules. An architecture with undescribed nodes is not ready for governance review.
+- **Protocol nested inside `connects`.** `"protocol": "HTTPS"` belongs at the same level as `"relationship-type"` in the relationship object. If you nest it inside the `connects` sub-object — inside the `source` or `destination` objects — it will be silently ignored by most tooling. See [relationships](./relationships.mdx) for the canonical pattern.
+- **`deployed-in` container referencing a non-existent node.** The `container` field in a `deployed-in` relationship must reference a `unique-id` that exists in the `nodes[]` array. If you write `"container": "kubernetes-cluster"` but the node's `unique-id` is `"k8s-cluster"`, the CALM CLI will flag a broken reference.
+- **Copying a 1.0-rc1 example.** The FINOS conference signup pattern file (`conference-signup.pattern.json`) uses `1.0-rc2` schema and `1.0-rc1` interface types (`url-interface`, `host-port-interface`, `container-image-interface`). None of those interface types exist in CALM 1.2. Always check the `$schema` URL of any example you copy from before including it in a 1.2 file.
+- **Using `"node-type": "ecosystem"` for the Kubernetes cluster.** The cluster is a controlled, operated system — not an uncontrolled external ecosystem. Use `"node-type": "system"`. `ecosystem` is for things like "the internet", "AWS", or "the production VPC" that you treat as a boundary rather than something you own and control end-to-end.
+- **Empty `data` in decorators for this architecture.** If you add a threat decorator to this architecture (which Lab 2 asks you to do as an extension), remember that `data: {}` is invalid. The `data` object requires at least one property.
+
+## Knowledge check
+
+Review the questions for this chapter in [`quizzes/module-02-calm-fundamentals.yaml`](../../quizzes/module-02-calm-fundamentals.yaml).
+
+## Further reading
+
+- [Decorators: cross-cutting concerns as separate documents](./decorators.mdx) — how to add threat models and governance overlays to this architecture
+- [Lab 2: Build the conference signup architecture](../../labs/lab-02-conference-signup/LAB.md) — hands-on reproduction of everything in this chapter
+- [CALM Studio](https://studio.calm.finos.org) — visualise and export your architecture
+- [FINOS CALM CLI](https://github.com/finos/architecture-as-code/tree/main/calm/cli) — validate, lint, and generate from CALM files
+- [conference-signup.architecture.json](../../code-examples/module-02-calm-fundamentals/conference-signup.architecture.json) — the complete reference file for this chapter
