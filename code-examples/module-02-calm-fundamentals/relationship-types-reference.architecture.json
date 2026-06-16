@@ -2,7 +2,7 @@
   "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
   "unique-id": "relationship-types-reference",
   "name": "CALM 1.2 Relationship Types Reference",
-  "description": "A reference architecture demonstrating all 5 CALM 1.2 relationship types using an FSI payments platform scenario. Each relationship illustrates a distinct relationship-type: interacts, connects (with HTTPS), connects (with JDBC), deployed-in, composed-of, and options. The protocol field on connects relationships is always at the TOP LEVEL of the relationship object — never nested inside the connects sub-object.",
+  "description": "A reference architecture demonstrating four of the five CALM 1.2 relationship types using an FSI payments platform scenario: interacts, connects (with HTTPS and JDBC), deployed-in, and composed-of. The protocol field on connects relationships is always at the TOP LEVEL of the relationship object — never nested inside the connects sub-object. The fifth type, options, is demonstrated in Chapter 2.3 via an inline code snippet; it is excluded here due to a known CALM CLI 1.44.1 limitation where the validator crashes on options relationships.",
   "nodes": [
     {
       "unique-id": "payments-analyst",
@@ -26,7 +26,7 @@
       "unique-id": "notifications-service",
       "node-type": "service",
       "name": "Notifications Service",
-      "description": "Service that sends payment status notifications to downstream consumers via message queue."
+      "description": "Service that sends payment status notifications to downstream consumers."
     },
     {
       "unique-id": "payments-db",
@@ -71,7 +71,7 @@
     },
     {
       "unique-id": "payments-service-to-db",
-      "description": "Payments Service reads and writes payment records to the Payments Database using JDBC. Protocol is at the top level — a sibling of relationship-type.",
+      "description": "Payments Service reads and writes payment records to the Payments Database using JDBC. Protocol is at the top level — a sibling of relationship-type, not nested inside connects.",
       "relationship-type": {
         "connects": {
           "source": { "node": "payments-service" },
@@ -98,24 +98,6 @@
           "container": "payments-platform",
           "nodes": ["payments-service", "notifications-service"]
         }
-      }
-    },
-    {
-      "unique-id": "messaging-architecture-options",
-      "description": "An architectural decision point: the Payments Service can notify downstream consumers either synchronously (via HTTPS callbacks) or asynchronously (via AMQP message queue). The options relationship captures this ADR-in-spec decision branch.",
-      "relationship-type": {
-        "options": [
-          {
-            "description": "Synchronous notification: Payments Service calls downstream consumers directly over HTTPS. Simpler integration but tighter coupling and shared failure domain.",
-            "nodes": ["payments-service", "notifications-service"],
-            "relationships": []
-          },
-          {
-            "description": "Asynchronous notification: Payments Service publishes to a message queue; Notifications Service consumes independently. Decoupled, resilient, but introduces a message broker dependency.",
-            "nodes": ["payments-service", "notifications-service"],
-            "relationships": []
-          }
-        ]
       }
     }
   ]
