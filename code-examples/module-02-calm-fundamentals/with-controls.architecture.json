@@ -1,0 +1,120 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "with-controls",
+  "name": "CALM 1.2 Controls Reference",
+  "description": "A reference architecture demonstrating controls at three attachment scopes in CALM 1.2: top-level (system-wide policies), per-node (data classification on a specific node), and per-relationship (mTLS enforcement on a specific connection). The scenario is a KYC (Know Your Customer) compliance service used in FSI onboarding workflows.",
+  "controls": {
+    "encryption-in-transit": {
+      "description": "All data transmitted between system components must be encrypted using TLS 1.3 or higher with validated certificates. This control applies system-wide to every connection in this architecture.",
+      "requirements": [
+        {
+          "requirement-url": "https://example.com/security/encryption-in-transit.json",
+          "config": {
+            "protocol": "TLS",
+            "minimumVersion": "1.3",
+            "certificateValidation": "required"
+          }
+        }
+      ]
+    }
+  },
+  "nodes": [
+    {
+      "unique-id": "compliance-officer",
+      "node-type": "actor",
+      "name": "Compliance Officer",
+      "description": "Human reviewer responsible for approving KYC checks and monitoring compliance status."
+    },
+    {
+      "unique-id": "kyc-firewall",
+      "node-type": "network",
+      "name": "KYC Firewall",
+      "description": "Network perimeter control that restricts inbound traffic to authorised sources and enforces mTLS for internal service calls."
+    },
+    {
+      "unique-id": "kyc-service",
+      "node-type": "service",
+      "name": "KYC Service",
+      "description": "Backend service that executes identity verification checks, risk scoring, and regulatory lookups for customer onboarding."
+    },
+    {
+      "unique-id": "kyc-records-db",
+      "node-type": "database",
+      "name": "KYC Records Database",
+      "description": "Persistent store for KYC verification results, identity documents, and audit trails. Contains PII and is subject to GDPR and FCA data retention rules.",
+      "controls": {
+        "data-classification": {
+          "description": "KYC records contain Personally Identifiable Information (PII) subject to GDPR Article 5 retention limitations and FCA SYSC 9.1 recordkeeping requirements. Data must be classified and retention enforced.",
+          "requirements": [
+            {
+              "requirement-url": "https://finos.org/ccc/controls/data-classification.requirement.json",
+              "config": {
+                "classification": "PII",
+                "retention-days": 2555,
+                "encryptionAtRest": true,
+                "accessControl": "role-based"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "compliance-officer-to-kyc-service",
+      "description": "Compliance officer reviews KYC results and triggers manual overrides via the KYC service interface.",
+      "relationship-type": {
+        "interacts": {
+          "actor": "compliance-officer",
+          "nodes": ["kyc-service"]
+        }
+      }
+    },
+    {
+      "unique-id": "kyc-firewall-to-kyc-service",
+      "description": "The KYC firewall forwards validated requests to the KYC service using mutual TLS. This relationship carries a per-relationship control enforcing certificate rotation.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "kyc-firewall"
+          },
+          "destination": {
+            "node": "kyc-service"
+          }
+        }
+      },
+      "protocol": "mTLS",
+      "controls": {
+        "mutual-tls": {
+          "description": "Both the firewall and the KYC service must present valid certificates for this connection. Certificates must be rotated regularly to limit the blast radius of a key compromise.",
+          "requirements": [
+            {
+              "requirement-url": "https://example.com/security/mutual-tls.requirement.json",
+              "config": {
+                "certificate-rotation-days": 90,
+                "caBundle": "internal-ca-bundle",
+                "clientCertRequired": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "unique-id": "kyc-service-to-records-db",
+      "description": "KYC service reads and writes verification results and identity records to the KYC records database via JDBC.",
+      "relationship-type": {
+        "connects": {
+          "source": {
+            "node": "kyc-service"
+          },
+          "destination": {
+            "node": "kyc-records-db"
+          }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
