@@ -1,0 +1,333 @@
+module: 3
+title: "Module 3: The CALM Ecosystem"
+
+chapters:
+  - chapter: 3.1
+    slug: cli-toolbox
+    title: "CALM CLI: Your architecture toolbox"
+    questions:
+      - id: q3.1.1
+        type: multiple_choice
+        prompt: |
+          Which CALM CLI flag produces output in a format suitable for CI test dashboards (Jenkins, GitHub Actions)?
+        options:
+          - label: "-f pretty"
+            correct: false
+            explanation: "pretty format is for human-readable terminal output, not CI test dashboards."
+          - label: "-f json"
+            correct: false
+            explanation: "json format is machine-readable but not in JUnit XML format expected by CI test dashboard plugins."
+          - label: "-f junit"
+            correct: true
+            explanation: "Correct. --format junit (or -f junit) produces JUnit XML output that GitHub Actions, Jenkins, and most CI platforms can parse into test reports."
+          - label: "--format xml"
+            correct: false
+            explanation: "--format xml is not a valid flag. The junit option produces XML in JUnit format."
+        reference_section: "../content/module-03-calm-ecosystem/cli-toolbox.mdx#ci-integration"
+
+      - id: q3.1.2
+        type: multiple_choice
+        prompt: |
+          What is the difference between `calm validate -a arch.calm.json` and `calm validate -a arch.calm.json -p pattern.json`?
+        options:
+          - label: "They are identical — the -p flag has no effect"
+            correct: false
+            explanation: "They are not identical. The -p flag adds pattern conformance checking on top of schema validation, which can surface additional errors."
+          - label: "The first checks schema shape only; the second additionally checks pattern conformance"
+            correct: true
+            explanation: "Correct. Without -p, calm validate checks the architecture conforms to the CALM JSON Schema. With -p, it also validates that the architecture satisfies all constraints defined in the pattern file."
+          - label: "The first validates the architecture; the second validates the pattern file"
+            correct: false
+            explanation: "Both commands operate on the architecture file (-a). To validate the pattern file itself, you use calm validate -p pattern.json (without -a)."
+          - label: "The -p flag is required for all validate calls"
+            correct: false
+            explanation: "-p is optional. Without it, calm validate checks schema conformance only, which is the most common usage in early development before a pattern is applied."
+        reference_section: "../content/module-03-calm-ecosystem/cli-toolbox.mdx#the-validate-command"
+
+      - id: q3.1.3
+        type: short_answer
+        prompt: |
+          Name the calm CLI subcommand used to compare two CALM documents and output a human-readable summary of what changed.
+        accepted_answers:
+          - "calm diff"
+          - "diff"
+          - "calm diff -f summary"
+        case_sensitive: false
+        explanation: "calm diff compares two CALM documents. The -f summary flag produces a human-readable summary of node and relationship changes. The --exit-code flag makes it suitable as a CI gate."
+        reference_section: "../content/module-03-calm-ecosystem/cli-toolbox.mdx#the-diff-command"
+
+  - chapter: 3.2
+    slug: calm-studio-visual-design
+    title: "CALM Studio: visual-first architecture design"
+    questions:
+      - id: q3.2.1
+        type: multiple_choice
+        prompt: |
+          What is the primary URL to access CALM Studio without any local installation?
+        options:
+          - label: "https://calm.finos.org/studio"
+            correct: false
+            explanation: "This URL does not lead to CALM Studio. The canonical FINOS site is calm.finos.org, but Studio has its own subdomain."
+          - label: "https://studio.calm.finos.org"
+            correct: true
+            explanation: "Correct. studio.calm.finos.org is the public CALM Studio web app — zero install required. Open it in any browser and start importing or creating CALM architectures."
+          - label: "npx @calmstudio/mcp"
+            correct: false
+            explanation: "@calmstudio/mcp is the MCP server for AI-driven architecture creation — it is NOT on npm and is not a Studio URL. Never run this command; it will return a 404."
+          - label: "localhost:5173"
+            correct: false
+            explanation: "localhost:5173 is the local development server URL (npm run dev from the Studio repo). It is not accessible without cloning and running the Studio codebase locally."
+        reference_section: "../content/module-03-calm-ecosystem/calm-studio-visual-design.mdx#accessing-studio"
+
+      - id: q3.2.2
+        type: multiple_choice
+        prompt: |
+          Which description best explains CALM Studio's "bidirectional sync"?
+        options:
+          - label: "Canvas changes automatically push to CALM Hub"
+            correct: false
+            explanation: "Bidirectional sync refers to the relationship between the visual canvas and the JSON code panel within Studio. CALM Hub is a separate registry — Studio does not automatically push to it."
+          - label: "Editing the diagram canvas updates the JSON panel, and editing the JSON panel updates the canvas"
+            correct: true
+            explanation: "Correct. Bidirectional sync means the canvas and JSON panel stay in sync in both directions. Drag a node on the canvas and the JSON updates. Edit the JSON and the canvas re-renders. A mutex prevents feedback loops."
+          - label: "Two Studio windows can sync their state in real time"
+            correct: false
+            explanation: "Studio does not offer multi-window real-time sync. Each Studio session is independent. Bidirectional sync describes the canvas-to-JSON-panel relationship within a single session."
+          - label: "The VSCode Preview Panel syncs with CALM Studio web"
+            correct: false
+            explanation: "The VSCode extension Preview Panel and CALM Studio web are independent tools. They both render CALM JSON visually, but they do not sync with each other."
+        reference_section: "../content/module-03-calm-ecosystem/calm-studio-visual-design.mdx#bidirectional-sync"
+
+  - chapter: 3.3
+    slug: calm-hub-architecture-registry
+    title: "CALM Hub: the architecture registry"
+    questions:
+      - id: q3.3.1
+        type: multiple_choice
+        prompt: |
+          What storage mode does the CALM Hub docker-compose quickstart use?
+        options:
+          - label: "MongoDB with authentication enabled"
+            correct: false
+            explanation: "The docker-compose quickstart uses the no-auth profile. Authentication (OIDC or proxy-auth) is for production deployments, not the local quickstart."
+          - label: "MongoDB without authentication — no-auth profile"
+            correct: true
+            explanation: "Correct. The docker-compose quickstart uses the no-auth profile: all requests are accepted without credentials. This is intentional for local development. The default Maven profile (without any flag) uses the secure profile which rejects all requests with 401."
+          - label: "NitriteDB embedded storage"
+            correct: false
+            explanation: "NitriteDB is the standalone storage mode for running Hub without any external database. The docker-compose quickstart uses MongoDB with the no-auth profile."
+          - label: "PostgreSQL"
+            correct: false
+            explanation: "CALM Hub does not support PostgreSQL. The two storage options are MongoDB (default and docker-compose) and NitriteDB (embedded standalone)."
+        reference_section: "../content/module-03-calm-ecosystem/calm-hub-architecture-registry.mdx#hub-architecture"
+
+      - id: q3.3.2
+        type: short_answer
+        prompt: |
+          Write the `calm hub` CLI command to list all architectures in a Hub instance running at http://localhost:8080.
+        accepted_answers:
+          - "calm hub list architectures --calm-hub-url http://localhost:8080"
+          - "calm hub list architectures"
+          - "npx @finos/calm-cli hub list architectures --calm-hub-url http://localhost:8080"
+        case_sensitive: false
+        explanation: "calm hub list architectures lists all architectures in a namespace. The --calm-hub-url flag specifies the Hub endpoint. If you have set a default in ~/.calm.json via calm init-config, the flag is optional."
+        reference_section: "../content/module-03-calm-ecosystem/calm-hub-architecture-registry.mdx#cli-hub-commands"
+
+      - id: q3.3.3
+        type: multiple_choice
+        prompt: |
+          Why does the CALM Hub return 401 on all requests when started via Maven without any profile flag?
+        options:
+          - label: "Hub requires a license key by default"
+            correct: false
+            explanation: "CALM Hub does not require a license key. It is an open-source project. The 401 response is caused by the default auth profile, not licensing."
+          - label: "The default Maven profile is 'secure' — all requests require authentication"
+            correct: true
+            explanation: "Correct. When you start Hub without a profile flag, Quarkus uses the 'secure' profile, which requires OIDC or proxy-auth on every request. To run Hub locally without credentials, add -Dquarkus.profile=no-auth to the Maven command, or use the docker-compose quickstart which already sets no-auth."
+          - label: "Maven does not support Hub startup — use Docker instead"
+            correct: false
+            explanation: "Maven is a supported way to run Hub. The issue is not Maven but the default authentication profile. Running mvn quarkus:dev with no profile flag activates the secure profile."
+          - label: "The no-auth profile must be manually disabled after first run"
+            correct: false
+            explanation: "The no-auth profile is not the default — it must be manually enabled with -Dquarkus.profile=no-auth. The secure profile is the default when no profile flag is provided."
+        reference_section: "../content/module-03-calm-ecosystem/calm-hub-architecture-registry.mdx#auth-profiles"
+
+  - chapter: 3.4
+    slug: calm-server-validation-service
+    title: "CALM Server: validation as a service"
+    questions:
+      - id: q3.4.1
+        type: multiple_choice
+        prompt: |
+          What HTTP endpoint does CALM Server expose for architecture validation?
+        options:
+          - label: "GET /calm/architectures"
+            correct: false
+            explanation: "/calm/architectures is a CALM Hub endpoint for architecture CRUD — not a CALM Server endpoint. CALM Server and CALM Hub are separate tools."
+          - label: "POST /calm/validate"
+            correct: true
+            explanation: "Correct. CALM Server exposes POST /calm/validate for architecture validation. You send the CALM JSON in the request body and receive a validation result with hasErrors, hasWarnings, and error details."
+          - label: "PUT /calm/schema"
+            correct: false
+            explanation: "PUT /calm/schema is not a CALM Server endpoint. CALM Server ships with bundled schemas — you do not upload schemas to it."
+          - label: "GET /calm/validate"
+            correct: false
+            explanation: "The validate endpoint must be POST (not GET) because you are sending the architecture JSON in the request body. GET requests do not carry a request body."
+        reference_section: "../content/module-03-calm-ecosystem/calm-server-validation-service.mdx#the-validate-endpoint"
+
+      - id: q3.4.2
+        type: multiple_choice
+        prompt: |
+          A platform team wants to enforce that all teams validate their architectures against the same schema version without requiring CLI installation on every developer machine. Which tool is most appropriate?
+        options:
+          - label: "CALM Studio"
+            correct: false
+            explanation: "CALM Studio is a visual design tool — it is not a platform validation service. Teams cannot call Studio from their CI pipelines as a shared validation endpoint."
+          - label: "CALM Server"
+            correct: true
+            explanation: "Correct. CALM Server exposes POST /calm/validate as an HTTP endpoint with bundled schemas. Teams call the shared endpoint from their CI pipelines — no CLI install required per developer. The platform team controls the server and can pin the schema version centrally."
+          - label: "calm validate CLI per developer"
+            correct: false
+            explanation: "The CLI requires installation on every developer machine and each developer may use a different version. This does not give the platform team centralized schema version control."
+          - label: "CALM Hub only"
+            correct: false
+            explanation: "CALM Hub is an architecture registry (push/pull/list). It does not expose a validation endpoint. Validation is CALM Server's responsibility."
+        reference_section: "../content/module-03-calm-ecosystem/calm-server-validation-service.mdx#cli-vs-server"
+
+  - chapter: 3.5
+    slug: vscode-extension
+    title: "VSCode extension: CALM in your editor"
+    questions:
+      - id: q3.5.1
+        type: multiple_choice
+        prompt: |
+          What is the official name and publisher of the CALM VSCode extension?
+        options:
+          - label: "\"CALM Validator\" by FINOS"
+            correct: false
+            explanation: "The extension is not called CALM Validator. Using the wrong name in the Extensions search will return no results or an unrelated extension."
+          - label: "\"CALM Tools\" by FINOS"
+            correct: true
+            explanation: "Correct. The extension is named 'CALM Tools' and is published by FINOS. Search for 'CALM Tools' in the VSCode Extensions sidebar, or install with: code --install-extension FINOS.calm-vscode-plugin"
+          - label: "\"Architecture as Code\" by FINOS"
+            correct: false
+            explanation: "Architecture as Code is the name of the FINOS GitHub organization and project, not the VSCode extension. The extension is specifically named 'CALM Tools'."
+          - label: "\"CALM Studio\" by FINOS"
+            correct: false
+            explanation: "CALM Studio is the browser-based visual design tool at studio.calm.finos.org. It is not a VSCode extension. The VSCode extension is named 'CALM Tools'."
+        reference_section: "../content/module-03-calm-ecosystem/vscode-extension.mdx#installing-the-extension"
+
+      - id: q3.5.2
+        type: short_answer
+        prompt: |
+          The CALM VSCode extension validates your architecture automatically without network access. What enables this offline validation capability?
+        accepted_answers:
+          - "bundled schemas"
+          - "bundled CALM schemas"
+          - "built-in schemas"
+          - "the extension includes bundled CALM 1.2 schemas"
+        case_sensitive: false
+        explanation: "The CALM Tools extension ships with bundled CALM 1.2 schemas. When you open or save a .calm.json file, the extension validates against the local bundled schemas — no network request required. This makes it work offline and in air-gapped environments."
+        reference_section: "../content/module-03-calm-ecosystem/vscode-extension.mdx#real-time-validation"
+
+  - chapter: 3.6
+    slug: patterns-and-standards
+    title: "Patterns and standards: the blueprint system"
+    questions:
+      - id: q3.6.1
+        type: code_completion
+        prompt: |
+          Complete the CALM CLI command to generate an architecture from a pattern file called
+          `secure-api-service.pattern.json` and save it to `my-api.calm.json`.
+        snippet: |
+          npx @finos/calm-cli <BLANK> -p secure-api-service.pattern.json -o my-api.calm.json
+        accepted_answers:
+          - "generate"
+        explanation: "calm generate instantiates an architecture from a pattern. The -p flag specifies the pattern; -o specifies the output file."
+        reference_section: "../content/module-03-calm-ecosystem/patterns-and-standards.mdx#the-calm-generate-workflow"
+
+      - id: q3.6.2
+        type: multiple_choice
+        prompt: |
+          Which command validates an architecture's conformance against a specific pattern (in addition to schema validity)?
+        options:
+          - label: "calm validate -a arch.calm.json"
+            correct: false
+            explanation: "This performs schema-only validation — it checks that the architecture conforms to the CALM JSON Schema, but does not check pattern conformance. Missing the -p flag means pattern constraints are not evaluated."
+          - label: "calm validate -a arch.calm.json -p pattern.json"
+            correct: true
+            explanation: "Correct. Adding -p pattern.json makes calm validate check two things: (1) schema conformance against CALM 1.2, and (2) pattern conformance — all required nodes and relationships defined in the pattern must be present in the architecture."
+          - label: "calm generate -p pattern.json"
+            correct: false
+            explanation: "calm generate creates a new architecture from a pattern — it does not validate an existing one. Use calm validate -a arch.calm.json -p pattern.json to check conformance of an existing architecture."
+          - label: "calm diff -a arch.calm.json -b pattern.json"
+            correct: false
+            explanation: "calm diff compares two CALM documents (two architecture versions, or two timeline moments). It does not check pattern conformance. The -a and -b flags are both expected to be architecture documents."
+        reference_section: "../content/module-03-calm-ecosystem/patterns-and-standards.mdx#validating-conformance-against-a-pattern"
+
+      - id: q3.6.3
+        type: short_answer
+        prompt: |
+          In one sentence, explain the relationship between a CALM pattern file and a CALM architecture file.
+        accepted_answers:
+          - "A pattern is a template defining required nodes and relationships; an architecture is a conforming instance of the pattern"
+          - "Pattern is the template; architecture is the instance that conforms to it"
+          - "A pattern defines what must exist; an architecture is built to satisfy the pattern"
+        case_sensitive: false
+        explanation: "A CALM pattern is a JSON Schema document that defines constraints (required nodes, required relationships, const values for node-type and unique-id). A CALM architecture is a document that satisfies those constraints. One pattern can have many conforming architectures; one architecture can conform to multiple patterns."
+        reference_section: "../content/module-03-calm-ecosystem/patterns-and-standards.mdx#what-a-pattern-is"
+
+  - chapter: 3.7
+    slug: cicd-integration
+    title: "CI/CD integration: architecture gates"
+    questions:
+      - id: q3.7.1
+        type: multiple_choice
+        prompt: |
+          In a GitHub Actions workflow using `calm diff --exit-code`, when does the step exit with a non-zero code?
+        options:
+          - label: "Only when the architecture has schema errors"
+            correct: false
+            explanation: "Schema errors are detected by calm validate, not calm diff. calm diff compares two architecture versions and reports structural differences — it does not perform schema validation."
+          - label: "Whenever changes are detected between the two architecture versions"
+            correct: true
+            explanation: "Correct. calm diff --exit-code exits non-zero any time it detects a difference between the two documents. This is useful for gating: compare the PR's architecture against the Hub-published baseline to catch unintended changes."
+          - label: "Only when nodes are added to the architecture"
+            correct: false
+            explanation: "calm diff --exit-code exits non-zero for any detected change — added nodes, removed nodes, changed relationships, modified properties. It is not limited to additions."
+          - label: "When the pattern conformance check fails"
+            correct: false
+            explanation: "calm diff does not check pattern conformance. Pattern conformance is checked by calm validate -p. calm diff only compares structural differences between two CALM documents."
+        reference_section: "../content/module-03-calm-ecosystem/cicd-integration.mdx#calm-diff-as-pr-review-automation"
+
+      - id: q3.7.2
+        type: multiple_choice
+        prompt: |
+          Why should schema validation and pattern validation run as SEPARATE steps in a CI pipeline?
+        options:
+          - label: "They are identical operations that must run twice for redundancy"
+            correct: false
+            explanation: "They are not identical. Schema validation checks the document is a valid CALM 1.2 document. Pattern validation checks that the architecture satisfies pattern-specific constraints. Running them separately is not redundancy — it is separation of concerns."
+          - label: "Separate steps produce clearer error messages — schema errors vs pattern conformance errors help engineers understand what to fix"
+            correct: true
+            explanation: "Correct. A schema error means the CALM document is malformed. A pattern conformance error means the architecture is valid CALM but does not satisfy the pattern's constraints (e.g., missing a required node type). Separating the steps makes CI logs easier to diagnose."
+          - label: "Pattern validation requires a separate CLI installation from schema validation"
+            correct: false
+            explanation: "Both validations use the same @finos/calm-cli package. The difference is the flags: calm validate -a for schema only, calm validate -a -p for schema plus pattern conformance."
+          - label: "Running them together causes a timeout in GitHub Actions"
+            correct: false
+            explanation: "There is no timeout issue with combining the flags. The reason to run them as separate steps is readability and diagnosability, not performance."
+        reference_section: "../content/module-03-calm-ecosystem/cicd-integration.mdx#two-validation-levels-in-one-pipeline"
+
+      - id: q3.7.3
+        type: short_answer
+        prompt: |
+          In a Hub-integrated CI pipeline, what happens to the architecture artifact immediately after a PR is merged to main?
+        accepted_answers:
+          - "calm hub push publishes the new architecture version to Hub"
+          - "the architecture is published to CALM Hub"
+          - "calm hub push architecture is run, storing a new version in Hub"
+          - "a new version is pushed to CALM Hub via calm hub push"
+        case_sensitive: false
+        explanation: "In a Hub-integrated pipeline, the merge-to-main event triggers calm hub push architecture, which stores a new versioned copy of the architecture in CALM Hub. This makes the latest validated architecture available to other teams via calm hub pull and to CALM Guard for continuous compliance monitoring."
+        reference_section: "../content/module-03-calm-ecosystem/cicd-integration.mdx#hub-integrated-pipeline"
