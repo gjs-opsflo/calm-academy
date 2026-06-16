@@ -1,0 +1,58 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "with-hub-metadata",
+  "name": "Order Processing Service (Hub-registered)",
+  "description": "Example architecture showing Hub namespace metadata conventions — org.mybank/order-processing/v1.0.0. Demonstrates how a CALM architecture references its Hub registry location in metadata.",
+  "metadata": [
+    {
+      "namespace": "org.mybank",
+      "artifact": "order-processing",
+      "version": "1.0.0",
+      "hub-url": "http://hub.mybank.internal:8080"
+    }
+  ],
+  "nodes": [
+    {
+      "unique-id": "order-portal",
+      "node-type": "webclient",
+      "name": "Order Portal",
+      "description": "Customer-facing web application for placing and tracking orders."
+    },
+    {
+      "unique-id": "order-service",
+      "node-type": "service",
+      "name": "Order Service",
+      "description": "REST API service that handles order creation, updates, and fulfillment workflow."
+    },
+    {
+      "unique-id": "orders-db",
+      "node-type": "database",
+      "name": "Orders Database",
+      "description": "Relational database storing order records, line items, and fulfillment status."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "portal-to-service",
+      "description": "Order Portal sends order requests to the Order Service over HTTPS",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-portal" },
+          "destination": { "node": "order-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "service-to-db",
+      "description": "Order Service reads and writes order records to the Orders Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "order-service" },
+          "destination": { "node": "orders-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
