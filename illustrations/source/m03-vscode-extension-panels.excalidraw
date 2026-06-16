@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — CALM Tools VSCode Extension Panels (Chapter 3.5)\n\nLayout: A wireframe of the VS Code application window with 4 labeled regions.\n\nLEFT SIDEBAR (narrow, ~10% width):\n  Label: 'CALM Tree View panel'\n  Shows a tree with 3 expandable sections:\n    - 'Nodes (5)' — expanded to show 3 node names\n    - 'Relationships (4)' — collapsed\n    - 'Flows (1)' — collapsed\n  Small CALM icon at top of sidebar.\n  Label below: 'Browse architecture structure'\n\nCENTER EDITOR (main area, ~50% width):\n  Label: 'JSON editor'\n  Shows ~8 lines of CALM JSON with indentation:\n    {\n      \"$schema\": \"...\",\n      \"nodes\": [\n        { \"unique-id\": \"waf\", ... }\n      ]\n    }\n  One line has a squiggly red underline (missing required field).\n  Label below: 'Edit CALM JSON — errors highlighted inline'\n\nRIGHT PANEL (~30% width):\n  Label: 'Preview Panel'\n  Shows 3 boxes (nodes) connected by 2 arrows (simplified architecture diagram).\n  Auto Layout button visible in top-right corner of panel.\n  Label below: 'Live diagram — updates as you type. Click node to inspect.'\n\nBOTTOM STRIP (full width):\n  Label: 'Problems panel'\n  Shows one red error icon + text: 'Property node-type is required at nodes[2]'\n  Clickable underline indicating navigation to error line.\n  Label: 'Errors surface in Problems panel — click to navigate'\n\nTitle above all panels: 'CALM Tools for VS Code — 4 panels in one editor'\nB&W only. Use box borders for each panel region. Clean wireframe style, no color.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — CALM Tools VSCode Extension Panels (Chapter 3.5)\n\nLayout: A wireframe of the VS Code application window with 4 labeled regions.\n\nLEFT SIDEBAR (narrow, ~10% width):\n  Label: 'CALM Tree View panel'\n  Shows a tree with 3 expandable sections:\n    - 'Nodes (5)' — expanded to show 3 node names\n    - 'Relationships (4)' — collapsed\n    - 'Flows (1)' — collapsed\n  Small CALM icon at top of sidebar.\n  Label below: 'Browse architecture structure'\n\nCENTER EDITOR (main area, ~50% width):\n  Label: 'JSON editor'\n  Shows ~8 lines of CALM JSON with indentation:\n    {\n      \"$schema\": \"...\",\n      \"nodes\": [\n        { \"unique-id\": \"waf\", ... }\n      ]\n    }\n  One line has a squiggly red underline (missing required field).\n  Label below: 'Edit CALM JSON — errors highlighted inline'\n\nRIGHT PANEL (~30% width):\n  Label: 'Preview Panel'\n  Shows 3 boxes (nodes) connected by 2 arrows (simplified architecture diagram).\n  Auto Layout button visible in top-right corner of panel.\n  Label below: 'Live diagram — updates as you type. Click node to inspect.'\n\nBOTTOM STRIP (full width):\n  Label: 'Problems panel'\n  Shows one red error icon + text: 'Property node-type is required at nodes[2]'\n  Clickable underline indicating navigation to error line.\n  Label: 'Errors surface in Problems panel — click to navigate'\n\nTitle above all panels: 'CALM Tools for VS Code — 4 panels in one editor'\nB&W only. Use box borders for each panel region. Clean wireframe style, no color."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

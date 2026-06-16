@@ -37,6 +37,9 @@ Stubs are replaced when user authors in Excalidraw and runs `bash scripts/export
 | m03-studio-canvas-anatomy | Studio Canvas: Node Palette, Canvas, JSON Panel, Properties | Module 3 (Ch 3.2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 | m03-bidirectional-sync | Studio Bidirectional Sync: Canvas edit → JSON update | Module 3 (Ch 3.2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 | m03-calm-server-platform-pattern | Validation as a Service vs Local CLI Pattern | Module 3 (Ch 3.4) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-vscode-extension-panels | VSCode Extension: 4 Panels (Tree, Editor, Preview, Problems) | Module 3 (Ch 3.5) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-cicd-gate-flow | GitHub Actions CI/CD Gate: PR → Validate → Pass/Fail Branches | Module 3 (Ch 3.7) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-full-stack-pipeline | Full Hub-Integrated Pipeline: PR to Deploy | Module 3 (Ch 3.7, slide deck) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 
 ## Updating This File
 
