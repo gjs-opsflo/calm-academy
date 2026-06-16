@@ -1,0 +1,83 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "$id": "https://example.org/calm/patterns/secure-api-service.pattern.json",
+  "type": "object",
+  "title": "Secure API Service Pattern",
+  "description": "A reusable architecture pattern enforcing a secure API service topology: a WAF/load balancer in front of an API service, which connects to a database. Ensures HTTPS on the public-facing connection.",
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "minItems": 3,
+      "prefixItems": [
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "waf-loadbalancer" },
+            "node-type": { "const": "network" },
+            "name": { "const": "WAF and Load Balancer" },
+            "description": { "type": "string" }
+          },
+          "required": ["unique-id", "node-type", "name", "description"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "api-service" },
+            "node-type": { "const": "service" },
+            "name": { "const": "Customer API Service" },
+            "description": { "type": "string" }
+          },
+          "required": ["unique-id", "node-type", "name", "description"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "customer-db" },
+            "node-type": { "const": "database" },
+            "name": { "const": "Customer Database" },
+            "description": { "type": "string" }
+          },
+          "required": ["unique-id", "node-type", "name", "description"]
+        }
+      ]
+    },
+    "relationships": {
+      "type": "array",
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "waf-to-api" },
+            "protocol": { "const": "HTTPS" },
+            "relationship-type": {
+              "const": {
+                "connects": {
+                  "source": { "node": "waf-loadbalancer" },
+                  "destination": { "node": "api-service" }
+                }
+              }
+            }
+          },
+          "required": ["unique-id", "protocol", "relationship-type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "api-to-db" },
+            "relationship-type": {
+              "const": {
+                "connects": {
+                  "source": { "node": "api-service" },
+                  "destination": { "node": "customer-db" }
+                }
+              }
+            }
+          },
+          "required": ["unique-id", "relationship-type"]
+        }
+      ]
+    }
+  },
+  "required": ["nodes", "relationships"]
+}
