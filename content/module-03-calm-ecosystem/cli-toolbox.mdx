@@ -1,0 +1,313 @@
+---
+title: "CALM CLI: Your architecture toolbox"
+slug: cli-toolbox
+module: 3
+chapter: 3.1
+estimated_minutes: 22
+prerequisites:
+  - building-your-first-architecture
+---
+
+## TL;DR
+
+- The CALM CLI ships 8 top-level commands: `validate`, `generate`, `diff`, `timeline`, `docify`, `template`, `init-ai`, and `hub` — install once with `npm install -g @finos/calm-cli`.
+- `calm validate` is the foundation of everything in this module — schema validation (`-a` only) and pattern conformance (`-a -p`) are two distinct operations, not one.
+- `-f junit` outputs JUnit XML for CI test dashboards (GitHub Actions, Jenkins, CircleCI) — always use it in pipelines.
+- `calm hub push/pull/list` ships in CLI 1.45.0 — it is not a gap; treat it as fully available.
+- `~/.calm.json` (created via `calm init-config`) stores your default Hub URL and remote host allowlist so you don't repeat flags on every command.
+
+## Why it matters
+
+Architecture diagrams rot. The moment a service changes, its Visio box becomes a lie. The CALM CLI closes that gap by making architecture validation as mechanical as a build check — you run it in CI, it fails on invalid documents, and drift becomes visible before it reaches production. Every other chapter in this module teaches a tool that builds on top of `calm validate`. Understanding the full command surface now means you will not be surprised later when Studio exports files that `validate` checks, or when Hub uses `calm hub push` to publish patterns that `generate` then instantiates.
+
+## The concept
+
+### The validate command
+
+`calm validate` checks a CALM document against the CALM 1.2 JSON Schema. It is the single most important command in the toolchain.
+
+**Schema validation only** (checks JSON shape and required fields):
+
+```bash
+calm validate -a arch.calm.json
+```
+
+**Pattern conformance** (checks schema AND verifies the architecture conforms to a specific pattern):
+
+```bash
+calm validate -a arch.calm.json -p secure-api-service.pattern.json
+```
+
+These are not the same operation. Without `-p`, the validator only checks that the document is a valid CALM 1.2 document — correct node types, required fields, valid protocol enums. With `-p`, it additionally checks that the architecture satisfies the pattern's constraints (required nodes, required topology, required protocols). You can have a perfectly valid CALM architecture that fails pattern conformance, and vice versa.
+
+Key flags:
+
+| Flag | Purpose |
+|------|---------|
+| `-a <file>` | Architecture file to validate |
+| `-p <file>` | Pattern file for conformance check (optional; combines with `-a`) |
+| `--timeline <file>` | Validate a CALM timeline file |
+| `-f json\|junit\|pretty` | Output format (default: `json`) |
+| `-o <file>` | Write output to file instead of stdout |
+| `--strict` | Fail on warnings as well as errors |
+| `-c <hub-url>` | Resolve remote schema URLs via a CALM Hub instance |
+
+**CI integration** — use `-f junit` to produce JUnit XML that GitHub Actions and Jenkins parse into test result dashboards:
+
+```bash
+calm validate -a arch.calm.json -f junit -o calm-results.xml
+```
+
+Then upload `calm-results.xml` as a test artifact. Most CI platforms render JUnit XML as a named test suite with pass/fail counts — your architecture validation becomes a first-class test.
+
+Full GitHub Actions pattern:
+
+```yaml
+- name: Install CALM CLI
+  run: npm install -g @finos/calm-cli
+- name: Validate architecture
+  run: calm validate -a arch.calm.json -f junit -o calm-results.xml
+- name: Upload results
+  uses: actions/upload-artifact@v4
+  if: always()
+  with:
+    name: calm-validation-results
+    path: calm-results.xml
+```
+
+### The generate command
+
+`calm generate` instantiates an architecture from a CALM pattern. The pattern defines the template (required nodes, required relationships, required protocols); `generate` creates a filled-in architecture document from it.
+
+**Interactive mode** (prompts for values):
+
+```bash
+npx @finos/calm-cli generate -p secure-api-service.pattern.json -o my-api.calm.json
+```
+
+The CLI walks you through each `const`-constrained field and prompts for a value. Useful for exploration.
+
+**Non-interactive** (scripting and CI):
+
+```bash
+npx @finos/calm-cli generate -p secure-api-service.pattern.json --option-choices '{"api-type":"REST"}' -o my-api.calm.json
+```
+
+**From a Hub-hosted pattern**:
+
+```bash
+npx @finos/calm-cli generate -p http://localhost:8080/calm/namespaces/myorg/patterns/secure-api -o my-api.calm.json
+```
+
+Key flags:
+
+| Flag | Purpose |
+|------|---------|
+| `-p <file\|url>` | Pattern file or Hub URL |
+| `-o <file>` | Output architecture file |
+| `--calm-hub-url <url>` | Hub base URL for remote pattern resolution |
+| `--option-choices <json>` | Pre-set answers for non-interactive generation |
+
+The `code-examples/module-03-calm-ecosystem/secure-api-generated.calm.json` file in this course is the result of running `calm generate -p secure-api-service.pattern.json`.
+
+### The diff command
+
+`calm diff` compares two CALM architecture documents and reports what changed — nodes added, nodes removed, relationships changed.
+
+**Basic diff** (human-readable summary):
+
+```bash
+calm diff -a code-examples/module-03-calm-ecosystem/timeline-moment-v1.calm.json \
+          -b code-examples/module-03-calm-ecosystem/timeline-moment-v2.calm.json \
+          -f summary
+```
+
+This produces a summary of what changed between v1 (3 nodes) and v2 (4 nodes — the email notification service was added).
+
+Key flags:
+
+| Flag | Purpose |
+|------|---------|
+| `-a <file>` | First architecture (the "before") |
+| `-b <file>` | Second architecture (the "after") |
+| `--timeline <file>` | Compare specific moments within a timeline file |
+| `--from <momentId>` | Start moment ID (used with `--timeline`) |
+| `--to <momentId>` | End moment ID (used with `--timeline`) |
+| `-f json\|summary` | Output format |
+| `--exit-code` | Exit non-zero when changes are detected |
+
+**Important: `--exit-code` is not what you think it is.**
+
+`--exit-code` exits non-zero when diff detects any change. This means if you naively add `calm diff --exit-code` to a CI job that compares the current PR branch against itself, every legitimate architecture update causes the job to fail. The correct pattern is to compare the PR version against the last Hub-published version:
+
+```bash
+# Gate on unexpected divergence from the published version
+calm diff -a http://hub:8080/calm/namespaces/myorg/architectures/secure-api \
+          -b architectures/secure-api.calm.json \
+          --exit-code
+```
+
+This gate asks: "Did this PR accidentally change the architecture in ways not tracked by Hub?" — not "Did the architecture change at all?" Using it on every commit against itself defeats the purpose.
+
+### The timeline command
+
+`calm timeline` synthesises a CALM timeline document from multiple versioned architecture files, providing a structured evolution record.
+
+```bash
+calm timeline -a v1.calm.json v2.calm.json v3.calm.json -o timeline.calm.json
+```
+
+The `-a` flag accepts multiple files in chronological order. The output is a CALM timeline document that `calm diff --timeline` and the VSCode extension's timeline navigator can use to browse architecture evolution over time.
+
+Key flags:
+
+| Flag | Purpose |
+|------|---------|
+| `-a <files...>` | Versioned architecture files in chronological order |
+| `-o <file>` | Output timeline file |
+
+### The docify command
+
+`calm docify` generates a documentation website from a CALM model — a browseable HTML representation of nodes, relationships, and controls.
+
+```bash
+calm docify -a architecture.calm.json
+```
+
+Useful for producing lightweight documentation from a CALM architecture without a full site build.
+
+![CALM CLI command taxonomy with top-level commands and key flags branching from a central root node](../illustrations/exported/m03-calm-cli-command-map.svg)
+
+### The template command
+
+`calm template` generates arbitrary files from CALM model data using Handlebars templates. Platform teams use this pattern to produce IaC (Terraform modules, Kubernetes manifests), API contracts, or documentation from a single CALM architecture source.
+
+If your CALM architecture is the source of truth, `calm template` is the bridge to any other format your toolchain requires — you define the template, the CLI merges in the architecture data.
+
+### The init-ai command
+
+`calm init-ai` augments a git repository with AI assistance configuration for CALM authoring. It writes instructions to the correct location for your chosen AI tool.
+
+```bash
+calm init-ai -p claude -d .
+```
+
+Supported providers via `-p`: `copilot`, `kiro`, `claude`, `codex`. The `-d` flag specifies the target directory (defaults to current directory).
+
+After running `calm init-ai -p claude`, your Claude Code configuration will include CALM spec guidance so that AI-assisted authoring stays within the 9 core node types and CALM 1.2 schema rules.
+
+### The hub subcommand
+
+`calm hub` is a subcommand group for interacting with a CALM Hub instance. It ships in CLI 1.45.0 — it is not a gap.
+
+**Push** (publish an artifact to Hub):
+
+```bash
+calm hub push architecture my-arch.calm.json
+calm hub push pattern my-pattern.pattern.json
+calm hub push standard my-standard.json
+```
+
+**Pull** (retrieve an artifact from Hub):
+
+```bash
+calm hub pull architecture
+calm hub pull pattern
+```
+
+**List** (browse Hub contents):
+
+```bash
+calm hub list architectures --calm-hub-url http://localhost:8080
+calm hub list namespaces --calm-hub-url http://localhost:8080
+calm hub list patterns --calm-hub-url http://localhost:8080
+```
+
+The Hub subcommand also includes `calm hub create` for creating Hub resources and additional push subcommands for `control-requirement` and `control-configuration`.
+
+Chapter [CALM Hub: The architecture registry](./calm-hub-architecture-registry.mdx) covers the full Hub workflow. This section introduces the command surface.
+
+### The `~/.calm.json` config file
+
+Create a local config file with `calm init-config`:
+
+```bash
+calm init-config --calm-hub-url http://localhost:8080
+```
+
+The config file stores:
+- `calm-hub-url` — default Hub URL used by all commands (so you don't repeat `--calm-hub-url` on every invocation)
+- `allowed-remote-hosts` — list of trusted hosts that the CLI is permitted to load remote schemas from
+
+```json
+{
+  "calm-hub-url": "http://localhost:8080",
+  "allowed-remote-hosts": ["calm.finos.org", "localhost"]
+}
+```
+
+### CI integration summary
+
+The install-and-validate pattern for GitHub Actions:
+
+```yaml
+- name: Install CALM CLI
+  run: npm install -g @finos/calm-cli
+
+- name: Validate architecture against schema
+  run: calm validate -a arch.calm.json -f pretty
+
+- name: Validate architecture against pattern
+  run: calm validate -a arch.calm.json -p patterns/secure-api-service.pattern.json -f junit -o calm-results.xml
+
+- name: Upload test results
+  uses: actions/upload-artifact@v4
+  if: always()
+  with:
+    name: calm-validation-results
+    path: calm-results.xml
+```
+
+Running schema validation and pattern validation as separate steps means your CI log clearly identifies which check failed.
+
+## Code/CALM examples
+
+The diff demo from this chapter uses two timeline snapshots from this course:
+
+- `code-examples/module-03-calm-ecosystem/timeline-moment-v1.calm.json` — v1 conference system (3 nodes)
+- `code-examples/module-03-calm-ecosystem/timeline-moment-v2.calm.json` — v2 conference system (4 nodes, email notification service added)
+
+Run the diff locally:
+
+```bash
+calm diff \
+  -a code-examples/module-03-calm-ecosystem/timeline-moment-v1.calm.json \
+  -b code-examples/module-03-calm-ecosystem/timeline-moment-v2.calm.json \
+  -f summary
+```
+
+The output will show one added node (`email-notification-service`) and one added relationship (`registration-service → email-notification-service`).
+
+## Common mistakes
+
+- **Confusing schema validation with pattern validation.** Running `calm validate -a arch.calm.json` tells you the document is valid CALM 1.2. It does NOT tell you whether the architecture satisfies any pattern constraints. You need `-p <pattern>` for pattern conformance. These produce different error messages and should be separate CI steps.
+
+- **Using `--exit-code` on every diff.** `calm diff --exit-code` exits non-zero whenever changes are detected. If you compare the PR branch against itself or against its own prior commit, every legitimate architecture update causes the CI job to fail. Use `--exit-code` to gate against the last published (Hub) version, not against the current branch.
+
+- **Referencing `npx @calmstudio/mcp` in scripts.** The calmstudio MCP server is NOT available on npm — `npx @calmstudio/mcp` returns a 404. The MCP server is installed locally (see the setup instructions in [your first CALM document](../module-00-on-ramp/your-first-calm-document.mdx)). Do not confuse the CLI package (`@finos/calm-cli`) with the MCP server.
+
+- **Mixing `.calm.json` and `.architecture.json` extensions in CI globs.** The course CI uses `find code-examples -name "*.calm.json"`. Files named `*.architecture.json` (used in earlier modules) are not matched by this glob. If you add Module 3 code examples with the wrong extension, CI silently skips them. Always use `.calm.json` for Module 3 and later.
+
+- **Omitting `-f junit` in CI.** The default output format is `json`. JSON output is parseable but most CI platforms expect JUnit XML for test reporting panels. Always add `-f junit -o results.xml` in pipeline steps.
+
+- **Installing globally and also using `npx`.** Pick one. `npm install -g @finos/calm-cli` then `calm validate ...` (no `npx`). Or always use `npx @finos/calm-cli validate ...` (no global install). Mixing both leads to version mismatch confusion when you update the global install but the cached `npx` version differs.
+
+## Knowledge check
+
+Take the quiz: [../quizzes/module-03-ecosystem.yaml](../quizzes/module-03-ecosystem.yaml)
+
+## Further reading
+
+- [Patterns and standards: the blueprint system](./patterns-and-standards.mdx) — Chapter 3.6, covers `calm generate` and pattern conformance in depth
+- [CI/CD integration: architecture gates](./cicd-integration.mdx) — Chapter 3.7, the full GitHub Actions workflow
+- [CALM CLI npm page](https://www.npmjs.com/package/@finos/calm-cli) — official package with changelog and version history

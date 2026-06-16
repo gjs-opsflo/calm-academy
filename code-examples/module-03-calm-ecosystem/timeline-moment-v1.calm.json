@@ -1,0 +1,50 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "conference-system-v1",
+  "name": "Conference Registration System (v1)",
+  "description": "Initial conference system with web frontend and registration service. Used as calm diff baseline — version 1 with core registration capability only.",
+  "nodes": [
+    {
+      "unique-id": "attendee-portal",
+      "node-type": "webclient",
+      "name": "Attendee Portal",
+      "description": "Browser-based web application through which conference attendees browse sessions, register, and manage their bookings."
+    },
+    {
+      "unique-id": "registration-service",
+      "node-type": "service",
+      "name": "Registration Service",
+      "description": "Backend service that handles conference registration requests, validates attendee details, and persists registration records."
+    },
+    {
+      "unique-id": "registration-db",
+      "node-type": "database",
+      "name": "Registration Database",
+      "description": "Relational database storing conference registration records, attendee profiles, and session bookings."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "portal-to-registration",
+      "description": "Attendee Portal calls the Registration Service REST API to submit and retrieve registrations",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "attendee-portal" },
+          "destination": { "node": "registration-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "registration-to-db",
+      "description": "Registration Service reads and writes attendee registration records to the Registration Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "registration-service" },
+          "destination": { "node": "registration-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}

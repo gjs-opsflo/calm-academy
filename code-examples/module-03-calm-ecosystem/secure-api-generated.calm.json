@@ -1,0 +1,50 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "secure-api-generated",
+  "name": "Secure API Service Architecture (Generated)",
+  "description": "Demonstrates the output of calm generate from the secure-api-service pattern. A WAF and load balancer sits in front of a customer API service, which persists data to a customer database.",
+  "nodes": [
+    {
+      "unique-id": "waf-loadbalancer",
+      "node-type": "network",
+      "name": "WAF and Load Balancer",
+      "description": "Web application firewall and load balancer that terminates TLS, inspects inbound HTTP traffic, and forwards requests to the API service."
+    },
+    {
+      "unique-id": "api-service",
+      "node-type": "service",
+      "name": "Customer API Service",
+      "description": "REST API service that handles customer data requests. Sits behind the WAF/load balancer and communicates with the customer database for data persistence."
+    },
+    {
+      "unique-id": "customer-db",
+      "node-type": "database",
+      "name": "Customer Database",
+      "description": "Relational database storing customer records. Accessed exclusively by the Customer API Service via JDBC."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "waf-to-api",
+      "description": "WAF and load balancer forwards validated HTTPS requests to the Customer API Service",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "waf-loadbalancer" },
+          "destination": { "node": "api-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "api-to-db",
+      "description": "Customer API Service reads and writes customer records to the Customer Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "api-service" },
+          "destination": { "node": "customer-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}

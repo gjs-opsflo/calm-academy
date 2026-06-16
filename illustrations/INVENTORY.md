@@ -30,6 +30,10 @@ Stubs are replaced when user authors in Excalidraw and runs `bash scripts/export
 | m02-conference-signup-step1-nodes | Conference Signup Step 1: 6 Nodes, No Relationships | Module 2 (Ch 2.7, lab 2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 | m02-conference-signup-step2-relationships | Conference Signup Step 2: All 5 Relationships Added | Module 2 (Ch 2.7, lab 2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 | m02-conference-signup-step3-complete | Conference Signup Step 3: Complete with Interface + Control | Module 2 (Ch 2.7, lab 2) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-calm-cli-command-map | CLI Command Taxonomy with Key Flags | Module 3 (Ch 3.1, slide deck) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-pattern-vs-architecture | Pattern File to Architecture via calm generate | Module 3 (Ch 3.6) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-hub-namespace-tree | Hub Namespace Resource Tree with Versions | Module 3 (Ch 3.3) | stub — needs Excalidraw authoring | user | 2026-06-16 |
+| m03-hub-publish-consume-flow | Hub Publish-Consume Workflow | Module 3 (Ch 3.3) | stub — needs Excalidraw authoring | user | 2026-06-16 |
 
 ## Updating This File
 

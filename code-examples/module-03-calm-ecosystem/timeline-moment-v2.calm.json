@@ -1,0 +1,67 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "conference-system-v2",
+  "name": "Conference Registration System (v2)",
+  "description": "Extended conference system adding an email notification service for registration confirmations and reminders. Demonstrates calm diff changes relative to v1 — one new node and one new relationship added.",
+  "nodes": [
+    {
+      "unique-id": "attendee-portal",
+      "node-type": "webclient",
+      "name": "Attendee Portal",
+      "description": "Browser-based web application through which conference attendees browse sessions, register, and manage their bookings."
+    },
+    {
+      "unique-id": "registration-service",
+      "node-type": "service",
+      "name": "Registration Service",
+      "description": "Backend service that handles conference registration requests, validates attendee details, persists registration records, and triggers email notifications on successful registration."
+    },
+    {
+      "unique-id": "registration-db",
+      "node-type": "database",
+      "name": "Registration Database",
+      "description": "Relational database storing conference registration records, attendee profiles, and session bookings."
+    },
+    {
+      "unique-id": "email-notification-service",
+      "node-type": "service",
+      "name": "Email Notification Service",
+      "description": "Service that sends transactional emails to conference attendees — registration confirmations, schedule reminders, and cancellation notices."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "portal-to-registration",
+      "description": "Attendee Portal calls the Registration Service REST API to submit and retrieve registrations",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "attendee-portal" },
+          "destination": { "node": "registration-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "registration-to-db",
+      "description": "Registration Service reads and writes attendee registration records to the Registration Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "registration-service" },
+          "destination": { "node": "registration-db" }
+        }
+      },
+      "protocol": "JDBC"
+    },
+    {
+      "unique-id": "registration-to-email",
+      "description": "Registration Service triggers email notifications via the Email Notification Service on successful registration",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "registration-service" },
+          "destination": { "node": "email-notification-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    }
+  ]
+}

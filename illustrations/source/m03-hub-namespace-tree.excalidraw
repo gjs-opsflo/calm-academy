@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — CALM Hub Namespace Resource Tree (Chapter 3.3)\n\nLayout: Tree diagram, top-to-bottom.\n\nROOT NODE (top, centred, heavy border):\n  Box labelled: 'CALM Hub'\n  Caption below: 'The architecture registry'\n\nTWO NAMESPACE BRANCHES below root:\n\n  LEFT BRANCH — 'org.mybank' namespace:\n    Box: 'org.mybank'\n    4 resource type child nodes beneath it:\n      - 'architectures' → version annotation: 'v1.0.0, v1.1.0, v2.0.0'\n      - 'patterns' → version annotation: 'v1.0.0, v2.1.0'\n      - 'standards' → version annotation: 'v1.0.0'\n      - 'controls' → version annotation: 'v1.0.0'\n    Each resource type box has version numbers shown as small annotation text.\n\n  RIGHT BRANCH — 'finos' namespace:\n    Box: 'finos'\n    2 resource type child nodes beneath it:\n      - 'patterns' → annotation: 'reference architectures'\n      - 'controls' → annotation: 'CCC control catalog'\n\nBottom annotation (below both branches, centred):\n  'calm hub list namespaces --calm-hub-url http://localhost:8080'\n  'calm hub list architectures --calm-hub-url http://localhost:8080'\n\nTitle above diagram: 'Hub namespace resource tree'\n\nStyle: B&W only. No colour. Root node has thicker/heavier border to draw the eye.\nNamespace boxes have medium borders. Resource type leaf nodes have thin borders.\nVersion annotations shown in smaller grey-equivalent text (dashed underline or italic hint).\nConnector lines are thin and straight.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — CALM Hub Namespace Resource Tree (Chapter 3.3)\n\nLayout: Tree diagram, top-to-bottom.\n\nROOT NODE (top, centred, heavy border):\n  Box labelled: 'CALM Hub'\n  Caption below: 'The architecture registry'\n\nTWO NAMESPACE BRANCHES below root:\n\n  LEFT BRANCH — 'org.mybank' namespace:\n    Box: 'org.mybank'\n    4 resource type child nodes beneath it:\n      - 'architectures' → version annotation: 'v1.0.0, v1.1.0, v2.0.0'\n      - 'patterns' → version annotation: 'v1.0.0, v2.1.0'\n      - 'standards' → version annotation: 'v1.0.0'\n      - 'controls' → version annotation: 'v1.0.0'\n    Each resource type box has version numbers shown as small annotation text.\n\n  RIGHT BRANCH — 'finos' namespace:\n    Box: 'finos'\n    2 resource type child nodes beneath it:\n      - 'patterns' → annotation: 'reference architectures'\n      - 'controls' → annotation: 'CCC control catalog'\n\nBottom annotation (below both branches, centred):\n  'calm hub list namespaces --calm-hub-url http://localhost:8080'\n  'calm hub list architectures --calm-hub-url http://localhost:8080'\n\nTitle above diagram: 'Hub namespace resource tree'\n\nStyle: B&W only. No colour. Root node has thicker/heavier border to draw the eye.\nNamespace boxes have medium borders. Resource type leaf nodes have thin borders.\nVersion annotations shown in smaller grey-equivalent text (dashed underline or italic hint).\nConnector lines are thin and straight."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — Pattern to Architecture via calm generate (Chapter 3.6)\n\nLayout: Two main panels side-by-side, separated by a central arrow.\n\nLEFT PANEL (label at top: 'Pattern (.pattern.json)'):\n  A rounded rectangle representing the pattern file.\n  Inside the rectangle, show JSON Schema constraints symbolically:\n    - '\"node-type\": { \"const\": \"network\" }'\n    - '\"node-type\": { \"const\": \"service\" }'\n    - '\"node-type\": { \"const\": \"database\" }'\n    - '\"protocol\": { \"const\": \"HTTPS\" }'\n    - '\"minItems\": 3'\n  Below the rectangle, caption in smaller text:\n    'Template — defines what MUST exist'\n\nCENTRAL ARROW (pointing left → right):\n  Arrow label (above arrow): 'calm generate -p pattern.json -o arch.calm.json'\n  Arrow sub-label (below arrow): 'instantiation'\n\nRIGHT PANEL (label at top: 'Architecture (.calm.json)'):\n  Three node boxes stacked vertically with connecting arrows:\n    TOP BOX: 'WAF/LB' (network)\n    ↓ HTTPS arrow\n    MIDDLE BOX: 'API Service' (service)\n    ↓ JDBC arrow\n    BOTTOM BOX: 'Customer DB' (database)\n  Below the cluster, caption in smaller text:\n    'Instance — conforms to pattern constraints'\n\nBOTTOM ANNOTATION (below both panels, centred):\n  'Validate conformance: calm validate -a arch.calm.json -p pattern.json'\n\nTitle (above both panels): 'Pattern to architecture via calm generate'\n\nStyle: B&W only. No colour. Left panel has dashed border (template/schema feel).\nRight panel has solid border (concrete instance). Central arrow is thick/bold.\nUse consistent box shapes: rounded rectangles for panels, sharp rectangles for node boxes.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Pattern to Architecture via calm generate (Chapter 3.6)\n\nLayout: Two main panels side-by-side, separated by a central arrow.\n\nLEFT PANEL (label at top: 'Pattern (.pattern.json)'):\n  A rounded rectangle representing the pattern file.\n  Inside the rectangle, show JSON Schema constraints symbolically:\n    - '\"node-type\": { \"const\": \"network\" }'\n    - '\"node-type\": { \"const\": \"service\" }'\n    - '\"node-type\": { \"const\": \"database\" }'\n    - '\"protocol\": { \"const\": \"HTTPS\" }'\n    - '\"minItems\": 3'\n  Below the rectangle, caption in smaller text:\n    'Template — defines what MUST exist'\n\nCENTRAL ARROW (pointing left → right):\n  Arrow label (above arrow): 'calm generate -p pattern.json -o arch.calm.json'\n  Arrow sub-label (below arrow): 'instantiation'\n\nRIGHT PANEL (label at top: 'Architecture (.calm.json)'):\n  Three node boxes stacked vertically with connecting arrows:\n    TOP BOX: 'WAF/LB' (network)\n    ↓ HTTPS arrow\n    MIDDLE BOX: 'API Service' (service)\n    ↓ JDBC arrow\n    BOTTOM BOX: 'Customer DB' (database)\n  Below the cluster, caption in smaller text:\n    'Instance — conforms to pattern constraints'\n\nBOTTOM ANNOTATION (below both panels, centred):\n  'Validate conformance: calm validate -a arch.calm.json -p pattern.json'\n\nTitle (above both panels): 'Pattern to architecture via calm generate'\n\nStyle: B&W only. No colour. Left panel has dashed border (template/schema feel).\nRight panel has solid border (concrete instance). Central arrow is thick/bold.\nUse consistent box shapes: rounded rectangles for panels, sharp rectangles for node boxes."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
