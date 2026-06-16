@@ -116,7 +116,7 @@ Plans:
 **Requirements:** MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03
 **Dependencies:** Phase 3 complete; CALM CLI available locally; GitHub Actions runner available for Lab 3
 
-**Plans:** 1/5 plans executed
+**Plans:** 4/5 plans executed
 
 Plans:
 
@@ -126,9 +126,9 @@ Plans:
 
 **Wave 2** *(04-02, 04-03, 04-04 run in parallel — all blocked on Wave 1)*
 
-- [ ] 04-02-PLAN.md — Studio/Hub/Server chapters: Ch 3.2 Studio + Ch 3.3 Hub + Ch 3.4 Server + with-hub-metadata code example + 3 illustration stubs (m03-studio-canvas-anatomy, m03-bidirectional-sync, m03-calm-server-platform-pattern)
-- [ ] 04-03-PLAN.md — VSCode/CI chapters: Ch 3.5 VSCode extension + Ch 3.7 CI/CD integration + 3 illustration stubs (m03-vscode-extension-panels, m03-cicd-gate-flow, m03-full-stack-pipeline) — completes all 10 ILL-04 stubs
-- [ ] 04-04-PLAN.md — Hands-on: Lab 3 (LAB-03 CI/CD gate — LAB.md + starter/ + solution/) + Module 3 quiz (QUIZ-04, 18 questions across all 7 chapters)
+- [x] 04-02-PLAN.md — Studio/Hub/Server chapters: Ch 3.2 Studio + Ch 3.3 Hub + Ch 3.4 Server + with-hub-metadata code example + 3 illustration stubs (m03-studio-canvas-anatomy, m03-bidirectional-sync, m03-calm-server-platform-pattern)
+- [x] 04-03-PLAN.md — VSCode/CI chapters: Ch 3.5 VSCode extension + Ch 3.7 CI/CD integration + 3 illustration stubs (m03-vscode-extension-panels, m03-cicd-gate-flow, m03-full-stack-pipeline) — completes all 10 ILL-04 stubs
+- [x] 04-04-PLAN.md — Hands-on: Lab 3 (LAB-03 CI/CD gate — LAB.md + starter/ + solution/) + Module 3 quiz (QUIZ-04, 18 questions across all 7 chapters)
 
 **Wave 3** *(blocked on all Wave 2 completion)*
 
@@ -196,7 +196,7 @@ Plans:
 | 1 | 3/3 | Complete   | 2026-06-15 |
 | 2 | 2/2 | Complete   | 2026-06-15 |
 | 3 | 4/4 | Complete   | 2026-06-16 |
-| 4 | 1/5 | In Progress|  |
+| 4 | 4/5 | In Progress|  |
 | 5 | Site Launch Prep | SITE-01 | 1 week |
 | 6 | Polish + Milestone Close | (all 21) | 1 week |
 
