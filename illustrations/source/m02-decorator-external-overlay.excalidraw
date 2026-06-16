@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — Decorator as external overlay (Chapter 2.6)\n\nLayout: Two document boxes side-by-side, separated by a vertical dashed divider line.\n\nLeft document box (titled 'conference-signup.architecture.json'):\n  Shows a simplified node list:\n    - conference-attendee (actor)\n    - conference-website (webclient)\n    - load-balancer (network)\n    - attendees (service)      ← highlight with a grey background band\n    - attendees-store (database) ← highlight with a grey background band\n    - k8s-cluster (system)\n  Style: rounded rectangle border, document icon at top right.\n\nRight document box (titled 'conference-signup.threat-model.decorator.json'):\n  Shows fields:\n    unique-id: \"conference-signup-threat-model\"\n    type: \"threat\"\n    target: [\"conference-signup.architecture.json\"]\n    applies-to: [\"attendees\", \"attendees-store\"]\n    data: { stride: { spoofing: \"...\", ... } }\n  Style: rounded rectangle border, same size as left document.\n\nTwo dashed arrows from the RIGHT document to the LEFT:\n  1. Arrow from 'target' field to the LEFT document title/header — annotation: 'points at the file'\n  2. Arrow from 'applies-to' field to the highlighted attendees and attendees-store nodes — annotation: 'points at specific nodes'\n\nThe arrows cross the vertical divider line, demonstrating cross-document reference.\n\nAnnotation below both documents: 'Decorators live in separate documents. They enrich without modifying.'\n\nStyle: B&W only. Dashed arrows for decorator references. Solid borders for document boxes. No colour fills.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Decorator as external overlay (Chapter 2.6)\n\nLayout: Two document boxes side-by-side, separated by a vertical dashed divider line.\n\nLeft document box (titled 'conference-signup.architecture.json'):\n  Shows a simplified node list:\n    - conference-attendee (actor)\n    - conference-website (webclient)\n    - load-balancer (network)\n    - attendees (service)      ← highlight with a grey background band\n    - attendees-store (database) ← highlight with a grey background band\n    - k8s-cluster (system)\n  Style: rounded rectangle border, document icon at top right.\n\nRight document box (titled 'conference-signup.threat-model.decorator.json'):\n  Shows fields:\n    unique-id: \"conference-signup-threat-model\"\n    type: \"threat\"\n    target: [\"conference-signup.architecture.json\"]\n    applies-to: [\"attendees\", \"attendees-store\"]\n    data: { stride: { spoofing: \"...\", ... } }\n  Style: rounded rectangle border, same size as left document.\n\nTwo dashed arrows from the RIGHT document to the LEFT:\n  1. Arrow from 'target' field to the LEFT document title/header — annotation: 'points at the file'\n  2. Arrow from 'applies-to' field to the highlighted attendees and attendees-store nodes — annotation: 'points at specific nodes'\n\nThe arrows cross the vertical divider line, demonstrating cross-document reference.\n\nAnnotation below both documents: 'Decorators live in separate documents. They enrich without modifying.'\n\nStyle: B&W only. Dashed arrows for decorator references. Solid borders for document boxes. No colour fills."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}

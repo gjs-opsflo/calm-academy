@@ -1,0 +1,37 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "spec-text",
+      "type": "text",
+      "x": 20,
+      "y": 20,
+      "width": 760,
+      "height": 460,
+      "text": "DIAGRAM SPEC — Conference signup step 2: relationships added (Chapter 2.7, Lab 2)\n\nLayout: Same 6 nodes as step 1, now with 5 relationship arrows drawn.\n\nSame node positions as step 1:\n  - conference-attendee (actor) — stick figure, far left\n  - conference-website (webclient) — browser window\n  - load-balancer (network) — cloud/pipe shape\n  - attendees (service) — hexagon\n  - attendees-store (database) — cylinder\n  - k8s-cluster (system) — large dashed rounded rectangle around load-balancer, attendees, attendees-store\n\n5 Relationship arrows:\n  1. Solid open-arrowhead arrow from conference-attendee → conference-website\n     Label on arrow: 'interacts'\n\n  2. Solid arrow from conference-website → load-balancer\n     Label on arrow: 'connects'\n     Protocol badge on arrow: 'HTTPS'\n\n  3. Solid arrow from load-balancer → attendees\n     Label on arrow: 'connects'\n     Protocol badge on arrow: 'mTLS'\n\n  4. Solid arrow from attendees → attendees-store\n     Label on arrow: 'connects'\n     Protocol badge on arrow: 'JDBC'\n\n  5. Dashed lines from k8s-cluster container boundary to load-balancer, attendees, attendees-store (three separate dashed lines, one to each)\n     Label near container: 'deployed-in'\n\nCaption below: 'Step 2 — connect them. 5 relationships, 4 relationship types.'\n\nStyle: B&W only. Solid arrows for interacts and connects. Dashed lines for deployed-in. Protocol badges in small boxes on the connect arrows. No colour fills.",
+      "fontSize": 14,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "angle": 0,
+      "baseline": 18,
+      "lineHeight": 1.25,
+      "containerId": null,
+      "originalText": "DIAGRAM SPEC — Conference signup step 2: relationships added (Chapter 2.7, Lab 2)\n\nLayout: Same 6 nodes as step 1, now with 5 relationship arrows drawn.\n\nSame node positions as step 1:\n  - conference-attendee (actor) — stick figure, far left\n  - conference-website (webclient) — browser window\n  - load-balancer (network) — cloud/pipe shape\n  - attendees (service) — hexagon\n  - attendees-store (database) — cylinder\n  - k8s-cluster (system) — large dashed rounded rectangle around load-balancer, attendees, attendees-store\n\n5 Relationship arrows:\n  1. Solid open-arrowhead arrow from conference-attendee → conference-website\n     Label on arrow: 'interacts'\n\n  2. Solid arrow from conference-website → load-balancer\n     Label on arrow: 'connects'\n     Protocol badge on arrow: 'HTTPS'\n\n  3. Solid arrow from load-balancer → attendees\n     Label on arrow: 'connects'\n     Protocol badge on arrow: 'mTLS'\n\n  4. Solid arrow from attendees → attendees-store\n     Label on arrow: 'connects'\n     Protocol badge on arrow: 'JDBC'\n\n  5. Dashed lines from k8s-cluster container boundary to load-balancer, attendees, attendees-store (three separate dashed lines, one to each)\n     Label near container: 'deployed-in'\n\nCaption below: 'Step 2 — connect them. 5 relationships, 4 relationship types.'\n\nStyle: B&W only. Solid arrows for interacts and connects. Dashed lines for deployed-in. Protocol badges in small boxes on the connect arrows. No colour fills."
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
