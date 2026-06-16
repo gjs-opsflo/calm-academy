@@ -1,0 +1,27 @@
+name: CALM Architecture Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-architecture:
+    name: Validate CALM Architecture
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install CALM CLI
+        run: npm install -g @finos/calm-cli
+
+      # TODO: add calm validate step here
+      # Hint: npx @finos/calm-cli validate -a architectures/secure-api.calm.json -f pretty

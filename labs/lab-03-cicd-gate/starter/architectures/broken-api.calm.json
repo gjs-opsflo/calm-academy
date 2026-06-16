@@ -1,0 +1,49 @@
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "broken-api",
+  "name": "Broken API Architecture (Intentionally Invalid)",
+  "description": "An intentionally invalid CALM architecture used to demonstrate what happens when the CI gate catches a schema violation. The database node is missing a required 'description' field.",
+  "nodes": [
+    {
+      "unique-id": "waf-loadbalancer",
+      "node-type": "network",
+      "name": "WAF and Load Balancer",
+      "description": "Web application firewall and load balancer that terminates TLS, inspects inbound HTTP traffic, and forwards requests to the API service."
+    },
+    {
+      "unique-id": "api-service",
+      "node-type": "service",
+      "name": "Customer API Service",
+      "description": "REST API service that handles customer data requests. Sits behind the WAF/load balancer and communicates with the customer database for data persistence."
+    },
+    {
+      "unique-id": "customer-db",
+      "node-type": "database",
+      "name": "Customer Database"
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "waf-to-api",
+      "description": "WAF and load balancer forwards validated HTTPS requests to the Customer API Service",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "waf-loadbalancer" },
+          "destination": { "node": "api-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "api-to-db",
+      "description": "Customer API Service reads and writes customer records to the Customer Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "api-service" },
+          "destination": { "node": "customer-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
