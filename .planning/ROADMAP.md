@@ -80,22 +80,22 @@ Plans:
 **Requirements:** MOD-03, LAB-02, QUIZ-03, ILL-03, SLIDE-02, CODE-01, CODE-02
 **Dependencies:** Phase 2 complete; all 9 core node types confirmed from CALM 1.2 spec
 
-**Plans:** 4 plans
+**Plans:** 4/4 plans complete
 
 Plans:
 
 **Wave 1**
 
-- [ ] 03-01-PLAN.md — Foundational vocabulary slice: Ch 2.1 spec + Ch 2.2 nodes + Ch 2.3 relationships + 2 code examples (node-types-reference, relationship-types-reference) + 6 illustration stubs
+- [x] 03-01-PLAN.md — Foundational vocabulary slice: Ch 2.1 spec + Ch 2.2 nodes + Ch 2.3 relationships + 2 code examples (node-types-reference, relationship-types-reference) + 6 illustration stubs
 
 **Wave 2** *(blocked on Wave 1)*
 
-- [ ] 03-02-PLAN.md — Advanced vocabulary slice: Ch 2.4 interfaces + Ch 2.5 controls + Ch 2.6 decorators + Ch 2.7 first architecture + 3 code examples (with-interfaces, with-controls, conference-signup) + 7 illustration stubs
+- [x] 03-02-PLAN.md — Advanced vocabulary slice: Ch 2.4 interfaces + Ch 2.5 controls + Ch 2.6 decorators + Ch 2.7 first architecture + 3 code examples (with-interfaces, with-controls, conference-signup) + 7 illustration stubs
 
 **Wave 3** *(blocked on Wave 2; 03-03 and 03-04 run in parallel)*
 
-- [ ] 03-03-PLAN.md — Hands-on: Lab 2 (LAB-02 conference signup) + Module 2 quiz (QUIZ-03, 18-21 questions across all 7 chapters)
-- [ ] 03-04-PLAN.md — Derived artifacts: Module 2 slide deck (SLIDE-02, 30-40 Marp slides) + 1-page cheatsheet (CODE-02)
+- [x] 03-03-PLAN.md — Hands-on: Lab 2 (LAB-02 conference signup) + Module 2 quiz (QUIZ-03, 18-21 questions across all 7 chapters)
+- [x] 03-04-PLAN.md — Derived artifacts: Module 2 slide deck (SLIDE-02, 30-40 Marp slides) + 1-page cheatsheet (CODE-02)
 
 **Success Criteria:**
 
@@ -115,6 +115,32 @@ Plans:
 **Mode:** mvp
 **Requirements:** MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03
 **Dependencies:** Phase 3 complete; CALM CLI available locally; GitHub Actions runner available for Lab 3
+
+**Plans:** 5 plans in 3 waves
+
+Plans:
+
+**Wave 1** *(foundational — unblocks all Wave 2 work)*
+
+- [ ] 04-01-PLAN.md — CI glob fix + Ch 3.1 CLI toolbox + Ch 3.6 Patterns + code examples (pattern + 3 .calm.json files) + 4 illustration stubs (m03-calm-cli-command-map, m03-pattern-vs-architecture, m03-hub-namespace-tree, m03-hub-publish-consume-flow)
+
+**Wave 2** *(04-02, 04-03, 04-04 run in parallel — all blocked on Wave 1)*
+
+- [ ] 04-02-PLAN.md — Studio/Hub/Server chapters: Ch 3.2 Studio + Ch 3.3 Hub + Ch 3.4 Server + with-hub-metadata code example + 3 illustration stubs (m03-studio-canvas-anatomy, m03-bidirectional-sync, m03-calm-server-platform-pattern)
+- [ ] 04-03-PLAN.md — VSCode/CI chapters: Ch 3.5 VSCode extension + Ch 3.7 CI/CD integration + 3 illustration stubs (m03-vscode-extension-panels, m03-cicd-gate-flow, m03-full-stack-pipeline) — completes all 10 ILL-04 stubs
+- [ ] 04-04-PLAN.md — Hands-on: Lab 3 (LAB-03 CI/CD gate — LAB.md + starter/ + solution/) + Module 3 quiz (QUIZ-04, 18 questions across all 7 chapters)
+
+**Wave 3** *(blocked on all Wave 2 completion)*
+
+- [ ] 04-05-PLAN.md — Derived artifact: Module 3 slide deck (SLIDE-03, 25-35 Marp slides, derived from 7 chapters + 10 m03-*.svg illustrations)
+
+**Cross-cutting constraints:**
+
+- All Module 3 code examples MUST use `.calm.json` extension (matches CI glob `*.calm.json`)
+- No `npx @calmstudio/mcp` in any chapter text — package is NOT on npm
+- CALM Studio: teach web (`https://studio.calm.finos.org`) only; Tauri desktop is "coming soon" — do NOT teach as available
+- Hub hub commands (`calm hub push/pull/list`) ship in CLI 1.45.0 — teach as available features, not gaps
+- Lab 3: Hub is a STRETCH GOAL ONLY — core lab requires no Docker and no running Hub instance
 
 **Success Criteria:**
 
@@ -169,7 +195,7 @@ Plans:
 |-------|------|--------------|---------------|
 | 1 | 3/3 | Complete   | 2026-06-15 |
 | 2 | 2/2 | Complete   | 2026-06-15 |
-| 3 | Module 2 — CALM Fundamentals | MOD-03, LAB-02, QUIZ-03, ILL-03, SLIDE-02, CODE-01, CODE-02 | 2.5 weeks |
+| 3 | 4/4 | Complete   | 2026-06-16 |
 | 4 | Module 3 — Ecosystem | MOD-04, LAB-03, QUIZ-04, ILL-04, SLIDE-03 | 2 weeks |
 | 5 | Site Launch Prep | SITE-01 | 1 week |
 | 6 | Polish + Milestone Close | (all 21) | 1 week |
