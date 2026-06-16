@@ -1,0 +1,328 @@
+---
+title: "Patterns and standards: the blueprint system"
+slug: patterns-and-standards
+module: 3
+chapter: 3.6
+estimated_minutes: 22
+prerequisites:
+  - vscode-extension
+---
+
+## TL;DR
+
+- A CALM Pattern is a JSON Schema document that defines the template for a conforming architecture — it uses `const` constraints to enforce required nodes, relationships, and protocols.
+- `calm generate -p pattern.json` instantiates a new architecture from the pattern; `calm validate -a arch.calm.json -p pattern.json` checks whether an existing architecture conforms.
+- Schema validation and pattern conformance are two separate CLI operations that produce different errors — always run them as separate CI steps.
+- Standards are org-specific JSON Schema extensions on top of the CALM spec — platform teams publish them to Hub; product teams must satisfy them.
+- CALM Hub is the versioned registry for all approved patterns and standards — `calm hub list patterns` browses available templates before you build.
+
+## Why it matters
+
+Telling every product team "build your API service this way" produces as many interpretations as there are teams. Patterns solve this by replacing prose guidance with enforced constraints. The WAF-in-front-of-API-behind-database topology is not a suggestion in a Confluence page — it is a CALM Pattern with `const` constraints that `calm validate -a -p` verifies on every PR. Teams that conform to the pattern get a green CI check. Teams that skip the WAF get a red one. Architecture standards become as enforceable as test coverage thresholds — and they propagate at the speed of a CLI command, not a committee meeting.
+
+## The concept
+
+### What a pattern is
+
+A CALM Pattern is a JSON Schema document. It uses the same `$schema` URL as a CALM architecture — `https://calm.finos.org/release/1.2/meta/calm.json` — but is validated with `calm validate -p` rather than `calm validate -a`. The pattern file defines:
+
+- Which node types must be present (via `const` on `node-type`)
+- Which relationships must exist (via `const` on `relationship-type`)
+- What protocols are required on specific connections (via `const` on `protocol`)
+- What metadata is mandatory (via `required` arrays)
+
+`calm validate -p pattern.json` validates that the pattern document itself is structurally valid. `calm generate -p pattern.json` uses the pattern as a template to produce a new architecture. `calm validate -a arch.calm.json -p pattern.json` checks that an existing architecture satisfies the pattern's constraints.
+
+### Pattern vs architecture vs standard
+
+| Artifact | Extension | Validates with | Purpose |
+|----------|-----------|----------------|---------|
+| Pattern | `.pattern.json` | `calm validate -p` | Template defining required topology — the "what must exist" |
+| Architecture | `.calm.json` | `calm validate -a` | Conforming instance of zero or more patterns — the "what does exist" |
+| Standard | (varies) | Referenced in `calm validate` call | Org-specific extension constraints on top of the CALM 1.2 spec |
+
+![Pattern file on the left with const constraints flowing via calm generate arrow to architecture file on the right with values filled in](../illustrations/exported/m03-pattern-vs-architecture.svg)
+
+The key distinction is temporal. A pattern exists before any architecture is built — it is the specification. An architecture exists after — it is the implementation. A standard exists at the organizational level — it constrains what patterns are allowed to specify.
+
+### The calm generate workflow
+
+`calm generate` reads a pattern file and produces a CALM architecture with the pattern's `const`-specified fields pre-filled. Fields without `const` constraints are left for the user to supply.
+
+**Interactive** (for exploration and manual authoring):
+
+```bash
+npx @finos/calm-cli generate -p path/to/secure-api-service.pattern.json -o my-api.calm.json
+```
+
+The CLI prompts for each non-const field. Useful when you are learning a pattern or customising a one-off architecture.
+
+**Non-interactive** (for scripting and CI):
+
+```bash
+npx @finos/calm-cli generate -p pattern.json --option-choices '{"api-type":"REST"}' -o arch.calm.json
+```
+
+**From a Hub-hosted pattern**:
+
+```bash
+npx @finos/calm-cli generate -p http://localhost:8080/calm/namespaces/myorg/patterns/secure-api -o arch.calm.json
+```
+
+The Hub URL form lets product teams consume the latest approved pattern without needing a local copy. When the platform team updates the pattern in Hub, all teams pull the updated constraints at their next `calm generate` invocation.
+
+### Building the course pattern: secure-api-service
+
+The following is the complete `code-examples/module-03-calm-ecosystem/secure-api-service.pattern.json` used throughout Lab 3:
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "$id": "https://example.org/calm/patterns/secure-api-service.pattern.json",
+  "type": "object",
+  "title": "Secure API Service Pattern",
+  "description": "A reusable architecture pattern enforcing a secure API service topology: a WAF/load balancer in front of an API service, which connects to a database. Ensures HTTPS on the public-facing connection.",
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "minItems": 3,
+      "prefixItems": [
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "waf-loadbalancer" },
+            "node-type": { "const": "network" },
+            "name": { "const": "WAF and Load Balancer" },
+            "description": { "type": "string" }
+          },
+          "required": ["unique-id", "node-type", "name", "description"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "api-service" },
+            "node-type": { "const": "service" },
+            "name": { "const": "Customer API Service" },
+            "description": { "type": "string" }
+          },
+          "required": ["unique-id", "node-type", "name", "description"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "customer-db" },
+            "node-type": { "const": "database" },
+            "name": { "const": "Customer Database" },
+            "description": { "type": "string" }
+          },
+          "required": ["unique-id", "node-type", "name", "description"]
+        }
+      ]
+    },
+    "relationships": {
+      "type": "array",
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "waf-to-api" },
+            "protocol": { "const": "HTTPS" },
+            "relationship-type": {
+              "const": {
+                "connects": {
+                  "source": { "node": "waf-loadbalancer" },
+                  "destination": { "node": "api-service" }
+                }
+              }
+            }
+          },
+          "required": ["unique-id", "protocol", "relationship-type"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "unique-id": { "const": "api-to-db" },
+            "relationship-type": {
+              "const": {
+                "connects": {
+                  "source": { "node": "api-service" },
+                  "destination": { "node": "customer-db" }
+                }
+              }
+            }
+          },
+          "required": ["unique-id", "relationship-type"]
+        }
+      ]
+    }
+  },
+  "required": ["nodes", "relationships"]
+}
+```
+
+What each constraint enforces:
+
+- `"node-type": { "const": "network" }` on the first node — an architecture conforming to this pattern MUST have a `network` node as its first element. Submitting a `service` as the first node fails pattern conformance.
+- `"protocol": { "const": "HTTPS" }` on the WAF→API relationship — the connection from the WAF to the API service MUST use HTTPS. A pattern conformance failure here means the learner's architecture is sending unencrypted traffic from the WAF to the service.
+- `"minItems": 3` on `nodes` — the architecture must have at least 3 nodes. An architecture with only the API service and database (skipping the WAF) fails this constraint.
+
+The generated architecture from this pattern is `code-examples/module-03-calm-ecosystem/secure-api-generated.calm.json`:
+
+```json
+{
+  "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
+  "unique-id": "secure-api-generated",
+  "name": "Secure API Service Architecture (Generated)",
+  "description": "Demonstrates the output of calm generate from the secure-api-service pattern.",
+  "nodes": [
+    {
+      "unique-id": "waf-loadbalancer",
+      "node-type": "network",
+      "name": "WAF and Load Balancer",
+      "description": "Web application firewall and load balancer..."
+    },
+    {
+      "unique-id": "api-service",
+      "node-type": "service",
+      "name": "Customer API Service",
+      "description": "REST API service that handles customer data requests..."
+    },
+    {
+      "unique-id": "customer-db",
+      "node-type": "database",
+      "name": "Customer Database",
+      "description": "Relational database storing customer records..."
+    }
+  ],
+  "relationships": [
+    {
+      "unique-id": "waf-to-api",
+      "description": "WAF forwards validated HTTPS requests to the Customer API Service",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "waf-loadbalancer" },
+          "destination": { "node": "api-service" }
+        }
+      },
+      "protocol": "HTTPS"
+    },
+    {
+      "unique-id": "api-to-db",
+      "description": "Customer API Service reads and writes to the Customer Database",
+      "relationship-type": {
+        "connects": {
+          "source": { "node": "api-service" },
+          "destination": { "node": "customer-db" }
+        }
+      },
+      "protocol": "JDBC"
+    }
+  ]
+}
+```
+
+Notice: the `const`-specified values (`"waf-loadbalancer"`, `"network"`, `"HTTPS"`) appear verbatim in the architecture. The `description` fields are free-form because the pattern used `"type": "string"` rather than `"const"`.
+
+### Validating conformance against a pattern
+
+**Schema-only validation** (checks CALM 1.2 spec shape):
+
+```bash
+calm validate -a arch.calm.json
+```
+
+**Pattern conformance** (checks CALM 1.2 spec shape AND pattern requirements):
+
+```bash
+calm validate -a arch.calm.json -p secure-api-service.pattern.json
+```
+
+These produce different errors. Schema errors look like: `"node-type must be one of: actor, ecosystem, system..."`. Pattern conformance errors look like: `"nodes[0].node-type must be equal to constant: network"`. Running both separately in CI makes it immediately obvious whether a failure is a spec violation or a topology violation.
+
+### Multi-pattern validation
+
+One architecture can be checked against multiple patterns simultaneously by running `calm validate` multiple times:
+
+```bash
+# Check topology matches the secure API pattern
+calm validate -a arch.calm.json -p patterns/secure-api-service.pattern.json
+
+# Check it also meets the org's data residency pattern
+calm validate -a arch.calm.json -p patterns/data-residency-eu.pattern.json
+
+# Check it satisfies the security standards pattern
+calm validate -a arch.calm.json -p patterns/security-baseline.pattern.json
+```
+
+This enables overlapping compliance: the same architecture can simultaneously satisfy architectural topology constraints, data residency rules, and security standards — each enforced by a separate pattern check, each producing targeted errors if violated.
+
+### Organizational standards
+
+Standards are org-specific JSON Schema extensions on top of the CALM 1.2 spec. Where a pattern enforces topology (which nodes and relationships must exist), a standard enforces naming conventions, metadata requirements, or cross-cutting constraints — for example: "every architecture MUST include a `data-asset` node describing the data it handles" or "all `database` nodes MUST have a `metadata` object with a `data-classification` field."
+
+Standards are stored in CALM Hub under the `/standards` endpoint:
+
+```bash
+calm hub push standard data-classification-standard.json --calm-hub-url http://hub:8080
+```
+
+Referenced in validate:
+
+```bash
+calm validate -a arch.calm.json -s http://hub:8080/calm/namespaces/myorg/standards/data-classification
+```
+
+Platform architects create and publish standards; product teams must satisfy them. The Hub provides discovery: `calm hub list standards --calm-hub-url http://localhost:8080`.
+
+### Building your organization's pattern library
+
+A pattern library is a namespace in CALM Hub containing all approved patterns for your organisation. The workflow:
+
+1. Platform architect authors a pattern (validates with `calm validate -p`)
+2. Architect publishes to Hub: `calm hub push pattern pattern.json --calm-hub-url http://hub:8080`
+3. Product teams browse: `calm hub list patterns --calm-hub-url http://hub:8080`
+4. Product teams generate: `calm generate -p http://hub:8080/calm/namespaces/myorg/patterns/secure-api -o arch.calm.json`
+5. CI validates conformance: `calm validate -a arch.calm.json -p http://hub:8080/calm/namespaces/myorg/patterns/secure-api`
+
+When the platform team updates a pattern, version it (v2.0.0). Old consumers continue to reference v1.0.0 via their pinned Hub URL until they opt in to the new version — no breaking changes forced on teams without migration time.
+
+## Code/CALM examples
+
+The full `secure-api-service.pattern.json` is shown in the [Building the course pattern](#building-the-course-pattern-secure-api-service) section above. The generated architecture `secure-api-generated.calm.json` is its conforming instance.
+
+Both files are in `code-examples/module-03-calm-ecosystem/` and both validate:
+
+```bash
+# Validate the pattern itself
+npx @finos/calm-cli validate -p code-examples/module-03-calm-ecosystem/secure-api-service.pattern.json
+
+# Validate the generated architecture (schema check)
+npx @finos/calm-cli validate -a code-examples/module-03-calm-ecosystem/secure-api-generated.calm.json
+
+# Validate the generated architecture against the pattern (conformance check)
+npx @finos/calm-cli validate \
+  -a code-examples/module-03-calm-ecosystem/secure-api-generated.calm.json \
+  -p code-examples/module-03-calm-ecosystem/secure-api-service.pattern.json
+```
+
+All three exit 0 with 0 errors.
+
+## Common mistakes
+
+- **Validating a pattern with `-a` instead of `-p`.** `calm validate -a my-pattern.pattern.json` fails with confusing errors because the pattern document's top-level structure (JSON Schema with `properties` and `prefixItems`) does not match what the CALM 1.2 spec expects from an architecture document. Always use `-p` for pattern files.
+
+- **Expecting `calm generate` to be non-interactive without `--option-choices`.** In CI, `calm generate -p pattern.json -o arch.calm.json` hangs waiting for interactive input. Always add `--option-choices '{}'` (or a JSON object with your choices) when running in automated pipelines.
+
+- **Treating schema validation and pattern conformance as the same check.** An architecture can be valid CALM 1.2 (passes `calm validate -a`) but still violate a pattern (fails `calm validate -a -p`). Run both checks explicitly in CI as separate steps so you know which category of failure you are dealing with.
+
+- **Expecting the validator to catch semantic errors.** `calm validate` checks structural conformance — correct node types, required fields, valid protocol enums, pattern topology. It does not check whether your architecture is a good design, whether the named service actually exists, or whether the described data flow makes sense. Semantic review is still a human or CALM Guard concern.
+
+## Knowledge check
+
+Take the quiz: [../quizzes/module-03-ecosystem.yaml](../quizzes/module-03-ecosystem.yaml)
+
+## Further reading
+
+- [CI/CD integration: architecture gates](./cicd-integration.mdx) — Chapter 3.7, using patterns in GitHub Actions pipelines
+- [CALM Hub: the architecture registry](./calm-hub-architecture-registry.mdx) — Chapter 3.3, storing and versioning patterns in Hub
