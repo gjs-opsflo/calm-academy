@@ -2,7 +2,7 @@
   "$schema": "https://calm.finos.org/release/1.2/meta/calm.json",
   "unique-id": "with-interfaces",
   "name": "CALM 1.2 Interfaces Reference",
-  "description": "A reference architecture demonstrating both interface forms available in CALM 1.2: the freeform interface-type (no definition-url) and the formal interface-definition (definition-url + config). Interfaces live on NODES, not on relationships. Relationships reference interface unique-ids via source.interfaces and destination.interfaces arrays. No 1.0-rc1 url-interface or host-port-interface types are used here.",
+  "description": "A reference architecture demonstrating both interface forms available in CALM 1.2: the freeform interface-type (no definition-url) and the formal interface-definition (definition-url + config). Interfaces live on NODES, not on relationships. Relationships reference interface unique-ids via source.interfaces and destination.interfaces arrays. This file uses only CALM 1.2 interface forms — no deprecated pre-1.1 interface types.",
   "nodes": [
     {
       "unique-id": "analyst",
