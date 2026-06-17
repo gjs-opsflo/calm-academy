@@ -42,7 +42,7 @@ Architecture as code applies that same principle. A `.architecture.json` file is
 
 The key shift is in what the architecture document is. A Visio diagram is a picture of the system. A `.architecture.json` is a description of the system that tools can process. The picture is opaque to machines; the description is transparent. A CI pipeline cannot read a diagram; it can absolutely read a JSON file and compare it against a schema, a pattern, or a set of declared controls. That difference — opaque versus transparent — is what makes automation possible and what makes drift detectable.
 
-![Three panels showing architecture diagrams diverging from production reality over launch day, 12 months later, and today — a 3am incident occurs where the diagram and reality disagree](../../illustrations/exported/m01-architecture-drift-timeline.svg)
+![Three panels showing architecture diagrams diverging from production reality over launch day, 12 months later, and today — a 3am incident occurs where the diagram and reality disagree](/img/m01-architecture-drift-timeline.svg)
 
 ### Architecture drift: when diagrams lie
 
@@ -74,7 +74,7 @@ Architecture debt is not a fixed cost. It compounds. The longer a diagram lies, 
 
 Each of these costs is paid every quarter. They do not amortise; they accrue.
 
-![Line chart showing two curves: linear effort to keep architecture documentation current versus exponential cost of letting it drift, with annotated incidents at month 6, 12, 18, and year 2](../../illustrations/exported/m01-architecture-debt-compound.svg)
+![Line chart showing two curves: linear effort to keep architecture documentation current versus exponential cost of letting it drift, with annotated incidents at month 6, 12, 18, and year 2](/img/m01-architecture-debt-compound.svg)
 
 The compound curve above uses directional language intentionally: weeks of onboarding friction, hours per incident response, months of audit prep. No invented numbers — the shape of the curve is the point. The cost of drift is not linear. It accelerates.
 

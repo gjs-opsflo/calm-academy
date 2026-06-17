@@ -60,7 +60,7 @@ Every CALM architecture starts with the same four required fields plus two empty
 
 Save this as `conference-signup.architecture.json`. If you run `npx @finos/calm-cli validate -a conference-signup.architecture.json` now, it should return `No issues found` — an empty architecture with the four required fields is valid.
 
-![Conference signup step 1 — 6 nodes laid out with labels, pre-relationships](../illustrations/exported/m02-conference-signup-step1-nodes.svg)
+![Conference signup step 1 — 6 nodes laid out with labels, pre-relationships](/img/m02-conference-signup-step1-nodes.svg)
 
 ### Step 2: Add the 6 nodes
 
@@ -173,11 +173,11 @@ Add the five relationships. The order in the JSON array does not affect validati
 
 **Protocol placement reminder:** `protocol` is always a sibling of `relationship-type` at the top level of the relationship object — never nested inside the `connects` sub-object. This is the most common CALM authoring mistake. Every `connects` relationship that carries a wire protocol needs `"protocol": "..."` at the same level as `"relationship-type"`. See [relationships](./relationships.mdx) for a detailed explanation.
 
-![Conference signup step 2 — same 6 nodes with all 5 relationship types drawn](../illustrations/exported/m02-conference-signup-step2-relationships.svg)
+![Conference signup step 2 — same 6 nodes with all 5 relationship types drawn](/img/m02-conference-signup-step2-relationships.svg)
 
 The `deployed-in` relationship declares runtime containment. The `k8s-cluster` node is the container; `load-balancer`, `attendees`, and `attendees-store` are the nodes deployed within it. The `conference-attendee` actor and `conference-website` webclient are not deployed-in the cluster — they exist outside it.
 
-![Side-by-side: deployed-in (runtime containment) vs composed-of (structural boundary)](../illustrations/exported/m02-deployed-in-composed-of.svg)
+![Side-by-side: deployed-in (runtime containment) vs composed-of (structural boundary)](/img/m02-deployed-in-composed-of.svg)
 
 Compare `deployed-in` to `composed-of`: `deployed-in` is a runtime concern ("these components are running inside this environment"); `composed-of` is a structural concern ("this system is logically defined by these components"). The conference signup system uses `deployed-in` because we are describing where things run, not defining a logical system boundary.
 
@@ -286,7 +286,7 @@ Open [CALM Studio](https://studio.calm.finos.org) in your browser. Click **Impor
 
 You can click any node to see its properties, drag to rearrange the layout, and export the canvas as an SVG.
 
-![Conference signup step 3 — full diagram with interface callout and control badge](../illustrations/exported/m02-conference-signup-step3-complete.svg)
+![Conference signup step 3 — full diagram with interface callout and control badge](/img/m02-conference-signup-step3-complete.svg)
 
 ## Code/CALM examples
 

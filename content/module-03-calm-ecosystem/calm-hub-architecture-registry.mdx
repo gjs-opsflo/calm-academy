@@ -54,7 +54,7 @@ Namespaces provide organisational isolation. Every resource in Hub lives under a
 
 Namespaces separate concerns and enable access control. A team can be granted read access to `finos/reference` and write access to their own `org.mybank/payments` namespace, but cannot publish to another team's namespace. This is the enterprise governance boundary for architecture artifacts.
 
-![Hub namespace resource tree: root Hub node, two namespace branches (org.mybank, finos), each with architectures/patterns/standards/controls leaves with version numbers](../illustrations/exported/m03-hub-namespace-tree.svg)
+![Hub namespace resource tree: root Hub node, two namespace branches (org.mybank, finos), each with architectures/patterns/standards/controls leaves with version numbers](/img/m03-hub-namespace-tree.svg)
 
 ### REST API shape
 
@@ -210,7 +210,7 @@ curl http://localhost:8080/calm/namespaces
 
 Here is the end-to-end Hub workflow that platform teams and development teams follow together:
 
-![Architect pushes to Hub, Hub stores versioned artifact, product team pulls via CLI, CI validates against Hub-hosted pattern](../illustrations/exported/m03-hub-publish-consume-flow.svg)
+![Architect pushes to Hub, Hub stores versioned artifact, product team pulls via CLI, CI validates against Hub-hosted pattern](/img/m03-hub-publish-consume-flow.svg)
 
 1. **Platform team creates the pattern** — `secure-api-service.pattern.json` defines the required node types and relationship constraints.
 2. **Platform team publishes to Hub** — `calm hub push pattern secure-api-service.pattern.json --calm-hub-url http://hub.mybank.internal:8080`
