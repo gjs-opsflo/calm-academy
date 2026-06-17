@@ -9,6 +9,9 @@ prerequisites:
   - patterns-and-standards
 ---
 
+import quizData from '@site/src/quizzes/module-03-ecosystem.json';
+import Quiz from '@site/src/components/Quiz';
+
 ## TL;DR
 
 - Validate on every PR — break the merge if the architecture is invalid; architecture standards only matter if they are enforced.
@@ -260,9 +263,9 @@ Lab 3 implements the GitHub Actions workflow from this chapter end-to-end. You f
 
 - **Pinning the Hub URL directly in architecture files.** The `--calm-hub-url` flag belongs in the CLI invocation, not in the architecture document. Architecture documents should reference patterns by their canonical ID or by a locally-resolved path. The Hub URL varies by environment (dev hub vs. prod hub); baking it into the architecture file couples the artifact to a specific environment.
 
-## Knowledge check
+## Knowledge Check
 
-Take the quiz: [../quizzes/module-03-ecosystem.yaml](../quizzes/module-03-ecosystem.yaml)
+<Quiz data={quizData} />
 
 ## Further reading
 

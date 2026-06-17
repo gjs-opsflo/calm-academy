@@ -10,6 +10,9 @@ prerequisites:
   - get-set-up-in-sixty-seconds
 ---
 
+import quizData from '@site/src/quizzes/module-00-on-ramp.json';
+import Quiz from '@site/src/components/Quiz';
+
 ## TL;DR
 
 - Pick a real system you know — describe it in 3 sentences
@@ -135,11 +138,9 @@ npx @finos/calm-cli validate -a my-system.architecture.json -f pretty
 
 - **Treating CALM as complete documentation.** Your 3-sentence description will produce a minimal architecture. A production system may have 20 nodes. CALM is not a substitute for full architecture documentation — it is the machine-readable layer that sits alongside it. The architecture you produce today will grow as you learn more of the spec.
 
-## Knowledge check
+## Knowledge Check
 
-Take the quiz to close the loop on what you just built:
-
-[Take the Module 0 quiz](../../quizzes/module-00-on-ramp.yaml)
+<Quiz data={quizData} />
 
 ## Lab
 

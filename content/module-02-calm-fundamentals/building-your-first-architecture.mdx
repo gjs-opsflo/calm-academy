@@ -9,6 +9,9 @@ prerequisites:
   - decorators
 ---
 
+import quizData from '@site/src/quizzes/module-02-calm-fundamentals.json';
+import Quiz from '@site/src/components/Quiz';
+
 ## TL;DR
 
 - You have the vocabulary from chapters 2.1–2.6. This chapter assembles it into a complete, validated architecture from a blank document.
@@ -443,9 +446,9 @@ Lab 2 gives you a blank skeleton and step-by-step instructions to reproduce this
 - **Using `"node-type": "ecosystem"` for the Kubernetes cluster.** The cluster is a controlled, operated system — not an uncontrolled external ecosystem. Use `"node-type": "system"`. `ecosystem` is for things like "the internet", "AWS", or "the production VPC" that you treat as a boundary rather than something you own and control end-to-end.
 - **Empty `data` in decorators for this architecture.** If you add a threat decorator to this architecture (which Lab 2 asks you to do as an extension), remember that `data: {}` is invalid. The `data` object requires at least one property.
 
-## Knowledge check
+## Knowledge Check
 
-Review the questions for this chapter in [`quizzes/module-02-calm-fundamentals.yaml`](../../quizzes/module-02-calm-fundamentals.yaml).
+<Quiz data={quizData} />
 
 ## Further reading
 
