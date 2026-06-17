@@ -16,13 +16,13 @@ Scaffold and deploy the Docusaurus site so CALM Academy content is publicly brow
 
 ### D1 — Content Wiring Strategy
 
-**Decision:** Symlink `content/` into `site/docs/`
+**Decision:** Use `docs: { path: '../content' }` in Docusaurus config *(symlink approach rejected)*
 
-- `site/docs/` → symlink → `content/` (or subdirectory per module)
-- Illustrations: symlink `illustrations/exported/` → `site/static/img/`
-- Docusaurus resolves relative image paths from `static/img/` at build time
+- Docusaurus `docs: { path: '../content' }` config reads MDX directly from the root `content/` directory
+- **Symlink rejected:** Docusaurus issues #3272/#6257/#10751 confirm `site/docs/ → symlink → ../content/` is unsupported and breaks in CI Linux environments
+- Illustrations: `site/static/img/` → symlink → `../../illustrations/exported/` (static-asset symlinks ARE supported; only the `docs/` symlink is broken)
 - No file copying — single source of truth stays in `content/`
-- Symlinks tracked in git (Unix; CI runner is Linux — no Windows concern)
+- `site/docs/` directory: **does not exist** — content served via path config
 
 ### D2 — Sidebar Navigation
 
@@ -35,11 +35,12 @@ Scaffold and deploy the Docusaurus site so CALM Academy content is publicly brow
 
 ### D3 — Quiz Component Architecture
 
-**Decision:** Custom React MDX component `<Quiz />`
+**Decision:** Custom React MDX component `<Quiz />` receiving pre-parsed data object
 
 - Component: `site/src/components/Quiz.tsx`
-- Usage in MDX: `<Quiz file="module-03-ecosystem.yaml" />`
-- Quiz YAML files read at build time (Docusaurus plugin or import) and bundled
+- Usage in MDX: `<Quiz data={quizData} />` (receives pre-parsed JS object, NOT a filename string)
+  - Example: `import quizData from '@site/src/quizzes/module-03-ecosystem.json'; <Quiz data={quizData} />`
+- YAML converted to JSON at prebuild time via `scripts/convert-quiz-yaml.mjs` (see D4)
 - Grading: submit-all (one submit button for the whole quiz, not per-question)
 - On submit: show score + per-question explanations
 - `short_answer` type: rendered as read-only — model answer revealed on submit (no freetext grading)
@@ -65,12 +66,12 @@ Scaffold and deploy the Docusaurus site so CALM Academy content is publicly brow
 
 ### D6 — Search
 
-**Decision:** Algolia DocSearch
+**Decision:** Local search only until DocSearch approved *(no placeholder Algolia config)*
 
-- `@docusaurus/plugin-search-algolia` (built-in, no extra install)
-- Apply for DocSearch crawl after first public deploy
-- Placeholder Algolia config in `docusaurus.config.js` until approved
-- Fallback: local search plugin (`@easyops-cn/docusaurus-search-local`) during dev
+- `@easyops-cn/docusaurus-search-local` — local client-side search plugin (active from launch)
+- **NO placeholder Algolia config:** a placeholder with fake credentials breaks the search bar at runtime (Docusaurus known pitfall — verified in RESEARCH.md Pitfall 5)
+- Apply for DocSearch crawl after first public deploy at `https://gjs-opsflo.github.io/calm-academy/`
+- When DocSearch approved: replace local plugin with `@docusaurus/plugin-search-algolia` + credentials in repo secrets
 
 ### D7 — Deploy Target
 
@@ -103,7 +104,7 @@ calm-academy/
 ├── code-examples/    ← CALM JSON
 ├── slides/           ← Marp decks
 └── site/             ← Docusaurus project
-    ├── docs/         ← symlink → ../content/
+    │                 (no docs/ dir — content via docs.path: '../content' config)
     ├── static/
     │   └── img/      ← symlink → ../../illustrations/exported/
     ├── src/
@@ -120,7 +121,7 @@ calm-academy/
 
 - File: `.github/workflows/site-deploy.yml`
 - Steps: checkout → setup-node → install deps → build → configure-pages → upload artifact → deploy
-- Node version: 20 (LTS)
+- Node version: 22 (LTS; Node 20 EOL April 2026 per RESEARCH.md Critical Finding #3; existing `ci.yml` already uses Node 22)
 - Runs on: `push` to `main`, `pull_request` (build-only, no deploy on PR)
 - Separate job: `validate-calm` (existing or new) — `npx @finos/calm-cli validate` on all `*.calm.json`
 

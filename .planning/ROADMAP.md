@@ -154,18 +154,46 @@ Plans:
 
 ### Phase 5: Site Launch Prep
 
-**Goal:** Docusaurus site is production-quality, fully published, and ready for public soft launch and FINOS demo.
+**Goal:** **As a** prospective FINOS reviewer or new learner, **I want to** open a stable public URL and navigate, read, and quiz on Modules 0–3 from any device, **so that** I can evaluate the course end-to-end without cloning the repo or running anything locally. (Derived for MVP user-story format; underlying outcome statement: Docusaurus site is production-quality, fully published, and ready for public soft launch and FINOS demo.)
 **Mode:** mvp
 **Requirements:** SITE-01
 **Dependencies:** Phases 1–4 complete (all module content exists)
 
+**Plans:** 4 plans
+
+Plans:
+
+**Wave 1** *(foundational vertical slice — Module 0 ch 0.1 renders with images locally)*
+
+- [ ] 05-01-PLAN.md — Scaffold Docusaurus 3.10.1 in `site/`, configure with `docs.path: '../content'`, create `site/static/img` → `../../illustrations/exported/` symlink, add `.nojekyll`, fix all 35 broken image paths across 21 MDX files to `/img/<file>.svg`, remove 5 empty placeholder content directories. End-to-end: `npm run build` succeeds; Module 0 chapter 0.1 renders with images in dev mode.
+
+**Wave 2** *(navigation vertical slice — sidebar shows all 24 chapters in pedagogical order)*
+
+- [ ] 05-02-PLAN.md — Add 4 `_category_.json` files (module 0–3 labels + positions) and add `sidebar_position` frontmatter to all 24 MDX files (derived from existing `chapter: M.N` → `sidebar_position: N`). End-to-end: sitemap confirms chapters render numerically, not alphabetically.
+
+**Wave 3** *(assessment vertical slice — user can take any of 4 quizzes end-to-end locally)*
+
+- [ ] 05-03-PLAN.md — Build prebuild YAML→JSON converter (`scripts/convert-quiz-yaml.mjs`), implement `site/src/components/Quiz.tsx` per UI-SPEC (all 9 interaction states, 16 verbatim copy strings, accessibility contract, --ifm-* CSS variables only), wire `<Quiz />` into all 4 final-chapter MDX files (Module 0 → `your-first-calm-document.mdx`; Module 1 → `governance-frameworks-and-aac.mdx`; Module 2 → `building-your-first-architecture.mdx`; Module 3 → `cicd-integration.mdx`). End-to-end: at least one quiz takeable in dev mode browser with score display + Retake.
+
+**Wave 4** *(public deployment vertical slice — anyone can reach live URL with all 4 quizzes)* `[autonomous: false — requires user to enable Pages in repo settings]`
+
+- [ ] 05-04-PLAN.md — Create `.github/workflows/site-deploy.yml` with GitHub Actions native Pages workflow (Node 22, NOT Node 20 per RESEARCH.md Critical Finding #3; `actions/configure-pages` + `upload-pages-artifact` + `deploy-pages`; no `peaceiris/actions-gh-pages`). One-time human action: enable GitHub Pages with source "GitHub Actions" in repo settings. End-to-end: `https://gjs-opsflo.github.io/calm-academy/` returns HTTP 200; human verifies mobile responsive + at least one full quiz interaction on live site.
+
+**Cross-cutting constraints:**
+
+- All work honors the 10 locked decisions D1–D10 from CONTEXT.md
+- Exception to D10 (Node 20): use Node 22 per RESEARCH.md Critical Finding #3 (Node 20 EOL April 2026; existing ci.yml already uses Node 22) — documented in Plan 04 SUMMARY
+- Content remains in `content/` — never copied/duplicated into `site/docs/`; use `docs.path: '../content'` (NOT a docs-directory symlink; Docusaurus issues #3272, #6257, #10751)
+- No Algolia key in `themeConfig` until DocSearch approved; `@easyops-cn/docusaurus-search-local` is the active search plugin for launch
+- Quiz Module 3 JSON is `module-03-ecosystem.json` (short slug), NOT `module-03-calm-ecosystem.json` — RESEARCH.md Pitfall 7
+
 **Success Criteria:**
 
 1. Docusaurus site builds with zero errors or warnings; all Module 0–3 content published
-2. Search works across all modules
-3. Quiz MDX component renders correctly for all 4 quizzes with correct auto-grading
+2. Search works across all modules (local search plugin during launch; Algolia DocSearch applied post-deploy)
+3. Quiz MDX component renders correctly for all 4 quizzes with correct submit-all grading per UI-SPEC
 4. Lab links and code example links are all valid (no 404s)
-5. Site is mobile-responsive on iOS Safari and Android Chrome
+5. Site is mobile-responsive on iOS Safari and Android Chrome (verified via Plan 04 Task 3 checkpoint)
 6. Site deploys automatically via GitHub Pages CI on push to main
 7. 10 internal beta testers complete Modules 0–1 and provide feedback; critical feedback incorporated
 
@@ -217,3 +245,5 @@ Sequential (each module builds on previous). Within each phase, text → illustr
 | Lab 3 depends on GitHub Actions | Provide local `act` fallback instructions in LAB.md |
 | Site build breaks on MDX quirks | Use Docusaurus 3.x with strict mode; validate MDX in CI |
 | Content quality inconsistency across modules | Apply STYLE-GUIDE.md before each phase starts; peer-review one chapter per module |
+| Phase 5 `docs.path: '../content'` may fail on CI Linux runner | RESEARCH.md A1 fallback documented; Plan 01 Task 3 catches early via local build; if CI fails, add `ln -s ../content site/docs` step (NOT a copy — preserves CONTEXT.md D1) |
+| Phase 5 GitHub Pages not enabled in repo settings | Plan 04 Task 1 is an explicit blocking-human checkpoint; deploy cannot proceed without user-side toggle |
