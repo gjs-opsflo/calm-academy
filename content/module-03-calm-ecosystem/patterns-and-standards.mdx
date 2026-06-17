@@ -41,7 +41,7 @@ A CALM Pattern is a JSON Schema document. It uses the same `$schema` URL as a CA
 | Architecture | `.calm.json` | `calm validate -a` | Conforming instance of zero or more patterns — the "what does exist" |
 | Standard | (varies) | Referenced in `calm validate` call | Org-specific extension constraints on top of the CALM 1.2 spec |
 
-![Pattern file on the left with const constraints flowing via calm generate arrow to architecture file on the right with values filled in](../illustrations/exported/m03-pattern-vs-architecture.svg)
+![Pattern file on the left with const constraints flowing via calm generate arrow to architecture file on the right with values filled in](/img/m03-pattern-vs-architecture.svg)
 
 The key distinction is temporal. A pattern exists before any architecture is built — it is the specification. An architecture exists after — it is the implementation. A standard exists at the organizational level — it constrains what patterns are allowed to specify.
 

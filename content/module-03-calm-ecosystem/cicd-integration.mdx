@@ -79,7 +79,7 @@ jobs:
           path: calm-validation-results.xml
 ```
 
-![GitHub Actions flow: PR opened → validate step (green/red) → junit output → merge allowed or blocked](../illustrations/exported/m03-cicd-gate-flow.svg)
+![GitHub Actions flow: PR opened → validate step (green/red) → junit output → merge allowed or blocked](/img/m03-cicd-gate-flow.svg)
 
 The workflow has four meaningful steps after checkout and install:
 
@@ -221,7 +221,7 @@ When CALM Hub is deployed in your organisation, the pipeline expands to a full p
 
 ### The full stack pipeline
 
-![Full pipeline: PR opened → calm validate → calm diff → tests pass → merge → Hub push → CALM Guard compliance → Terraform/IaC apply → Deploy](../illustrations/exported/m03-full-stack-pipeline.svg)
+![Full pipeline: PR opened → calm validate → calm diff → tests pass → merge → Hub push → CALM Guard compliance → Terraform/IaC apply → Deploy](/img/m03-full-stack-pipeline.svg)
 
 The mental model: architecture is code. It gets the same pipeline treatment as application code. Architecture that fails CI does not merge. Architecture that merges becomes the versioned source of truth in Hub. CALM Guard continuously verifies that running systems match what is in Hub. Terraform applies infrastructure that conforms to the verified architecture.
 

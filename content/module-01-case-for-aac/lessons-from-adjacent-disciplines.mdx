@@ -78,7 +78,7 @@ Terraform (infra)  →  CALM (architecture)  →  OPA / Policy (compliance)
 
 CALM sits between the infra layer that tells you what is deployed and the policy layer that tells you what rules apply. It is the missing middle layer. Terraform knows there is a database instance; CALM knows that instance is the `payment-db`, that it is connected to the `payment-service` via an encrypted interface, and that it carries PCI-DSS scope. OPA can then enforce rules against the CALM architecture: "all databases carrying PCI-DSS scope must have encryption declared." The three layers answer three different questions that only together give you full visibility into your system.
 
-![Three-layer stack diagram showing infrastructure (Terraform, AWS CDK, Pulumi) at the bottom, architecture (CALM) as the emphasised middle layer, and policy/compliance (OPA, Rego, CALM Guard) at the top, with CALM annotated as 'the missing middle layer'](../../illustrations/exported/m01-aac-stack.svg)
+![Three-layer stack diagram showing infrastructure (Terraform, AWS CDK, Pulumi) at the bottom, architecture (CALM) as the emphasised middle layer, and policy/compliance (OPA, Rego, CALM Guard) at the top, with CALM annotated as 'the missing middle layer'](/img/m01-aac-stack.svg)
 
 ### The IaC vs AaC comparison: the central table
 
@@ -107,7 +107,7 @@ This is not a marketing slogan — "CALM is Terraform for architecture" — it i
 
 The "nobody knows what's actually deployed" problem was solved by Terraform. The "nobody knows what the architecture actually is" problem is solved by the same structural approach.
 
-![Two-column comparison table as diagram showing before-and-after for Infrastructure (Terraform) on the left and Architecture (CALM) on the right across 6 rows](../../illustrations/exported/m01-iac-analogy.svg)
+![Two-column comparison table as diagram showing before-and-after for Infrastructure (Terraform) on the left and Architecture (CALM) on the right across 6 rows](/img/m01-iac-analogy.svg)
 
 ### Connecting back: you already produced the artifact
 

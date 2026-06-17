@@ -95,7 +95,7 @@ Wrong — `protocol` nested inside `connects`:
 
 The wrong form does not cause a schema validation error (the schema uses `additionalProperties: true` on most objects), but it produces a file where `protocol` is invisible to tools that read the top-level field. The CALM CLI, CALM Studio, and pattern matchers all read `protocol` at the relationship level.
 
-![Side-by-side diagram contrasting connects (node-to-node with protocol) and interacts (actor-initiates-to-node)](../illustrations/exported/m02-connects-vs-interacts.svg)
+![Side-by-side diagram contrasting connects (node-to-node with protocol) and interacts (actor-initiates-to-node)](/img/m02-connects-vs-interacts.svg)
 
 ### Protocol enum
 
@@ -139,7 +139,7 @@ The `actor` field must reference a node whose `node-type` is `actor`. This is a 
 
 `interacts` has no `protocol` field. Actors interact at the application level — the underlying protocol is irrelevant to the semantic (the actor initiates; the system responds). If you need to model the protocol of a specific human-to-UI interaction, document it in the relationship `description`.
 
-![Close-up of an actor node initiating an interaction with a service node](../illustrations/exported/m02-actor-node.svg)
+![Close-up of an actor node initiating an interaction with a service node](/img/m02-actor-node.svg)
 
 ### deployed-in
 
@@ -222,7 +222,7 @@ Each item in the `options` array is a decision branch with:
 
 ### All five at a glance
 
-![All 5 CALM relationship types in a single diagram with example arrows and one-line definitions](../illustrations/exported/m02-relationship-types.svg)
+![All 5 CALM relationship types in a single diagram with example arrows and one-line definitions](/img/m02-relationship-types.svg)
 
 The complete validated reference file demonstrating four of the five relationship types is in `code-examples/module-02-calm-fundamentals/relationship-types-reference.architecture.json`.
 

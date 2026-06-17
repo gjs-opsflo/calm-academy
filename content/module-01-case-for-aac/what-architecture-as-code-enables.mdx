@@ -33,7 +33,7 @@ History becomes an audit trail with genuine resolution. When a compliance audito
 
 Architecture changes that bypass code review are visible as commits without PR approval. The human enforcement gap that diagrams have — "did someone actually update the diagram?" — does not exist for version-controlled files. The file is either in the right state or it is not. If the file was not updated when a service was added, the file is wrong in a detectable and remediable way. If a diagram was not updated when a service was added, the diagram is wrong in a way that may not be discovered for months or years.
 
-![Three-layer stack diagram showing infrastructure, architecture, and policy as three layers — the CALM architecture layer is the source artifact for git history](../../illustrations/exported/m01-aac-stack.svg)
+![Three-layer stack diagram showing infrastructure, architecture, and policy as three layers — the CALM architecture layer is the source artifact for git history](/img/m01-aac-stack.svg)
 
 ### Automated validation
 
@@ -53,7 +53,7 @@ Every new service starts architecturally compliant. The product team does not ne
 
 This is the same value proposition as Terraform modules: instead of every engineer independently figuring out how to provision a VPC with the correct security groups, the platform team publishes a module and product teams use it. The pattern is the module, but for architecture rather than infrastructure.
 
-![Circular flywheel diagram with four stages: validate, detect drift, enforce, improve patterns — showing the governance loop powered by CALM](../../illustrations/exported/m01-calm-ecosystem-flywheel.svg)
+![Circular flywheel diagram with four stages: validate, detect drift, enforce, improve patterns — showing the governance loop powered by CALM](/img/m01-calm-ecosystem-flywheel.svg)
 
 Patterns also evolve. As real-world architectures are published to CALM Hub, pattern authors can observe which implementations diverge from the pattern and why. Divergences that represent legitimate evolution of the pattern are incorporated back into the pattern definition. The flywheel turns: validate → detect drift → enforce → improve patterns → validate more architectures against better patterns.
 

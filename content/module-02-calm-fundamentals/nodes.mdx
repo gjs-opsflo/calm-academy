@@ -52,7 +52,7 @@ FSI example: `trading-analyst` — a desk trader who accesses the trading portal
 
 Anti-pattern: using `actor` for a service that makes outbound calls. A payment processing service that calls an external settlement API is a `service` calling another `service`. Service-to-service communication uses `connects`, not `interacts`. `actor` is for entities outside your system boundary that the system must respond to.
 
-![Close-up of an actor node initiating an interaction with a service node](../illustrations/exported/m02-actor-node.svg)
+![Close-up of an actor node initiating an interaction with a service node](/img/m02-actor-node.svg)
 
 #### ecosystem
 
@@ -72,7 +72,7 @@ Anti-pattern: using `system` for a runtime environment like a Kubernetes cluster
 
 The `system` vs `service` vs `ecosystem` distinction is the most frequently confused trio in CALM. The diagram below summarises the differences.
 
-![Three-panel diagram contrasting system, service, and ecosystem boundaries](../illustrations/exported/m02-system-vs-service-vs-ecosystem.svg)
+![Three-panel diagram contrasting system, service, and ecosystem boundaries](/img/m02-system-vs-service-vs-ecosystem.svg)
 
 #### service
 
@@ -147,7 +147,7 @@ An AWS VPC is an `ecosystem` — services are deployed-in it. A trade execution 
 
 The diagram below shows all 9 CALM 1.2 core node types with their canonical CALM Studio canvas shapes. When you see these shapes in Studio, you can map them back to the type names immediately.
 
-![Visual gallery of all 9 CALM 1.2 core node types with their CALM Studio canvas shapes](../illustrations/exported/m02-node-types-gallery.svg)
+![Visual gallery of all 9 CALM 1.2 core node types with their CALM Studio canvas shapes](/img/m02-node-types-gallery.svg)
 
 The complete reference file demonstrating all 9 types with realistic FSI names is in `code-examples/module-02-calm-fundamentals/node-types-reference.architecture.json`.
 
