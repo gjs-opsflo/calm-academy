@@ -6,7 +6,15 @@
   "compilerOptions": {
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
-    "strict": true
+    "strict": true,
+    "types": ["vitest/globals"]
   },
-  "exclude": [".docusaurus", "build"]
+  "exclude": [
+    ".docusaurus",
+    "build",
+    "docusaurus.config.js",
+    "sidebars.js",
+    "src/components/HomepageFeatures",
+    "src/pages/index.tsx"
+  ]
 }
