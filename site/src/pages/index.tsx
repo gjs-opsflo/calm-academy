@@ -14,7 +14,7 @@ export default function Home(): ReactNode {
         </p>
         <Link
           className="button button--primary button--lg"
-          to="/docs/three-paths-to-first-calm-doc">
+          to="/docs/module-00-on-ramp/three-paths-to-first-calm-doc">
           Start Learning
         </Link>
       </main>

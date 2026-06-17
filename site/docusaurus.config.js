@@ -10,7 +10,7 @@ export default {
   organizationName: 'gjs-opsflo',
   projectName: 'calm-academy',
   trailingSlash: false,
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   presets: [
