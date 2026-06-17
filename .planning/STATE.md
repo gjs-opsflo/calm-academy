@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 5
 status: executing
-last_updated: "2026-06-17T08:42:02.727Z"
+last_updated: "2026-06-17T09:31:04Z"
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 18
-  completed_plans: 14
-  percent: 67
+  completed_plans: 15
+  percent: 72
 ---
 
 # Project State: CALM Academy
@@ -43,6 +43,7 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 | Vertical MVP delivery (module per phase) | 2026-06-15 | Each phase = shippable increment; early modules prove pipeline |
 | Skip research phase | 2026-06-15 | Gemara + FINOS ecosystem research already exists in .planning/research/ |
 | YOLO mode | 2026-06-15 | Auto-approve; user wants to move fast |
+| Sidebar order verified via HTML not sitemap | 2026-06-17 | Docusaurus sitemap plugin sorts URLs alphabetically regardless of sidebar_position; menu__link HTML structure is the correct verification artifact |
 
 ## Blockers
 
@@ -57,4 +58,4 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 
 ---
 *Initialized: 2026-06-15*
-*Last updated: 2026-06-15 after Phase 1 planning complete (3 plans, verification passed)*
+*Last updated: 2026-06-17 after Phase 5 Plan 02 complete (sidebar navigation ordering — 24 MDX files + 4 _category_.json)*
