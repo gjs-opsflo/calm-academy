@@ -5,7 +5,9 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
+    "prebuild": "cd .. && node scripts/convert-quiz-yaml.mjs",
     "build": "docusaurus build",
+    "convert-quizzes": "cd .. && node scripts/convert-quiz-yaml.mjs",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
