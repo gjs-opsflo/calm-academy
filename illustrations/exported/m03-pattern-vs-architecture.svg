@@ -1,15 +1,97 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="white" stroke="#cccccc" stroke-width="2"/>
-  <text x="400" y="155" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#666666">
-    [Illustration placeholder: m03-pattern-vs-architecture]
-  </text>
-  <text x="400" y="190" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Pattern file (const constraints) → calm generate → Architecture file (values filled in)
-  </text>
-  <text x="400" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Source: illustrations/source/m03-pattern-vs-architecture.excalidraw
-  </text>
-  <text x="400" y="250" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Export: open in Excalidraw, edit, export SVG
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" style="background:#ffffff">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+  </defs>
+  <style>text { font-family: Virgil, 'Segoe UI Emoji', cursive; fill: #1e1e1e; }</style>
+
+  <!-- Title -->
+  <text x="400" y="30" font-size="20" text-anchor="middle" font-weight="bold">Pattern to architecture via calm generate</text>
+
+  <!-- ===== LEFT PANEL: Pattern (.pattern.json) ===== -->
+  <text x="175" y="62" font-size="14" text-anchor="middle" font-weight="bold">Pattern (.pattern.json)</text>
+
+  <!-- Dashed border panel (template feel) -->
+  <rect x="18" y="72" width="315" height="320" rx="8" fill="#fafafa" stroke="#1e1e1e" stroke-width="2" stroke-dasharray="8,4"/>
+
+  <!-- Schema constraints inside -->
+  <text x="175" y="100" font-size="12" text-anchor="middle" font-weight="bold">JSON Schema constraints</text>
+  <line x1="30" y1="108" x2="320" y2="108" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <rect x="32" y="116" width="286" height="28" rx="3" fill="#f0f0f0" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="175" y="135" font-size="9" text-anchor="middle" font-family="monospace">"node-type": { "const": "network" }</text>
+
+  <rect x="32" y="152" width="286" height="28" rx="3" fill="#f0f0f0" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="175" y="171" font-size="9" text-anchor="middle" font-family="monospace">"node-type": { "const": "service" }</text>
+
+  <rect x="32" y="188" width="286" height="28" rx="3" fill="#f0f0f0" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="175" y="207" font-size="9" text-anchor="middle" font-family="monospace">"node-type": { "const": "database" }</text>
+
+  <rect x="32" y="224" width="286" height="28" rx="3" fill="#f0f0f0" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="175" y="243" font-size="9" text-anchor="middle" font-family="monospace">"protocol": { "const": "HTTPS" }</text>
+
+  <rect x="32" y="260" width="286" height="28" rx="3" fill="#f0f0f0" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="175" y="279" font-size="9" text-anchor="middle" font-family="monospace">"minItems": 3</text>
+
+  <!-- Template caption -->
+  <text x="175" y="315" font-size="11" text-anchor="middle" fill="#555" font-style="italic">Template — defines what MUST exist</text>
+  <text x="175" y="332" font-size="10" text-anchor="middle" fill="#777">Abstract — no concrete names or values</text>
+  <text x="175" y="347" font-size="10" text-anchor="middle" fill="#777">Reusable across many architectures</text>
+  <text x="175" y="365" font-size="10" text-anchor="middle" fill="#777">Versioned in CALM Hub</text>
+
+  <!-- ===== CENTRAL ARROW ===== -->
+  <!-- calm generate command -->
+  <text x="400" y="190" font-size="10" text-anchor="middle" font-family="monospace, Courier New, monospace">calm generate</text>
+  <text x="400" y="204" font-size="10" text-anchor="middle" font-family="monospace, Courier New, monospace">-p pattern.json</text>
+  <text x="400" y="218" font-size="10" text-anchor="middle" font-family="monospace, Courier New, monospace">-o arch.calm.json</text>
+  <!-- Main arrow -->
+  <line x1="333" y1="232" x2="467" y2="232" stroke="#1e1e1e" stroke-width="3" marker-end="url(#arr)"/>
+  <text x="400" y="252" font-size="11" text-anchor="middle" fill="#555" font-style="italic">instantiation</text>
+
+  <!-- ===== RIGHT PANEL: Architecture (.calm.json) ===== -->
+  <text x="625" y="62" font-size="14" text-anchor="middle" font-weight="bold">Architecture (.calm.json)</text>
+
+  <!-- Solid border panel (concrete instance) -->
+  <rect x="468" y="72" width="315" height="320" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
+
+  <text x="625" y="100" font-size="12" text-anchor="middle" font-weight="bold">Concrete instances</text>
+  <line x1="480" y1="108" x2="772" y2="108" stroke="#1e1e1e" stroke-width="1"/>
+
+  <!-- Node boxes in architecture -->
+  <!-- WAF/LB (network) -->
+  <rect x="535" y="120" width="180" height="44" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
+  <text x="625" y="140" font-size="12" text-anchor="middle" font-weight="bold">WAF / LB</text>
+  <text x="625" y="156" font-size="9" text-anchor="middle" fill="#555">node-type: network</text>
+
+  <!-- Arrow HTTPS -->
+  <line x1="625" y1="164" x2="625" y2="200" stroke="#1e1e1e" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="645" y="186" font-size="9">HTTPS</text>
+
+  <!-- API Service (service) -->
+  <rect x="535" y="200" width="180" height="44" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
+  <text x="625" y="220" font-size="12" text-anchor="middle" font-weight="bold">API Service</text>
+  <text x="625" y="236" font-size="9" text-anchor="middle" fill="#555">node-type: service</text>
+
+  <!-- Arrow JDBC -->
+  <line x1="625" y1="244" x2="625" y2="280" stroke="#1e1e1e" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="645" y="266" font-size="9">JDBC</text>
+
+  <!-- Customer DB (database) -->
+  <rect x="535" y="280" width="180" height="44" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
+  <text x="625" y="300" font-size="12" text-anchor="middle" font-weight="bold">Customer DB</text>
+  <text x="625" y="316" font-size="9" text-anchor="middle" fill="#555">node-type: database</text>
+
+  <!-- Instance caption -->
+  <text x="625" y="352" font-size="11" text-anchor="middle" fill="#555" font-style="italic">Instance — conforms to pattern constraints</text>
+  <text x="625" y="368" font-size="10" text-anchor="middle" fill="#777">Concrete names, descriptions, interfaces</text>
+  <text x="625" y="382" font-size="10" text-anchor="middle" fill="#777">Validated with: calm validate -a -p</text>
+
+  <!-- Bottom annotation -->
+  <rect x="60" y="408" width="680" height="46" rx="6" fill="#f5f5f5" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="400" y="428" font-size="11" text-anchor="middle" font-family="monospace">calm validate -a arch.calm.json -p pattern.json</text>
+  <text x="400" y="446" font-size="10" text-anchor="middle" fill="#555">Validate conformance: check the instance satisfies all pattern constraints</text>
+
+  <!-- Caption -->
+  <text x="400" y="490" font-size="14" text-anchor="middle" fill="#757575">Module 3.6 — Pattern (template) instantiated as Architecture via calm generate</text>
 </svg>

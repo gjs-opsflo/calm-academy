@@ -1,15 +1,89 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="white" stroke="#cccccc" stroke-width="2"/>
-  <text x="400" y="155" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#666666">
-    [Illustration placeholder: m03-hub-namespace-tree]
-  </text>
-  <text x="400" y="190" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Hub namespace resource tree — domain, namespace, architectures/patterns/standards with versions
-  </text>
-  <text x="400" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Source: illustrations/source/m03-hub-namespace-tree.excalidraw
-  </text>
-  <text x="400" y="250" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Export: open in Excalidraw, edit, export SVG
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" width="800" height="540" style="background:#ffffff">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+  </defs>
+  <style>text { font-family: Virgil, 'Segoe UI Emoji', cursive; fill: #1e1e1e; }</style>
+
+  <!-- Title -->
+  <text x="400" y="30" font-size="20" text-anchor="middle" font-weight="bold">Hub namespace resource tree</text>
+
+  <!-- ROOT NODE: CALM Hub -->
+  <rect x="290" y="48" width="220" height="54" rx="8" ry="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="3"/>
+  <text x="400" y="72" font-size="17" text-anchor="middle" font-weight="bold">CALM Hub</text>
+  <text x="400" y="92" font-size="12" text-anchor="middle" fill="#555">The architecture registry</text>
+
+  <!-- Root to trunk line -->
+  <line x1="400" y1="102" x2="400" y2="124" stroke="#1e1e1e" stroke-width="2"/>
+  <!-- Trunk splits left and right -->
+  <line x1="200" y1="124" x2="600" y2="124" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="200" y1="124" x2="200" y2="148" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="600" y1="124" x2="600" y2="148" stroke="#1e1e1e" stroke-width="2"/>
+
+  <!-- ===== LEFT BRANCH: org.mybank ===== -->
+  <rect x="120" y="148" width="160" height="40" rx="6" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
+  <text x="200" y="173" font-size="14" text-anchor="middle" font-weight="bold">org.mybank</text>
+
+  <!-- mybank → 4 resource children -->
+  <line x1="200" y1="188" x2="200" y2="210" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="80" y1="210" x2="330" y2="210" stroke="#1e1e1e" stroke-width="1.5"/>
+  <!-- 4 drops -->
+  <line x1="80" y1="210" x2="80" y2="228" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="163" y1="210" x2="163" y2="228" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="246" y1="210" x2="246" y2="228" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="330" y1="210" x2="330" y2="228" stroke="#1e1e1e" stroke-width="1.5"/>
+
+  <!-- architectures leaf -->
+  <rect x="40" y="228" width="80" height="32" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
+  <text x="80" y="249" font-size="11" text-anchor="middle">architectures</text>
+  <text x="80" y="274" font-size="8" text-anchor="middle" fill="#555">v1.0.0, v1.1.0,</text>
+  <text x="80" y="285" font-size="8" text-anchor="middle" fill="#555">v2.0.0</text>
+
+  <!-- patterns leaf -->
+  <rect x="122" y="228" width="80" height="32" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
+  <text x="162" y="249" font-size="11" text-anchor="middle">patterns</text>
+  <text x="162" y="274" font-size="8" text-anchor="middle" fill="#555">v1.0.0,</text>
+  <text x="162" y="285" font-size="8" text-anchor="middle" fill="#555">v2.1.0</text>
+
+  <!-- standards leaf -->
+  <rect x="206" y="228" width="80" height="32" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
+  <text x="246" y="249" font-size="11" text-anchor="middle">standards</text>
+  <text x="246" y="274" font-size="8" text-anchor="middle" fill="#555">v1.0.0</text>
+
+  <!-- controls leaf -->
+  <rect x="290" y="228" width="80" height="32" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
+  <text x="330" y="249" font-size="11" text-anchor="middle">controls</text>
+  <text x="330" y="274" font-size="8" text-anchor="middle" fill="#555">v1.0.0</text>
+
+  <!-- ===== RIGHT BRANCH: finos ===== -->
+  <rect x="520" y="148" width="160" height="40" rx="6" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
+  <text x="600" y="173" font-size="14" text-anchor="middle" font-weight="bold">finos</text>
+
+  <!-- finos → 2 resource children -->
+  <line x1="600" y1="188" x2="600" y2="210" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="530" y1="210" x2="670" y2="210" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="530" y1="210" x2="530" y2="228" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="670" y1="210" x2="670" y2="228" stroke="#1e1e1e" stroke-width="1.5"/>
+
+  <!-- patterns leaf (finos) -->
+  <rect x="490" y="228" width="80" height="32" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
+  <text x="530" y="249" font-size="11" text-anchor="middle">patterns</text>
+  <text x="530" y="274" font-size="8" text-anchor="middle" fill="#555">reference</text>
+  <text x="530" y="285" font-size="8" text-anchor="middle" fill="#555">architectures</text>
+
+  <!-- controls leaf (finos) -->
+  <rect x="630" y="228" width="80" height="32" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
+  <text x="670" y="249" font-size="11" text-anchor="middle">controls</text>
+  <text x="670" y="274" font-size="8" text-anchor="middle" fill="#555">CCC control</text>
+  <text x="670" y="285" font-size="8" text-anchor="middle" fill="#555">catalog</text>
+
+  <!-- CLI commands annotation box -->
+  <rect x="60" y="310" width="680" height="68" rx="6" fill="#f5f5f5" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="400" y="332" font-size="11" text-anchor="middle" font-family="monospace, Courier New, monospace">calm hub list namespaces --calm-hub-url http://localhost:8080</text>
+  <text x="400" y="352" font-size="11" text-anchor="middle" font-family="monospace, Courier New, monospace">calm hub list architectures --calm-hub-url http://localhost:8080</text>
+  <text x="400" y="370" font-size="9" text-anchor="middle" fill="#555" font-style="italic">namespace&#8594;resource type&#8594;version — the three levels of the Hub registry</text>
+
+  <!-- Caption -->
+  <text x="400" y="528" font-size="14" text-anchor="middle" fill="#757575">Module 3.3 — CALM Hub namespace resource tree</text>
 </svg>

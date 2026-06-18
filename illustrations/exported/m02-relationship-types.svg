@@ -1,15 +1,139 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="white" stroke="#cccccc" stroke-width="2"/>
-  <text x="400" y="155" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#666666">
-    [Illustration placeholder: m02-relationship-types]
-  </text>
-  <text x="400" y="190" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    5-row diagram: connects, interacts, deployed-in, composed-of, options — each with example nodes and line style
-  </text>
-  <text x="400" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Author in Excalidraw: illustrations/source/m02-relationship-types.excalidraw
-  </text>
-  <text x="400" y="250" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Then run: bash scripts/export-excalidraw.sh m02-relationship-types
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 620" width="800" height="620" style="background:#ffffff">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+    <marker id="arr-dash" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+  </defs>
+  <style>text { font-family: Virgil, 'Segoe UI Emoji', cursive; fill: #1e1e1e; }</style>
+
+  <!-- Title -->
+  <text x="400" y="28" font-size="19" text-anchor="middle" font-weight="bold">The 5 CALM 1.2 Relationship Types</text>
+
+  <!-- Row separators -->
+  <line x1="20" y1="48" x2="780" y2="48" stroke="#cccccc" stroke-width="1"/>
+  <line x1="20" y1="152" x2="780" y2="152" stroke="#cccccc" stroke-width="1"/>
+  <line x1="20" y1="256" x2="780" y2="256" stroke="#cccccc" stroke-width="1"/>
+  <line x1="20" y1="382" x2="780" y2="382" stroke="#cccccc" stroke-width="1"/>
+  <line x1="20" y1="488" x2="780" y2="488" stroke="#cccccc" stroke-width="1"/>
+
+  <!-- ===== ROW 1: connects ===== -->
+  <!-- Row label -->
+  <text x="30" y="106" font-size="14" font-weight="bold">connects</text>
+
+  <!-- webclient node (left) -->
+  <rect x="138" y="62" width="120" height="72" rx="4" ry="4" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <rect x="138" y="62" width="120" height="20" rx="4" ry="4" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <line x1="138" y1="82" x2="258" y2="82" stroke="#1e1e1e" stroke-width="1"/>
+  <circle cx="150" cy="72" r="4" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="198" y="114" font-size="12" text-anchor="middle">webclient</text>
+
+  <!-- Arrow with protocol label -->
+  <line x1="258" y1="98" x2="448" y2="98" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="353" y="88" font-size="11" text-anchor="middle">protocol: HTTPS</text>
+
+  <!-- service node (right) -->
+  <polygon points="510,66 554,88 554,126 510,148 466,126 466,88" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="510" y="112" font-size="12" text-anchor="middle">service</text>
+
+  <!-- Row description -->
+  <text x="618" y="96" font-size="12" fill="#757575">node-to-node</text>
+  <text x="618" y="112" font-size="12" fill="#757575">data flow with</text>
+  <text x="618" y="128" font-size="12" fill="#757575">protocol</text>
+
+  <!-- ===== ROW 2: interacts ===== -->
+  <text x="30" y="210" font-size="14" font-weight="bold">interacts</text>
+
+  <!-- Stick figure actor (left) -->
+  <circle cx="178" cy="170" r="16" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <line x1="178" y1="186" x2="178" y2="218" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="156" y1="200" x2="200" y2="200" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="178" y1="218" x2="160" y2="238" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="178" y1="218" x2="196" y2="238" stroke="#1e1e1e" stroke-width="2"/>
+  <text x="178" y="252" font-size="11" text-anchor="middle">actor</text>
+
+  <!-- Solid arrow -->
+  <line x1="202" y1="200" x2="448" y2="200" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="325" y="190" font-size="11" text-anchor="middle">actor initiates</text>
+
+  <!-- webclient node (right) -->
+  <rect x="452" y="166" width="120" height="68" rx="4" ry="4" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <rect x="452" y="166" width="120" height="18" rx="4" ry="4" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <line x1="452" y1="184" x2="572" y2="184" stroke="#1e1e1e" stroke-width="1"/>
+  <text x="512" y="215" font-size="12" text-anchor="middle">webclient</text>
+
+  <!-- Row description -->
+  <text x="618" y="196" font-size="12" fill="#757575">actor initiates</text>
+  <text x="618" y="212" font-size="12" fill="#757575">to node(s) —</text>
+  <text x="618" y="228" font-size="12" fill="#757575">no protocol field</text>
+
+  <!-- ===== ROW 3: deployed-in ===== -->
+  <text x="30" y="316" font-size="14" font-weight="bold">deployed-in</text>
+
+  <!-- Dashed outer ecosystem container -->
+  <rect x="138" y="264" width="360" height="110" rx="8" ry="8" stroke="#1e1e1e" stroke-width="2" stroke-dasharray="7,4" fill="#ffffff"/>
+  <text x="200" y="280" font-size="10" fill="#757575">ecosystem</text>
+
+  <!-- Inner nodes -->
+  <rect x="160" y="290" width="80" height="36" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="200" y="313" font-size="11" text-anchor="middle">service</text>
+  <rect x="268" y="290" width="80" height="36" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="308" y="313" font-size="11" text-anchor="middle">database</text>
+  <!-- Dashed lines from border to inner nodes -->
+  <line x1="160" y1="258" x2="200" y2="290" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="308" y1="264" x2="308" y2="290" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Row description -->
+  <text x="618" y="304" font-size="12" fill="#757575">nodes live</text>
+  <text x="618" y="320" font-size="12" fill="#757575">inside a runtime</text>
+  <text x="618" y="336" font-size="12" fill="#757575">container</text>
+
+  <!-- ===== ROW 4: composed-of ===== -->
+  <text x="30" y="432" font-size="14" font-weight="bold">composed-of</text>
+
+  <!-- Solid outer system container -->
+  <rect x="138" y="390" width="360" height="82" rx="8" ry="8" stroke="#1e1e1e" stroke-width="3" fill="#ffffff"/>
+  <text x="200" y="406" font-size="10" fill="#757575">system</text>
+
+  <!-- Inner hexagons -->
+  <polygon points="216,420 236,432 236,456 216,468 196,456 196,432" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="216" y="449" font-size="10" text-anchor="middle">service-a</text>
+  <polygon points="332,420 352,432 352,456 332,468 312,456 312,432" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="332" y="449" font-size="10" text-anchor="middle">service-b</text>
+  <!-- Diamond composition connectors from border -->
+  <polygon points="138,431 150,424 162,431 150,438" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <line x1="162" y1="431" x2="196" y2="444" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="162" y1="431" x2="312" y2="444" stroke="#1e1e1e" stroke-width="1.5"/>
+
+  <!-- Row description -->
+  <text x="618" y="422" font-size="12" fill="#757575">container is</text>
+  <text x="618" y="438" font-size="12" fill="#757575">structurally made</text>
+  <text x="618" y="454" font-size="12" fill="#757575">of these nodes</text>
+
+  <!-- ===== ROW 5: options ===== -->
+  <text x="30" y="540" font-size="14" font-weight="bold">options</text>
+
+  <!-- Central diamond -->
+  <polygon points="318,506 354,530 318,554 282,530" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="318" y="534" font-size="11" text-anchor="middle">?</text>
+
+  <!-- Left arrow to option-a -->
+  <line x1="282" y1="530" x2="188" y2="530" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="128" y="514" width="60" height="32" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="158" y="534" font-size="11" text-anchor="middle">option-a</text>
+
+  <!-- Right arrow to option-b -->
+  <line x1="354" y1="530" x2="448" y2="530" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <rect x="448" y="514" width="60" height="32" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="478" y="534" font-size="11" text-anchor="middle">option-b</text>
+
+  <!-- Row description -->
+  <text x="618" y="522" font-size="12" fill="#757575">decision branches</text>
+  <text x="618" y="538" font-size="12" fill="#757575">(ADR-in-spec)</text>
+
+  <!-- Bottom border -->
+  <line x1="20" y1="585" x2="780" y2="585" stroke="#cccccc" stroke-width="1"/>
+  <text x="400" y="608" font-size="13" text-anchor="middle" fill="#757575">Exactly these 5 relationship types in CALM 1.2. No others.</text>
 </svg>

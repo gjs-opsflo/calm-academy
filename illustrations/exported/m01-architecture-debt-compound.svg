@@ -1,15 +1,90 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="white" stroke="#cccccc" stroke-width="2"/>
-  <text x="400" y="155" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#666666">
-    [Illustration placeholder: m01-architecture-debt-compound]
-  </text>
-  <text x="400" y="190" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Architecture Debt Compound Curve — linear vs exponential cost of letting architecture drift
-  </text>
-  <text x="400" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Author in Excalidraw: illustrations/source/m01-architecture-debt-compound.excalidraw
-  </text>
-  <text x="400" y="250" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Then run: bash scripts/export-excalidraw.sh m01-architecture-debt-compound
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="800" height="520" style="background:#ffffff">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+    <pattern id="crosshatch" width="8" height="8" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="8" y2="8" stroke="#aaaaaa" stroke-width="1"/>
+      <line x1="8" y1="0" x2="0" y2="8" stroke="#aaaaaa" stroke-width="1"/>
+    </pattern>
+    <clipPath id="debtclip">
+      <polygon points="100,370 700,290 700,80 100,370"/>
+    </clipPath>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="30" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="19" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Architecture debt compounds like technical debt</text>
+
+  <!-- Chart area -->
+  <!-- Y axis -->
+  <line x1="100" y1="60" x2="100" y2="390" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- X axis -->
+  <line x1="100" y1="390" x2="730" y2="390" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Y axis label -->
+  <text x="52" y="230" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#1e1e1e" transform="rotate(-90,52,230)">cost / pain</text>
+
+  <!-- X axis time labels -->
+  <text x="100" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Launch</text>
+  <text x="210" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">M6</text>
+  <text x="320" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">M12</text>
+  <text x="430" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">M18</text>
+  <text x="540" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Y2</text>
+  <text x="700" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Y3</text>
+
+  <!-- Tick marks on X axis -->
+  <line x1="210" y1="386" x2="210" y2="394" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="320" y1="386" x2="320" y2="394" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="430" y1="386" x2="430" y2="394" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="540" y1="386" x2="540" y2="394" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="700" y1="386" x2="700" y2="394" stroke="#1e1e1e" stroke-width="1.5"/>
+
+  <!-- Cross-hatch shading for debt gap area (between the two curves) -->
+  <!-- Debt region: bounded by curve B (above) and curve A (below) -->
+  <!-- Filled polygon approximating the gap -->
+  <polygon points="100,370 210,345 320,310 430,260 540,190 700,80 700,290 540,320 430,345 320,360 210,368 100,370"
+           fill="url(#crosshatch)" stroke="none" opacity="0.7"/>
+
+  <!-- Curve A — linear (dashed) -->
+  <!-- Points: Launch(100,370) → M6(210,355) → M12(320,340) → M18(430,325) → Y2(540,310) → Y3(700,290) -->
+  <polyline points="100,370 210,355 320,340 430,325 540,310 700,290"
+            fill="none" stroke="#1e1e1e" stroke-width="2.5" stroke-dasharray="8,5"/>
+
+  <!-- Curve B — exponential (solid) -->
+  <!-- Points: Launch(100,370) → M6(210,345) → M12(320,310) → M18(430,260) → Y2(540,190) → Y3(700,80) -->
+  <polyline points="100,370 210,345 320,305 430,255 540,185 700,78"
+            fill="none" stroke="#1e1e1e" stroke-width="3"/>
+
+  <!-- Curve A label -->
+  <text x="710" y="287" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" text-anchor="start" fill="#1e1e1e">linear effort</text>
+  <text x="710" y="300" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" text-anchor="start" fill="#1e1e1e">if kept current</text>
+
+  <!-- Curve B label -->
+  <text x="710" y="78" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" text-anchor="start" fill="#1e1e1e">actual cost</text>
+  <text x="710" y="91" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" text-anchor="start" fill="#1e1e1e">of letting it drift</text>
+
+  <!-- Gap label: "the debt" -->
+  <text x="360" y="295" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e" transform="rotate(-20,360,295)">the debt</text>
+
+  <!-- Annotation dots + labels on curve B -->
+  <circle cx="210" cy="345" r="5" fill="#1e1e1e"/>
+  <line x1="210" y1="340" x2="210" y2="300" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="215" y="295" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="10" fill="#1e1e1e">first onboarding friction</text>
+
+  <circle cx="320" cy="305" r="5" fill="#1e1e1e"/>
+  <line x1="320" y1="300" x2="260" y2="265" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="140" y="261" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="10" fill="#1e1e1e">first compliance audit pain</text>
+
+  <circle cx="430" cy="255" r="5" fill="#1e1e1e"/>
+  <line x1="430" y1="250" x2="430" y2="210" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="435" y="206" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="10" fill="#1e1e1e">first major incident</text>
+
+  <circle cx="540" cy="185" r="5" fill="#1e1e1e"/>
+  <line x1="540" y1="180" x2="540" y2="145" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="545" y="141" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="10" fill="#1e1e1e">rewrite considered</text>
+
+  <!-- Caption -->
+  <text x="400" y="440" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-style="italic" text-anchor="middle" fill="#1e1e1e">The longer the diagram lies, the more expensive the truth becomes.</text>
+  <text x="400" y="464" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#757575">Solid line = actual drift cost. Dashed line = maintenance cost if kept current. Gap = architecture debt.</text>
+  <text x="400" y="490" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#757575">CALM prevents the gap from opening.</text>
 </svg>

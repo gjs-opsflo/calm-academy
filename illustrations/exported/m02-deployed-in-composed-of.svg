@@ -1,15 +1,96 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="white" stroke="#cccccc" stroke-width="2"/>
-  <text x="400" y="155" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#666666">
-    [Illustration placeholder: m02-deployed-in-composed-of]
-  </text>
-  <text x="400" y="190" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    deployed-in (dashed container, runtime containment) vs composed-of (solid border, structural composition)
-  </text>
-  <text x="400" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Author in Excalidraw: illustrations/source/m02-deployed-in-composed-of.excalidraw
-  </text>
-  <text x="400" y="250" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Then run: bash scripts/export-excalidraw.sh m02-deployed-in-composed-of
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560" width="800" height="560" style="background:#ffffff">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+  </defs>
+  <style>text { font-family: Virgil, 'Segoe UI Emoji', cursive; fill: #1e1e1e; }</style>
+
+  <!-- Title -->
+  <text x="400" y="28" font-size="19" text-anchor="middle" font-weight="bold">deployed-in vs composed-of</text>
+
+  <!-- Panel divider -->
+  <line x1="400" y1="42" x2="400" y2="490" stroke="#cccccc" stroke-width="1.5"/>
+
+  <!-- ===== LEFT PANEL: deployed-in ===== -->
+  <text x="200" y="58" font-size="16" text-anchor="middle" font-weight="bold">deployed-in</text>
+
+  <!-- Dashed outer container: k8s-cluster (system) -->
+  <rect x="22" y="70" width="356" height="260" rx="10" ry="10" stroke="#1e1e1e" stroke-width="2" stroke-dasharray="8,4" fill="#ffffff"/>
+  <text x="75" y="92" font-size="12" fill="#757575">k8s-cluster (system)</text>
+
+  <!-- Cloud shape for load-balancer (network) -->
+  <path d="M58,140 Q52,120 68,116 Q72,104 84,108 Q88,96 100,100 Q112,90 120,104 Q130,98 136,110 Q148,108 148,122 Q156,124 154,136 Q152,148 138,146 Q132,156 118,150 Q110,160 96,154 Q82,162 72,154 Q56,154 58,140 Z"
+        stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="100" y="170" font-size="11" text-anchor="middle">load-balancer</text>
+  <text x="100" y="184" font-size="10" text-anchor="middle" fill="#757575">(network)</text>
+
+  <!-- Hexagon: attendees (service) -->
+  <polygon points="200,116 230,133 230,167 200,184 170,167 170,133" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="200" y="155" font-size="11" text-anchor="middle">attendees</text>
+  <text x="200" y="200" font-size="10" text-anchor="middle" fill="#757575">(service)</text>
+
+  <!-- Cylinder: attendees-store (database) -->
+  <ellipse cx="320" cy="128" rx="40" ry="10" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <rect x="280" y="128" width="80" height="44" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <ellipse cx="320" cy="172" rx="40" ry="10" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="320" y="196" font-size="10" text-anchor="middle">attendees-store</text>
+  <text x="320" y="210" font-size="10" text-anchor="middle" fill="#757575">(database)</text>
+
+  <!-- Dashed lines from container border to nodes -->
+  <line x1="100" y1="70" x2="100" y2="108" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="200" y1="70" x2="200" y2="116" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="320" y1="70" x2="320" y2="118" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Caption -->
+  <text x="200" y="356" font-size="12" text-anchor="middle">runtime containment —</text>
+  <text x="200" y="373" font-size="12" text-anchor="middle">these nodes LIVE inside this container</text>
+  <!-- Code annotation -->
+  <rect x="22" y="390" width="356" height="36" rx="4" ry="4" stroke="#cccccc" stroke-width="1" fill="#ffffff"/>
+  <text x="30" y="407" font-size="9">deployed-in: { container: "k8s-cluster",</text>
+  <text x="30" y="421" font-size="9">               nodes: ["load-balancer", ...] }</text>
+
+  <!-- ===== RIGHT PANEL: composed-of ===== -->
+  <text x="600" y="58" font-size="16" text-anchor="middle" font-weight="bold">composed-of</text>
+
+  <!-- Solid outer container: trade-execution-platform (system) -->
+  <rect x="420" y="70" width="356" height="260" rx="10" ry="10" stroke="#1e1e1e" stroke-width="3" fill="#ffffff"/>
+  <text x="476" y="92" font-size="12" fill="#757575">trade-execution-platform (system)</text>
+
+  <!-- Hexagon: order-service -->
+  <polygon points="510,114 540,131 540,165 510,182 480,165 480,131" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="510" y="153" font-size="11" text-anchor="middle">order-service</text>
+  <text x="510" y="198" font-size="10" text-anchor="middle" fill="#757575">(service)</text>
+
+  <!-- Hexagon: notifications-service -->
+  <polygon points="618,114 648,131 648,165 618,182 588,165 588,131" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="618" y="148" font-size="10" text-anchor="middle">notifications</text>
+  <text x="618" y="162" font-size="10" text-anchor="middle">-service</text>
+  <text x="618" y="198" font-size="10" text-anchor="middle" fill="#757575">(service)</text>
+
+  <!-- Cylinder: trades-db -->
+  <ellipse cx="726" cy="128" rx="40" ry="10" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <rect x="686" y="128" width="80" height="44" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <ellipse cx="726" cy="172" rx="40" ry="10" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="726" y="196" font-size="10" text-anchor="middle">trades-db</text>
+  <text x="726" y="210" font-size="10" text-anchor="middle" fill="#757575">(database)</text>
+
+  <!-- Diamond composition connector from container border -->
+  <polygon points="420,148 434,140 448,148 434,156" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <line x1="448" y1="148" x2="480" y2="148" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="448" y1="148" x2="588" y2="148" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="448" y1="148" x2="686" y2="148" stroke="#1e1e1e" stroke-width="1.5"/>
+
+  <!-- Caption -->
+  <text x="600" y="356" font-size="12" text-anchor="middle">structural composition —</text>
+  <text x="600" y="373" font-size="12" text-anchor="middle">this system IS made of these nodes</text>
+  <!-- Code annotation -->
+  <rect x="420" y="390" width="356" height="36" rx="4" ry="4" stroke="#cccccc" stroke-width="1" fill="#ffffff"/>
+  <text x="428" y="407" font-size="9">composed-of: { container: "trade-exec-platform",</text>
+  <text x="428" y="421" font-size="9">               nodes: ["order-service", ...] }</text>
+
+  <!-- Bottom annotation -->
+  <rect x="18" y="450" width="764" height="44" rx="6" ry="6" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="5,3" fill="#ffffff"/>
+  <text x="400" y="470" font-size="13" text-anchor="middle">deployed-in = runtime (where do they run?).</text>
+  <text x="400" y="488" font-size="13" text-anchor="middle">composed-of = structure (what is it made of?)</text>
 </svg>

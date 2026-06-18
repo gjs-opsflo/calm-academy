@@ -4,34 +4,171 @@
   "source": "https://excalidraw.com",
   "elements": [
     {
-      "id": "spec-text",
-      "type": "text",
-      "x": 20,
-      "y": 20,
-      "width": 760,
-      "height": 460,
-      "text": "DIAGRAM SPEC — CALM CLI Command Taxonomy (Chapter 3.1)\n\nLayout: Tree diagram, top-to-bottom orientation.\n\nROOT NODE (top, centred):\n  Box labelled: `calm` (or `npx @finos/calm-cli`)\n  Caption: 'v1.45.0'\n\n8 PRIMARY COMMAND BRANCHES below the root node:\n  validate | generate | diff | timeline | docify | template | init-ai | hub\n\nEach primary command box has 2-4 KEY FLAG child nodes beneath it:\n\n  validate branch:\n    Flags: `-a <arch>`, `-p <pattern>`, `-f junit`, `--strict`\n    Note annotation: 'schema-only vs pattern conformance'\n\n  generate branch:\n    Flags: `-p <pattern>`, `-o <file>`, `--option-choices`\n\n  diff branch:\n    Flags: `-a`, `-b`, `-f summary`, `--exit-code`\n    Note annotation: 'exit-code = gate on unexpected changes'\n\n  timeline branch:\n    Flags: `-a <files...>`, `-o <file>`\n\n  docify branch:\n    No sub-flags shown; brief label 'generates doc site'\n\n  template branch:\n    No sub-flags shown; brief label 'Handlebars output'\n\n  init-ai branch:\n    Flags: `-p copilot|kiro|claude|codex`, `-d <path>`\n\n  hub branch (EXPANDS FURTHER — it is a subcommand group):\n    Three sub-branches under hub:\n      push → (architecture / pattern / standard / control-requirement)\n      pull → (architecture / pattern / standard)\n      list → (architectures / namespaces / patterns / standards)\n\nTitle above diagram: 'The CALM CLI command taxonomy'\n\nStyle: B&W only. No colour. Clean tree structure with thin connector lines.\nAll boxes use rounded-corner rectangles. Hub branch should be visually wider\nto accommodate its sub-branches. Root node has heavier border to draw the eye.",
-      "fontSize": 14,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "angle": 0,
-      "baseline": 18,
-      "lineHeight": 1.25,
-      "containerId": null,
-      "originalText": "DIAGRAM SPEC — CALM CLI Command Taxonomy (Chapter 3.1)\n\nLayout: Tree diagram, top-to-bottom orientation.\n\nROOT NODE (top, centred):\n  Box labelled: `calm` (or `npx @finos/calm-cli`)\n  Caption: 'v1.45.0'\n\n8 PRIMARY COMMAND BRANCHES below the root node:\n  validate | generate | diff | timeline | docify | template | init-ai | hub\n\nEach primary command box has 2-4 KEY FLAG child nodes beneath it:\n\n  validate branch:\n    Flags: `-a <arch>`, `-p <pattern>`, `-f junit`, `--strict`\n    Note annotation: 'schema-only vs pattern conformance'\n\n  generate branch:\n    Flags: `-p <pattern>`, `-o <file>`, `--option-choices`\n\n  diff branch:\n    Flags: `-a`, `-b`, `-f summary`, `--exit-code`\n    Note annotation: 'exit-code = gate on unexpected changes'\n\n  timeline branch:\n    Flags: `-a <files...>`, `-o <file>`\n\n  docify branch:\n    No sub-flags shown; brief label 'generates doc site'\n\n  template branch:\n    No sub-flags shown; brief label 'Handlebars output'\n\n  init-ai branch:\n    Flags: `-p copilot|kiro|claude|codex`, `-d <path>`\n\n  hub branch (EXPANDS FURTHER — it is a subcommand group):\n    Three sub-branches under hub:\n      push → (architecture / pattern / standard / control-requirement)\n      pull → (architecture / pattern / standard)\n      list → (architectures / namespaces / patterns / standards)\n\nTitle above diagram: 'The CALM CLI command taxonomy'\n\nStyle: B&W only. No colour. Clean tree structure with thin connector lines.\nAll boxes use rounded-corner rectangles. Hub branch should be visually wider\nto accommodate its sub-branches. Root node has heavier border to draw the eye."
+      "id": "root", "type": "rectangle", "x": 290, "y": 48, "width": 220, "height": 54,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 3, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "root-t"}]
+    },
+    {
+      "id": "root-t", "type": "text", "x": 290, "y": 48, "width": 220, "height": 54,
+      "text": "calm\nnpx @finos/calm-cli · v1.45.0", "fontSize": 15, "fontFamily": 1,
+      "textAlign": "center", "verticalAlign": "middle", "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 1,
+      "strokeStyle": "solid", "roughness": 1, "opacity": 100, "angle": 0,
+      "containerId": "root", "originalText": "calm\nnpx @finos/calm-cli · v1.45.0"
+    },
+    {
+      "id": "cmd-validate", "type": "rectangle", "x": 10, "y": 148, "width": 80, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cmd-validate-t"}]
+    },
+    {
+      "id": "cmd-validate-t", "type": "text", "x": 10, "y": 148, "width": 80, "height": 34,
+      "text": "validate", "fontSize": 13, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "cmd-validate", "originalText": "validate"
+    },
+    {
+      "id": "cmd-generate", "type": "rectangle", "x": 108, "y": 148, "width": 80, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cmd-generate-t"}]
+    },
+    {
+      "id": "cmd-generate-t", "type": "text", "x": 108, "y": 148, "width": 80, "height": 34,
+      "text": "generate", "fontSize": 13, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "cmd-generate", "originalText": "generate"
+    },
+    {
+      "id": "cmd-diff", "type": "rectangle", "x": 206, "y": 148, "width": 80, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cmd-diff-t"}]
+    },
+    {
+      "id": "cmd-diff-t", "type": "text", "x": 206, "y": 148, "width": 80, "height": 34,
+      "text": "diff", "fontSize": 13, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "cmd-diff", "originalText": "diff"
+    },
+    {
+      "id": "cmd-timeline", "type": "rectangle", "x": 304, "y": 148, "width": 80, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cmd-timeline-t"}]
+    },
+    {
+      "id": "cmd-timeline-t", "type": "text", "x": 304, "y": 148, "width": 80, "height": 34,
+      "text": "timeline", "fontSize": 13, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "cmd-timeline", "originalText": "timeline"
+    },
+    {
+      "id": "cmd-docify", "type": "rectangle", "x": 400, "y": 148, "width": 80, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cmd-docify-t"}]
+    },
+    {
+      "id": "cmd-docify-t", "type": "text", "x": 400, "y": 148, "width": 80, "height": 34,
+      "text": "docify", "fontSize": 13, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "cmd-docify", "originalText": "docify"
+    },
+    {
+      "id": "cmd-template", "type": "rectangle", "x": 494, "y": 148, "width": 80, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cmd-template-t"}]
+    },
+    {
+      "id": "cmd-template-t", "type": "text", "x": 494, "y": 148, "width": 80, "height": 34,
+      "text": "template", "fontSize": 13, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "cmd-template", "originalText": "template"
+    },
+    {
+      "id": "cmd-initai", "type": "rectangle", "x": 586, "y": 148, "width": 80, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cmd-initai-t"}]
+    },
+    {
+      "id": "cmd-initai-t", "type": "text", "x": 586, "y": 148, "width": 80, "height": 34,
+      "text": "init-ai", "fontSize": 13, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "cmd-initai", "originalText": "init-ai"
+    },
+    {
+      "id": "cmd-hub", "type": "rectangle", "x": 712, "y": 148, "width": 80, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 3, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cmd-hub-t"}]
+    },
+    {
+      "id": "cmd-hub-t", "type": "text", "x": 712, "y": 148, "width": 80, "height": 34,
+      "text": "hub", "fontSize": 13, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "cmd-hub", "originalText": "hub"
+    },
+    {
+      "id": "hub-push", "type": "rectangle", "x": 668, "y": 215, "width": 64, "height": 28,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "hub-push-t"}]
+    },
+    {
+      "id": "hub-push-t", "type": "text", "x": 668, "y": 215, "width": 64, "height": 28,
+      "text": "push", "fontSize": 12, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "hub-push", "originalText": "push"
+    },
+    {
+      "id": "hub-pull", "type": "rectangle", "x": 720, "y": 215, "width": 64, "height": 28,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "hub-pull-t"}]
+    },
+    {
+      "id": "hub-pull-t", "type": "text", "x": 720, "y": 215, "width": 64, "height": 28,
+      "text": "pull", "fontSize": 12, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "hub-pull", "originalText": "pull"
+    },
+    {
+      "id": "hub-list", "type": "rectangle", "x": 763, "y": 215, "width": 64, "height": 28,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "hub-list-t"}]
+    },
+    {
+      "id": "hub-list-t", "type": "text", "x": 763, "y": 215, "width": 64, "height": 28,
+      "text": "list", "fontSize": 12, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "hub-list", "originalText": "list"
+    },
+    {
+      "id": "title", "type": "text", "x": 200, "y": 10, "width": 400, "height": 32,
+      "text": "The CALM CLI command taxonomy", "fontSize": 20, "fontFamily": 1,
+      "textAlign": "center", "verticalAlign": "top", "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 1,
+      "strokeStyle": "solid", "roughness": 1, "opacity": 100, "angle": 0,
+      "containerId": null, "originalText": "The CALM CLI command taxonomy"
     }
   ],
-  "appState": {
-    "gridSize": null,
-    "viewBackgroundColor": "#ffffff"
-  },
+  "appState": {"gridSize": null, "viewBackgroundColor": "#ffffff"},
   "files": {}
 }

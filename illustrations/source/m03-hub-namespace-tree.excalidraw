@@ -4,34 +4,147 @@
   "source": "https://excalidraw.com",
   "elements": [
     {
-      "id": "spec-text",
-      "type": "text",
-      "x": 20,
-      "y": 20,
-      "width": 760,
-      "height": 460,
-      "text": "DIAGRAM SPEC — CALM Hub Namespace Resource Tree (Chapter 3.3)\n\nLayout: Tree diagram, top-to-bottom.\n\nROOT NODE (top, centred, heavy border):\n  Box labelled: 'CALM Hub'\n  Caption below: 'The architecture registry'\n\nTWO NAMESPACE BRANCHES below root:\n\n  LEFT BRANCH — 'org.mybank' namespace:\n    Box: 'org.mybank'\n    4 resource type child nodes beneath it:\n      - 'architectures' → version annotation: 'v1.0.0, v1.1.0, v2.0.0'\n      - 'patterns' → version annotation: 'v1.0.0, v2.1.0'\n      - 'standards' → version annotation: 'v1.0.0'\n      - 'controls' → version annotation: 'v1.0.0'\n    Each resource type box has version numbers shown as small annotation text.\n\n  RIGHT BRANCH — 'finos' namespace:\n    Box: 'finos'\n    2 resource type child nodes beneath it:\n      - 'patterns' → annotation: 'reference architectures'\n      - 'controls' → annotation: 'CCC control catalog'\n\nBottom annotation (below both branches, centred):\n  'calm hub list namespaces --calm-hub-url http://localhost:8080'\n  'calm hub list architectures --calm-hub-url http://localhost:8080'\n\nTitle above diagram: 'Hub namespace resource tree'\n\nStyle: B&W only. No colour. Root node has thicker/heavier border to draw the eye.\nNamespace boxes have medium borders. Resource type leaf nodes have thin borders.\nVersion annotations shown in smaller grey-equivalent text (dashed underline or italic hint).\nConnector lines are thin and straight.",
-      "fontSize": 14,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "angle": 0,
-      "baseline": 18,
-      "lineHeight": 1.25,
-      "containerId": null,
-      "originalText": "DIAGRAM SPEC — CALM Hub Namespace Resource Tree (Chapter 3.3)\n\nLayout: Tree diagram, top-to-bottom.\n\nROOT NODE (top, centred, heavy border):\n  Box labelled: 'CALM Hub'\n  Caption below: 'The architecture registry'\n\nTWO NAMESPACE BRANCHES below root:\n\n  LEFT BRANCH — 'org.mybank' namespace:\n    Box: 'org.mybank'\n    4 resource type child nodes beneath it:\n      - 'architectures' → version annotation: 'v1.0.0, v1.1.0, v2.0.0'\n      - 'patterns' → version annotation: 'v1.0.0, v2.1.0'\n      - 'standards' → version annotation: 'v1.0.0'\n      - 'controls' → version annotation: 'v1.0.0'\n    Each resource type box has version numbers shown as small annotation text.\n\n  RIGHT BRANCH — 'finos' namespace:\n    Box: 'finos'\n    2 resource type child nodes beneath it:\n      - 'patterns' → annotation: 'reference architectures'\n      - 'controls' → annotation: 'CCC control catalog'\n\nBottom annotation (below both branches, centred):\n  'calm hub list namespaces --calm-hub-url http://localhost:8080'\n  'calm hub list architectures --calm-hub-url http://localhost:8080'\n\nTitle above diagram: 'Hub namespace resource tree'\n\nStyle: B&W only. No colour. Root node has thicker/heavier border to draw the eye.\nNamespace boxes have medium borders. Resource type leaf nodes have thin borders.\nVersion annotations shown in smaller grey-equivalent text (dashed underline or italic hint).\nConnector lines are thin and straight."
+      "id": "title", "type": "text", "x": 100, "y": 10, "width": 600, "height": 32,
+      "text": "Hub namespace resource tree", "fontSize": 20, "fontFamily": 1,
+      "textAlign": "center", "verticalAlign": "top", "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 1,
+      "strokeStyle": "solid", "roughness": 1, "opacity": 100, "angle": 0,
+      "containerId": null, "originalText": "Hub namespace resource tree"
+    },
+    {
+      "id": "root", "type": "rectangle", "x": 290, "y": 48, "width": 220, "height": 54,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 3, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "root-t"}]
+    },
+    {
+      "id": "root-t", "type": "text", "x": 290, "y": 48, "width": 220, "height": 54,
+      "text": "CALM Hub\nThe architecture registry",
+      "fontSize": 15, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "root", "originalText": "CALM Hub\nThe architecture registry"
+    },
+    {
+      "id": "ns-mybank", "type": "rectangle", "x": 120, "y": 148, "width": 160, "height": 40,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "ns-mybank-t"}]
+    },
+    {
+      "id": "ns-mybank-t", "type": "text", "x": 120, "y": 148, "width": 160, "height": 40,
+      "text": "org.mybank", "fontSize": 14, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "ns-mybank", "originalText": "org.mybank"
+    },
+    {
+      "id": "leaf-arch", "type": "rectangle", "x": 40, "y": 228, "width": 80, "height": 32,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "leaf-arch-t"}]
+    },
+    {
+      "id": "leaf-arch-t", "type": "text", "x": 40, "y": 228, "width": 80, "height": 32,
+      "text": "architectures", "fontSize": 10, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "leaf-arch", "originalText": "architectures"
+    },
+    {
+      "id": "leaf-pat", "type": "rectangle", "x": 122, "y": 228, "width": 80, "height": 32,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "leaf-pat-t"}]
+    },
+    {
+      "id": "leaf-pat-t", "type": "text", "x": 122, "y": 228, "width": 80, "height": 32,
+      "text": "patterns", "fontSize": 10, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "leaf-pat", "originalText": "patterns"
+    },
+    {
+      "id": "leaf-std", "type": "rectangle", "x": 206, "y": 228, "width": 80, "height": 32,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "leaf-std-t"}]
+    },
+    {
+      "id": "leaf-std-t", "type": "text", "x": 206, "y": 228, "width": 80, "height": 32,
+      "text": "standards", "fontSize": 10, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "leaf-std", "originalText": "standards"
+    },
+    {
+      "id": "leaf-ctrl", "type": "rectangle", "x": 290, "y": 228, "width": 80, "height": 32,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "leaf-ctrl-t"}]
+    },
+    {
+      "id": "leaf-ctrl-t", "type": "text", "x": 290, "y": 228, "width": 80, "height": 32,
+      "text": "controls", "fontSize": 10, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "leaf-ctrl", "originalText": "controls"
+    },
+    {
+      "id": "ns-finos", "type": "rectangle", "x": 520, "y": 148, "width": 160, "height": 40,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "ns-finos-t"}]
+    },
+    {
+      "id": "ns-finos-t", "type": "text", "x": 520, "y": 148, "width": 160, "height": 40,
+      "text": "finos", "fontSize": 14, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "ns-finos", "originalText": "finos"
+    },
+    {
+      "id": "finos-pat", "type": "rectangle", "x": 490, "y": 228, "width": 80, "height": 32,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "finos-pat-t"}]
+    },
+    {
+      "id": "finos-pat-t", "type": "text", "x": 490, "y": 228, "width": 80, "height": 32,
+      "text": "patterns", "fontSize": 10, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "finos-pat", "originalText": "patterns"
+    },
+    {
+      "id": "finos-ctrl", "type": "rectangle", "x": 630, "y": 228, "width": 80, "height": 32,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "finos-ctrl-t"}]
+    },
+    {
+      "id": "finos-ctrl-t", "type": "text", "x": 630, "y": 228, "width": 80, "height": 32,
+      "text": "controls", "fontSize": 10, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "finos-ctrl", "originalText": "controls"
+    },
+    {
+      "id": "cli-note", "type": "rectangle", "x": 60, "y": 310, "width": 680, "height": 68,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "cli-note-t"}]
+    },
+    {
+      "id": "cli-note-t", "type": "text", "x": 60, "y": 310, "width": 680, "height": 68,
+      "text": "calm hub list namespaces --calm-hub-url http://localhost:8080\ncalm hub list architectures --calm-hub-url http://localhost:8080",
+      "fontSize": 11, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "cli-note",
+      "originalText": "calm hub list namespaces --calm-hub-url http://localhost:8080\ncalm hub list architectures --calm-hub-url http://localhost:8080"
     }
   ],
-  "appState": {
-    "gridSize": null,
-    "viewBackgroundColor": "#ffffff"
-  },
+  "appState": {"gridSize": null, "viewBackgroundColor": "#ffffff"},
   "files": {}
 }

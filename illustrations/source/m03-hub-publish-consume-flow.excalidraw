@@ -4,34 +4,73 @@
   "source": "https://excalidraw.com",
   "elements": [
     {
-      "id": "spec-text",
-      "type": "text",
-      "x": 20,
-      "y": 20,
-      "width": 760,
-      "height": 460,
-      "text": "DIAGRAM SPEC — Hub Publish-Consume Workflow (Chapter 3.3)\n\nLayout: Horizontal flow, left-to-right, 4 actor/step boxes with arrows between them.\n\nSTEP 1 (leftmost):\n  Actor shape: 'Architect' (stick figure or person icon)\n  Action label below figure:\n    'Creates/updates architecture'\n    'locally (CLI or Studio)'\n\nARROW 1 → (right-pointing, labelled above):\n  'calm hub push architecture v2.0.0'\n\nSTEP 2:\n  Box: 'CALM Hub' (server/rectangle icon)\n  Label inside or below:\n    'Stores version history'\n    'Namespace-scoped'\n    'Diffs, history preserved'\n\nARROW 2 → (right-pointing, labelled above):\n  'calm hub pull architecture'\n  OR\n  'calm generate -p hub-pattern-url'\n\nSTEP 3:\n  Actor shape: 'Product Team' (group of stick figures, 2-3)\n  Action label below:\n    'References Hub artifact by'\n    'namespace + version'\n\nARROW 3 → (right-pointing, labelled above):\n  'calm validate -a arch.calm.json'\n  '-p http://hub:8080/ns/patterns/...'\n\nSTEP 4 (rightmost):\n  Box: 'CI/CD Pipeline' (gear or workflow icon)\n  Label inside or below:\n    'Gate blocks non-conforming architectures'\n    'Exit 0 = merge allowed'\n    'Exit 1 = PR blocked'\n\nBOTTOM ANNOTATION (below all 4 steps, centred):\n  'Version pinning: teams reference namespace + version.'\n  'Breaking changes require a new version — old consumers continue working.'\n\nTitle above diagram: 'Hub publish-consume workflow'\n\nStyle: B&W only. No colour. Actor shapes can be simple stick figures or labelled person boxes.\nHub box has heavier border (it is the central registry). Arrows are medium weight.\nAll labels are readable at normal document zoom.",
-      "fontSize": 14,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "angle": 0,
-      "baseline": 18,
-      "lineHeight": 1.25,
-      "containerId": null,
-      "originalText": "DIAGRAM SPEC — Hub Publish-Consume Workflow (Chapter 3.3)\n\nLayout: Horizontal flow, left-to-right, 4 actor/step boxes with arrows between them.\n\nSTEP 1 (leftmost):\n  Actor shape: 'Architect' (stick figure or person icon)\n  Action label below figure:\n    'Creates/updates architecture'\n    'locally (CLI or Studio)'\n\nARROW 1 → (right-pointing, labelled above):\n  'calm hub push architecture v2.0.0'\n\nSTEP 2:\n  Box: 'CALM Hub' (server/rectangle icon)\n  Label inside or below:\n    'Stores version history'\n    'Namespace-scoped'\n    'Diffs, history preserved'\n\nARROW 2 → (right-pointing, labelled above):\n  'calm hub pull architecture'\n  OR\n  'calm generate -p hub-pattern-url'\n\nSTEP 3:\n  Actor shape: 'Product Team' (group of stick figures, 2-3)\n  Action label below:\n    'References Hub artifact by'\n    'namespace + version'\n\nARROW 3 → (right-pointing, labelled above):\n  'calm validate -a arch.calm.json'\n  '-p http://hub:8080/ns/patterns/...'\n\nSTEP 4 (rightmost):\n  Box: 'CI/CD Pipeline' (gear or workflow icon)\n  Label inside or below:\n    'Gate blocks non-conforming architectures'\n    'Exit 0 = merge allowed'\n    'Exit 1 = PR blocked'\n\nBOTTOM ANNOTATION (below all 4 steps, centred):\n  'Version pinning: teams reference namespace + version.'\n  'Breaking changes require a new version — old consumers continue working.'\n\nTitle above diagram: 'Hub publish-consume workflow'\n\nStyle: B&W only. No colour. Actor shapes can be simple stick figures or labelled person boxes.\nHub box has heavier border (it is the central registry). Arrows are medium weight.\nAll labels are readable at normal document zoom."
+      "id": "title", "type": "text", "x": 100, "y": 10, "width": 600, "height": 32,
+      "text": "Hub publish-consume workflow", "fontSize": 20, "fontFamily": 1,
+      "textAlign": "center", "verticalAlign": "top", "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 1,
+      "strokeStyle": "solid", "roughness": 1, "opacity": 100, "angle": 0,
+      "containerId": null, "originalText": "Hub publish-consume workflow"
+    },
+    {
+      "id": "step1-label", "type": "text", "x": 30, "y": 200, "width": 80, "height": 60,
+      "text": "Architect\nCreates/updates\narch locally\n(CLI or Studio)",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": null, "originalText": "Architect\nCreates/updates\narch locally\n(CLI or Studio)"
+    },
+    {
+      "id": "step2-hub", "type": "rectangle", "x": 228, "y": 108, "width": 150, "height": 80,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 3, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step2-hub-t"}]
+    },
+    {
+      "id": "step2-hub-t", "type": "text", "x": 228, "y": 108, "width": 150, "height": 80,
+      "text": "CALM Hub\nStores version history\nNamespace-scoped\nDiffs preserved",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step2-hub", "originalText": "CALM Hub\nStores version history\nNamespace-scoped\nDiffs preserved"
+    },
+    {
+      "id": "step3-label", "type": "text", "x": 460, "y": 160, "width": 100, "height": 50,
+      "text": "Product Team\nReferences Hub\nartifact by\nnamespace+version",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": null, "originalText": "Product Team\nReferences Hub\nartifact by\nnamespace+version"
+    },
+    {
+      "id": "step4-cicd", "type": "rectangle", "x": 638, "y": 108, "width": 142, "height": 80,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step4-cicd-t"}]
+    },
+    {
+      "id": "step4-cicd-t", "type": "text", "x": 638, "y": 108, "width": 142, "height": 80,
+      "text": "CI/CD Pipeline\nGate: arch must conform\nExit 0 = merge allowed\nExit 1 = PR blocked",
+      "fontSize": 9, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step4-cicd", "originalText": "CI/CD Pipeline\nGate: arch must conform\nExit 0 = merge allowed\nExit 1 = PR blocked"
+    },
+    {
+      "id": "note-version", "type": "rectangle", "x": 40, "y": 310, "width": 720, "height": 60,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "note-version-t"}]
+    },
+    {
+      "id": "note-version-t", "type": "text", "x": 40, "y": 310, "width": 720, "height": 60,
+      "text": "Version pinning: teams reference namespace + version.\nBreaking changes require a new version — old consumers continue working.",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#555555", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "note-version",
+      "originalText": "Version pinning: teams reference namespace + version.\nBreaking changes require a new version — old consumers continue working."
     }
   ],
-  "appState": {
-    "gridSize": null,
-    "viewBackgroundColor": "#ffffff"
-  },
+  "appState": {"gridSize": null, "viewBackgroundColor": "#ffffff"},
   "files": {}
 }

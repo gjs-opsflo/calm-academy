@@ -1,15 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="white" stroke="#cccccc" stroke-width="2"/>
-  <text x="400" y="155" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#666666">
-    [Illustration placeholder: m02-conference-signup-step1-nodes]
-  </text>
-  <text x="400" y="190" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Conference signup step 1: 6 nodes laid out (actor, webclient, network, service, database, system), no relationships yet
-  </text>
-  <text x="400" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Author in Excalidraw: illustrations/source/m02-conference-signup-step1-nodes.excalidraw
-  </text>
-  <text x="400" y="250" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Then run: bash scripts/export-excalidraw.sh m02-conference-signup-step1-nodes
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420" style="background:#ffffff">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+  </defs>
+  <style>text { font-family: Virgil, 'Segoe UI Emoji', cursive; fill: #1e1e1e; }</style>
+
+  <!-- Title -->
+  <text x="400" y="26" font-size="18" text-anchor="middle" font-weight="bold">Conference Signup — Step 1: Declare the Nodes</text>
+
+  <!-- k8s-cluster (system) — large dashed rect around right nodes (drawn first / behind) -->
+  <rect x="310" y="56" width="464" height="270" rx="10" ry="10" stroke="#1e1e1e" stroke-width="2" stroke-dasharray="8,4" fill="#ffffff"/>
+  <text x="360" y="74" font-size="12" fill="#757575">k8s-cluster (system)</text>
+
+  <!-- NODE 1: conference-attendee (actor) — stick figure -->
+  <circle cx="58" cy="110" r="20" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <line x1="58" y1="130" x2="58" y2="168" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="34" y1="148" x2="82" y2="148" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="58" y1="168" x2="38" y2="196" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="58" y1="168" x2="78" y2="196" stroke="#1e1e1e" stroke-width="2"/>
+  <text x="58" y="216" font-size="11" text-anchor="middle">conference-attendee</text>
+  <text x="58" y="232" font-size="10" text-anchor="middle" fill="#757575">(actor)</text>
+
+  <!-- NODE 2: conference-website (webclient) — browser window -->
+  <rect x="132" y="86" width="148" height="90" rx="4" ry="4" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <rect x="132" y="86" width="148" height="24" rx="4" ry="4" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <line x1="132" y1="110" x2="280" y2="110" stroke="#1e1e1e" stroke-width="1.5"/>
+  <circle cx="146" cy="98" r="5" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <circle cx="160" cy="98" r="5" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <rect x="172" y="91" width="68" height="14" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1" fill="#ffffff"/>
+  <text x="206" y="146" font-size="11" text-anchor="middle">conference-website</text>
+  <text x="206" y="162" font-size="10" text-anchor="middle" fill="#757575">(webclient)</text>
+  <text x="206" y="190" font-size="10" text-anchor="middle" fill="#757575">— outside k8s-cluster —</text>
+
+  <!-- NODE 3: load-balancer (network) — cloud shape inside k8s container -->
+  <path d="M358,118 Q350,100 366,96 Q370,84 380,88 Q384,76 394,80 Q404,70 412,82 Q422,76 428,90 Q440,88 442,102 Q450,104 448,116 Q448,132 434,130 Q426,142 414,136 Q406,148 394,142 Q382,152 372,144 Q356,144 358,118 Z"
+        stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="400" y="162" font-size="11" text-anchor="middle">load-balancer</text>
+  <text x="400" y="176" font-size="10" text-anchor="middle" fill="#757575">(network)</text>
+
+  <!-- NODE 4: attendees (service) — hexagon -->
+  <polygon points="548,100 584,120 584,160 548,180 512,160 512,120" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="548" y="145" font-size="11" text-anchor="middle">attendees</text>
+  <text x="548" y="195" font-size="10" text-anchor="middle" fill="#757575">(service)</text>
+
+  <!-- NODE 5: attendees-store (database) — cylinder -->
+  <ellipse cx="690" cy="112" rx="52" ry="12" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <rect x="638" y="112" width="104" height="56" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <ellipse cx="690" cy="168" rx="52" ry="12" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="690" y="196" font-size="11" text-anchor="middle">attendees-store</text>
+  <text x="690" y="210" font-size="10" text-anchor="middle" fill="#757575">(database)</text>
+
+  <!-- Caption -->
+  <text x="400" y="370" font-size="14" text-anchor="middle" font-style="italic">Step 1 — declare the nodes. No relationships yet.</text>
+
+  <!-- No arrows legend -->
+  <rect x="18" y="390" width="764" height="22" rx="3" ry="3" stroke="#cccccc" stroke-width="1" fill="#ffffff"/>
+  <text x="400" y="406" font-size="11" text-anchor="middle" fill="#757575">6 nodes declared. Relationships will be added in Step 2. The k8s-cluster boundary hints at future deployed-in.</text>
 </svg>

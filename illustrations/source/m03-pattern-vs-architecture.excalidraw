@@ -4,34 +4,180 @@
   "source": "https://excalidraw.com",
   "elements": [
     {
-      "id": "spec-text",
-      "type": "text",
-      "x": 20,
-      "y": 20,
-      "width": 760,
-      "height": 460,
-      "text": "DIAGRAM SPEC — Pattern to Architecture via calm generate (Chapter 3.6)\n\nLayout: Two main panels side-by-side, separated by a central arrow.\n\nLEFT PANEL (label at top: 'Pattern (.pattern.json)'):\n  A rounded rectangle representing the pattern file.\n  Inside the rectangle, show JSON Schema constraints symbolically:\n    - '\"node-type\": { \"const\": \"network\" }'\n    - '\"node-type\": { \"const\": \"service\" }'\n    - '\"node-type\": { \"const\": \"database\" }'\n    - '\"protocol\": { \"const\": \"HTTPS\" }'\n    - '\"minItems\": 3'\n  Below the rectangle, caption in smaller text:\n    'Template — defines what MUST exist'\n\nCENTRAL ARROW (pointing left → right):\n  Arrow label (above arrow): 'calm generate -p pattern.json -o arch.calm.json'\n  Arrow sub-label (below arrow): 'instantiation'\n\nRIGHT PANEL (label at top: 'Architecture (.calm.json)'):\n  Three node boxes stacked vertically with connecting arrows:\n    TOP BOX: 'WAF/LB' (network)\n    ↓ HTTPS arrow\n    MIDDLE BOX: 'API Service' (service)\n    ↓ JDBC arrow\n    BOTTOM BOX: 'Customer DB' (database)\n  Below the cluster, caption in smaller text:\n    'Instance — conforms to pattern constraints'\n\nBOTTOM ANNOTATION (below both panels, centred):\n  'Validate conformance: calm validate -a arch.calm.json -p pattern.json'\n\nTitle (above both panels): 'Pattern to architecture via calm generate'\n\nStyle: B&W only. No colour. Left panel has dashed border (template/schema feel).\nRight panel has solid border (concrete instance). Central arrow is thick/bold.\nUse consistent box shapes: rounded rectangles for panels, sharp rectangles for node boxes.",
-      "fontSize": 14,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "angle": 0,
-      "baseline": 18,
-      "lineHeight": 1.25,
-      "containerId": null,
-      "originalText": "DIAGRAM SPEC — Pattern to Architecture via calm generate (Chapter 3.6)\n\nLayout: Two main panels side-by-side, separated by a central arrow.\n\nLEFT PANEL (label at top: 'Pattern (.pattern.json)'):\n  A rounded rectangle representing the pattern file.\n  Inside the rectangle, show JSON Schema constraints symbolically:\n    - '\"node-type\": { \"const\": \"network\" }'\n    - '\"node-type\": { \"const\": \"service\" }'\n    - '\"node-type\": { \"const\": \"database\" }'\n    - '\"protocol\": { \"const\": \"HTTPS\" }'\n    - '\"minItems\": 3'\n  Below the rectangle, caption in smaller text:\n    'Template — defines what MUST exist'\n\nCENTRAL ARROW (pointing left → right):\n  Arrow label (above arrow): 'calm generate -p pattern.json -o arch.calm.json'\n  Arrow sub-label (below arrow): 'instantiation'\n\nRIGHT PANEL (label at top: 'Architecture (.calm.json)'):\n  Three node boxes stacked vertically with connecting arrows:\n    TOP BOX: 'WAF/LB' (network)\n    ↓ HTTPS arrow\n    MIDDLE BOX: 'API Service' (service)\n    ↓ JDBC arrow\n    BOTTOM BOX: 'Customer DB' (database)\n  Below the cluster, caption in smaller text:\n    'Instance — conforms to pattern constraints'\n\nBOTTOM ANNOTATION (below both panels, centred):\n  'Validate conformance: calm validate -a arch.calm.json -p pattern.json'\n\nTitle (above both panels): 'Pattern to architecture via calm generate'\n\nStyle: B&W only. No colour. Left panel has dashed border (template/schema feel).\nRight panel has solid border (concrete instance). Central arrow is thick/bold.\nUse consistent box shapes: rounded rectangles for panels, sharp rectangles for node boxes."
+      "id": "title", "type": "text", "x": 50, "y": 10, "width": 700, "height": 32,
+      "text": "Pattern to architecture via calm generate",
+      "fontSize": 20, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": null,
+      "originalText": "Pattern to architecture via calm generate"
+    },
+    {
+      "id": "panel-pattern", "type": "rectangle", "x": 18, "y": 72, "width": 315, "height": 320,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#fafafa", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": []
+    },
+    {
+      "id": "lbl-pattern", "type": "text", "x": 23, "y": 48, "width": 305, "height": 24,
+      "text": "Pattern (.pattern.json)", "fontSize": 14, "fontFamily": 1,
+      "textAlign": "center", "verticalAlign": "top", "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 1,
+      "strokeStyle": "solid", "roughness": 1, "opacity": 100, "angle": 0,
+      "containerId": null, "originalText": "Pattern (.pattern.json)"
+    },
+    {
+      "id": "constraint1", "type": "rectangle", "x": 32, "y": 116, "width": 286, "height": 28,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f0f0f0", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3},
+      "boundElements": [{"type": "text", "id": "constraint1-t"}]
+    },
+    {
+      "id": "constraint1-t", "type": "text", "x": 32, "y": 116, "width": 286, "height": 28,
+      "text": "\"node-type\": { \"const\": \"network\" }",
+      "fontSize": 9, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "constraint1",
+      "originalText": "\"node-type\": { \"const\": \"network\" }"
+    },
+    {
+      "id": "constraint2", "type": "rectangle", "x": 32, "y": 152, "width": 286, "height": 28,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f0f0f0", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3},
+      "boundElements": [{"type": "text", "id": "constraint2-t"}]
+    },
+    {
+      "id": "constraint2-t", "type": "text", "x": 32, "y": 152, "width": 286, "height": 28,
+      "text": "\"node-type\": { \"const\": \"service\" }",
+      "fontSize": 9, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "constraint2",
+      "originalText": "\"node-type\": { \"const\": \"service\" }"
+    },
+    {
+      "id": "constraint3", "type": "rectangle", "x": 32, "y": 188, "width": 286, "height": 28,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f0f0f0", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3},
+      "boundElements": [{"type": "text", "id": "constraint3-t"}]
+    },
+    {
+      "id": "constraint3-t", "type": "text", "x": 32, "y": 188, "width": 286, "height": 28,
+      "text": "\"node-type\": { \"const\": \"database\" }",
+      "fontSize": 9, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "constraint3",
+      "originalText": "\"node-type\": { \"const\": \"database\" }"
+    },
+    {
+      "id": "constraint4", "type": "rectangle", "x": 32, "y": 224, "width": 286, "height": 28,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f0f0f0", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3},
+      "boundElements": [{"type": "text", "id": "constraint4-t"}]
+    },
+    {
+      "id": "constraint4-t", "type": "text", "x": 32, "y": 224, "width": 286, "height": 28,
+      "text": "\"protocol\": { \"const\": \"HTTPS\" }",
+      "fontSize": 9, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "constraint4",
+      "originalText": "\"protocol\": { \"const\": \"HTTPS\" }"
+    },
+    {
+      "id": "constraint5", "type": "rectangle", "x": 32, "y": 260, "width": 286, "height": 28,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f0f0f0", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3},
+      "boundElements": [{"type": "text", "id": "constraint5-t"}]
+    },
+    {
+      "id": "constraint5-t", "type": "text", "x": 32, "y": 260, "width": 286, "height": 28,
+      "text": "\"minItems\": 3",
+      "fontSize": 9, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "constraint5",
+      "originalText": "\"minItems\": 3"
+    },
+    {
+      "id": "panel-arch", "type": "rectangle", "x": 468, "y": 72, "width": 315, "height": 320,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": []
+    },
+    {
+      "id": "lbl-arch", "type": "text", "x": 473, "y": 48, "width": 305, "height": 24,
+      "text": "Architecture (.calm.json)", "fontSize": 14, "fontFamily": 1,
+      "textAlign": "center", "verticalAlign": "top", "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 1,
+      "strokeStyle": "solid", "roughness": 1, "opacity": 100, "angle": 0,
+      "containerId": null, "originalText": "Architecture (.calm.json)"
+    },
+    {
+      "id": "arch-node1", "type": "rectangle", "x": 535, "y": 120, "width": 180, "height": 44,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "arch-node1-t"}]
+    },
+    {
+      "id": "arch-node1-t", "type": "text", "x": 535, "y": 120, "width": 180, "height": 44,
+      "text": "WAF / LB\nnode-type: network",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "arch-node1", "originalText": "WAF / LB\nnode-type: network"
+    },
+    {
+      "id": "arch-node2", "type": "rectangle", "x": 535, "y": 200, "width": 180, "height": 44,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "arch-node2-t"}]
+    },
+    {
+      "id": "arch-node2-t", "type": "text", "x": 535, "y": 200, "width": 180, "height": 44,
+      "text": "API Service\nnode-type: service",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "arch-node2", "originalText": "API Service\nnode-type: service"
+    },
+    {
+      "id": "arch-node3", "type": "rectangle", "x": 535, "y": 280, "width": 180, "height": 44,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "arch-node3-t"}]
+    },
+    {
+      "id": "arch-node3-t", "type": "text", "x": 535, "y": 280, "width": 180, "height": 44,
+      "text": "Customer DB\nnode-type: database",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "arch-node3", "originalText": "Customer DB\nnode-type: database"
+    },
+    {
+      "id": "bottom-note", "type": "rectangle", "x": 60, "y": 408, "width": 680, "height": 46,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "bottom-note-t"}]
+    },
+    {
+      "id": "bottom-note-t", "type": "text", "x": 60, "y": 408, "width": 680, "height": 46,
+      "text": "Validate conformance: calm validate -a arch.calm.json -p pattern.json",
+      "fontSize": 11, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "bottom-note",
+      "originalText": "Validate conformance: calm validate -a arch.calm.json -p pattern.json"
     }
   ],
-  "appState": {
-    "gridSize": null,
-    "viewBackgroundColor": "#ffffff"
-  },
+  "appState": {"gridSize": null, "viewBackgroundColor": "#ffffff"},
   "files": {}
 }

@@ -4,34 +4,156 @@
   "source": "https://excalidraw.com",
   "elements": [
     {
-      "id": "spec-text",
-      "type": "text",
-      "x": 20,
-      "y": 20,
-      "width": 760,
-      "height": 460,
-      "text": "DIAGRAM SPEC — GitHub Actions CI/CD Gate Flow (Chapter 3.7)\n\nLayout: Horizontal flow from left to right, with a branch at the validation step.\n\nMAIN SEQUENCE (left to right, all boxes have heavy solid borders):\n  Step 1: 'PR opened' (document icon with branch arrow). Arrow right →\n  Step 2: 'Checkout + Install CALM CLI' (gear icon, npm install -g @finos/calm-cli). Arrow right →\n  Step 3: 'calm validate -a arch.calm.json' (terminal/box shape, monospace label)\n\nBRANCH FROM Step 3:\n\n  PASS BRANCH (upward arc from Step 3):\n    Check icon (✓) → 'Architecture valid'\n    → 'Output JUnit: -f junit -o results.xml'\n    → 'upload-artifact (if: always())'\n    → 'PR can merge' (heavy border box, merge icon)\n\n  FAIL BRANCH (downward arc from Step 3):\n    X icon → 'Architecture invalid'\n    → 'Pipeline blocked'\n    Caption: 'Engineers see error in Problems panel / CI dashboard'\n    (dashed border box for FAIL path boxes)\n\nBELOW MAIN FLOW (annotation):\n  'calm validate -f junit -o results.xml → upload-artifact → visible in GitHub Actions UI as test report'\n\nTitle: 'CALM Architecture Gate — GitHub Actions flow'\n\nStyle: B&W only. PASS path boxes: heavy solid borders. FAIL path boxes: dashed borders.\nArrows: solid for pass path, dashed for fail path. All labels in sentence case.",
-      "fontSize": 14,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "angle": 0,
-      "baseline": 18,
-      "lineHeight": 1.25,
-      "containerId": null,
-      "originalText": "DIAGRAM SPEC — GitHub Actions CI/CD Gate Flow (Chapter 3.7)\n\nLayout: Horizontal flow from left to right, with a branch at the validation step.\n\nMAIN SEQUENCE (left to right, all boxes have heavy solid borders):\n  Step 1: 'PR opened' (document icon with branch arrow). Arrow right →\n  Step 2: 'Checkout + Install CALM CLI' (gear icon, npm install -g @finos/calm-cli). Arrow right →\n  Step 3: 'calm validate -a arch.calm.json' (terminal/box shape, monospace label)\n\nBRANCH FROM Step 3:\n\n  PASS BRANCH (upward arc from Step 3):\n    Check icon (✓) → 'Architecture valid'\n    → 'Output JUnit: -f junit -o results.xml'\n    → 'upload-artifact (if: always())'\n    → 'PR can merge' (heavy border box, merge icon)\n\n  FAIL BRANCH (downward arc from Step 3):\n    X icon → 'Architecture invalid'\n    → 'Pipeline blocked'\n    Caption: 'Engineers see error in Problems panel / CI dashboard'\n    (dashed border box for FAIL path boxes)\n\nBELOW MAIN FLOW (annotation):\n  'calm validate -f junit -o results.xml → upload-artifact → visible in GitHub Actions UI as test report'\n\nTitle: 'CALM Architecture Gate — GitHub Actions flow'\n\nStyle: B&W only. PASS path boxes: heavy solid borders. FAIL path boxes: dashed borders.\nArrows: solid for pass path, dashed for fail path. All labels in sentence case."
+      "id": "title", "type": "text", "x": 50, "y": 10, "width": 700, "height": 32,
+      "text": "CALM Architecture Gate — GitHub Actions flow",
+      "fontSize": 19, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": null,
+      "originalText": "CALM Architecture Gate — GitHub Actions flow"
+    },
+    {
+      "id": "step1", "type": "rectangle", "x": 30, "y": 135, "width": 140, "height": 60,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step1-t"}]
+    },
+    {
+      "id": "step1-t", "type": "text", "x": 30, "y": 135, "width": 140, "height": 60,
+      "text": "PR opened\ndeveloper pushes\narchitecture update",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step1", "originalText": "PR opened\ndeveloper pushes\narchitecture update"
+    },
+    {
+      "id": "step2", "type": "rectangle", "x": 240, "y": 135, "width": 175, "height": 60,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step2-t"}]
+    },
+    {
+      "id": "step2-t", "type": "text", "x": 240, "y": 135, "width": 175, "height": 60,
+      "text": "Checkout + Install\nnpm install -g\n@finos/calm-cli",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step2", "originalText": "Checkout + Install\nnpm install -g\n@finos/calm-cli"
+    },
+    {
+      "id": "step3", "type": "rectangle", "x": 490, "y": 128, "width": 200, "height": 74,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 3, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step3-t"}]
+    },
+    {
+      "id": "step3-t", "type": "text", "x": 490, "y": 128, "width": 200, "height": 74,
+      "text": "calm validate\n-a arch.calm.json\n-p pattern.json\n-f junit -o results.xml",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step3", "originalText": "calm validate\n-a arch.calm.json\n-p pattern.json\n-f junit -o results.xml"
+    },
+    {
+      "id": "pass-arch-valid", "type": "rectangle", "x": 560, "y": 36, "width": 160, "height": 36,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "pass-arch-valid-t"}]
+    },
+    {
+      "id": "pass-arch-valid-t", "type": "text", "x": 560, "y": 36, "width": 160, "height": 36,
+      "text": "Architecture valid",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "pass-arch-valid", "originalText": "Architecture valid"
+    },
+    {
+      "id": "junit-box", "type": "rectangle", "x": 290, "y": 36, "width": 150, "height": 36,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "junit-box-t"}]
+    },
+    {
+      "id": "junit-box-t", "type": "text", "x": 290, "y": 36, "width": 150, "height": 36,
+      "text": "-f junit\nresults.xml",
+      "fontSize": 10, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "junit-box", "originalText": "-f junit\nresults.xml"
+    },
+    {
+      "id": "upload-box", "type": "rectangle", "x": 30, "y": 36, "width": 150, "height": 36,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "upload-box-t"}]
+    },
+    {
+      "id": "upload-box-t", "type": "text", "x": 30, "y": 36, "width": 150, "height": 36,
+      "text": "upload-artifact\n(if: always())",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "upload-box", "originalText": "upload-artifact\n(if: always())"
+    },
+    {
+      "id": "pr-merge", "type": "rectangle", "x": 30, "y": 120, "width": 150, "height": 50,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 3, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "pr-merge-t"}]
+    },
+    {
+      "id": "pr-merge-t", "type": "text", "x": 30, "y": 120, "width": 150, "height": 50,
+      "text": "PR can merge\nexit code 0",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "pr-merge", "originalText": "PR can merge\nexit code 0"
+    },
+    {
+      "id": "fail-invalid", "type": "rectangle", "x": 558, "y": 296, "width": 164, "height": 36,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "fail-invalid-t"}]
+    },
+    {
+      "id": "fail-invalid-t", "type": "text", "x": 558, "y": 296, "width": 164, "height": 36,
+      "text": "Architecture invalid",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "fail-invalid", "originalText": "Architecture invalid"
+    },
+    {
+      "id": "fail-blocked-pr", "type": "rectangle", "x": 28, "y": 290, "width": 150, "height": 48,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "fail-blocked-pr-t"}]
+    },
+    {
+      "id": "fail-blocked-pr-t", "type": "text", "x": 28, "y": 290, "width": 150, "height": 48,
+      "text": "PR blocked\nexit code 1",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "fail-blocked-pr", "originalText": "PR blocked\nexit code 1"
+    },
+    {
+      "id": "bottom-note", "type": "rectangle", "x": 50, "y": 390, "width": 700, "height": 50,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "bottom-note-t"}]
+    },
+    {
+      "id": "bottom-note-t", "type": "text", "x": 50, "y": 390, "width": 700, "height": 50,
+      "text": "calm validate -f junit -o results.xml → upload-artifact → visible in GitHub Actions UI as test report",
+      "fontSize": 10, "fontFamily": 3, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "bottom-note",
+      "originalText": "calm validate -f junit -o results.xml → upload-artifact → visible in GitHub Actions UI as test report"
     }
   ],
-  "appState": {
-    "gridSize": null,
-    "viewBackgroundColor": "#ffffff"
-  },
+  "appState": {"gridSize": null, "viewBackgroundColor": "#ffffff"},
   "files": {}
 }

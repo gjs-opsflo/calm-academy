@@ -4,34 +4,224 @@
   "source": "https://excalidraw.com",
   "elements": [
     {
-      "id": "spec-text",
-      "type": "text",
-      "x": 20,
-      "y": 20,
-      "width": 760,
-      "height": 460,
-      "text": "DIAGRAM SPEC — Full Hub-Integrated Architecture Pipeline (Chapter 3.7, slide deck)\n\nLayout: Vertical pipeline, 7 sequential steps connected by downward arrows. Centre-aligned.\n\nStep 1 (top): 'PR opened'\n  Sub-label: 'developer pushes architecture update'\n  Icon: document with upward arrow\n\nStep 2: 'calm validate'\n  Sub-label: 'architecture vs Hub-hosted pattern'\n  Gate marker: diamond shape on left side. Label: 'Gate 1'\n  Fail path (right side, dashed arrow): 'blocked — PR cannot merge'\n\nStep 3: 'calm diff'\n  Sub-label: 'compare PR version vs Hub-published version'\n  Gate marker: diamond shape on left side. Label: 'Gate 2'\n  Output (right side): 'summary in PR comments'\n\nStep 4: 'Tests pass'\n  Sub-label: 'application tests run in parallel'\n  Note: parallel track (can show offset box)\n\nStep 5: 'PR merged'\n  Sub-label: 'architecture + app code merge to main'\n\nStep 6: 'calm hub push'\n  Sub-label: 'new architecture version published to CALM Hub'\n  Highlight: HEAVY BORDER (this is the critical publish step)\n  Label: 'Hub now holds the new canonical version'\n\nStep 7: Branch into two parallel tracks:\n  Track A (left): 'CALM Guard'\n    → 'pulls from Hub'\n    → 'compliance check'\n    → 'alert if non-compliant'\n  Track B (right): 'Terraform / IaC'\n    → 'applies infrastructure'\n    → 'matches architecture'\n    → 'Deploy'\n\nRight-side annotation (vertical, beside steps 1–6):\n  'Architecture is code. It gets the same pipeline as app code.'\n\nBottom caption (below step 7):\n  'No merge without valid architecture.'\n  'No deploy without Hub-published architecture.'\n\nTitle (above Step 1): 'Full CALM Hub-Integrated Pipeline'\n\nStyle: B&W only. Steps 2 and 3 have gate diamond shapes. Step 6 has heavy border.\nAll arrows downward (main path) or branching right (fail paths, parallel tracks).",
-      "fontSize": 14,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "angle": 0,
-      "baseline": 18,
-      "lineHeight": 1.25,
-      "containerId": null,
-      "originalText": "DIAGRAM SPEC — Full Hub-Integrated Architecture Pipeline (Chapter 3.7, slide deck)\n\nLayout: Vertical pipeline, 7 sequential steps connected by downward arrows. Centre-aligned.\n\nStep 1 (top): 'PR opened'\n  Sub-label: 'developer pushes architecture update'\n  Icon: document with upward arrow\n\nStep 2: 'calm validate'\n  Sub-label: 'architecture vs Hub-hosted pattern'\n  Gate marker: diamond shape on left side. Label: 'Gate 1'\n  Fail path (right side, dashed arrow): 'blocked — PR cannot merge'\n\nStep 3: 'calm diff'\n  Sub-label: 'compare PR version vs Hub-published version'\n  Gate marker: diamond shape on left side. Label: 'Gate 2'\n  Output (right side): 'summary in PR comments'\n\nStep 4: 'Tests pass'\n  Sub-label: 'application tests run in parallel'\n  Note: parallel track (can show offset box)\n\nStep 5: 'PR merged'\n  Sub-label: 'architecture + app code merge to main'\n\nStep 6: 'calm hub push'\n  Sub-label: 'new architecture version published to CALM Hub'\n  Highlight: HEAVY BORDER (this is the critical publish step)\n  Label: 'Hub now holds the new canonical version'\n\nStep 7: Branch into two parallel tracks:\n  Track A (left): 'CALM Guard'\n    → 'pulls from Hub'\n    → 'compliance check'\n    → 'alert if non-compliant'\n  Track B (right): 'Terraform / IaC'\n    → 'applies infrastructure'\n    → 'matches architecture'\n    → 'Deploy'\n\nRight-side annotation (vertical, beside steps 1–6):\n  'Architecture is code. It gets the same pipeline as app code.'\n\nBottom caption (below step 7):\n  'No merge without valid architecture.'\n  'No deploy without Hub-published architecture.'\n\nTitle (above Step 1): 'Full CALM Hub-Integrated Pipeline'\n\nStyle: B&W only. Steps 2 and 3 have gate diamond shapes. Step 6 has heavy border.\nAll arrows downward (main path) or branching right (fail paths, parallel tracks)."
+      "id": "title", "type": "text", "x": 100, "y": 10, "width": 600, "height": 32,
+      "text": "Full CALM Hub-Integrated Pipeline",
+      "fontSize": 20, "fontFamily": 1, "textAlign": "center", "verticalAlign": "top",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": null,
+      "originalText": "Full CALM Hub-Integrated Pipeline"
+    },
+    {
+      "id": "step1", "type": "rectangle", "x": 220, "y": 50, "width": 180, "height": 56,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step1-t"}]
+    },
+    {
+      "id": "step1-t", "type": "text", "x": 220, "y": 50, "width": 180, "height": 56,
+      "text": "PR opened\ndeveloper pushes architecture update",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step1", "originalText": "PR opened\ndeveloper pushes architecture update"
+    },
+    {
+      "id": "step2", "type": "rectangle", "x": 220, "y": 132, "width": 180, "height": 56,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step2-t"}]
+    },
+    {
+      "id": "step2-t", "type": "text", "x": 220, "y": 132, "width": 180, "height": 56,
+      "text": "calm validate\narch vs Hub-hosted pattern",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step2", "originalText": "calm validate\narch vs Hub-hosted pattern"
+    },
+    {
+      "id": "gate1", "type": "diamond", "x": 160, "y": 145, "width": 50, "height": 30,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": null, "boundElements": [{"type": "text", "id": "gate1-t"}]
+    },
+    {
+      "id": "gate1-t", "type": "text", "x": 160, "y": 145, "width": 50, "height": 30,
+      "text": "Gate 1", "fontSize": 8, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "gate1", "originalText": "Gate 1"
+    },
+    {
+      "id": "fail1", "type": "rectangle", "x": 470, "y": 143, "width": 140, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "fail1-t"}]
+    },
+    {
+      "id": "fail1-t", "type": "text", "x": 470, "y": 143, "width": 140, "height": 34,
+      "text": "blocked — PR cannot merge",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "fail1", "originalText": "blocked — PR cannot merge"
+    },
+    {
+      "id": "step3", "type": "rectangle", "x": 220, "y": 214, "width": 180, "height": 56,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step3-t"}]
+    },
+    {
+      "id": "step3-t", "type": "text", "x": 220, "y": 214, "width": 180, "height": 56,
+      "text": "calm diff\nPR version vs Hub-published",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step3", "originalText": "calm diff\nPR version vs Hub-published"
+    },
+    {
+      "id": "gate2", "type": "diamond", "x": 160, "y": 227, "width": 50, "height": 30,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": null, "boundElements": [{"type": "text", "id": "gate2-t"}]
+    },
+    {
+      "id": "gate2-t", "type": "text", "x": 160, "y": 227, "width": 50, "height": 30,
+      "text": "Gate 2", "fontSize": 8, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "gate2", "originalText": "Gate 2"
+    },
+    {
+      "id": "diff-out", "type": "rectangle", "x": 470, "y": 225, "width": 140, "height": 34,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "diff-out-t"}]
+    },
+    {
+      "id": "diff-out-t", "type": "text", "x": 470, "y": 225, "width": 140, "height": 34,
+      "text": "summary in PR comments",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "diff-out", "originalText": "summary in PR comments"
+    },
+    {
+      "id": "step4", "type": "rectangle", "x": 220, "y": 296, "width": 180, "height": 56,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step4-t"}]
+    },
+    {
+      "id": "step4-t", "type": "text", "x": 220, "y": 296, "width": 180, "height": 56,
+      "text": "Tests pass\napplication tests run in parallel",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step4", "originalText": "Tests pass\napplication tests run in parallel"
+    },
+    {
+      "id": "step5", "type": "rectangle", "x": 220, "y": 378, "width": 180, "height": 56,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step5-t"}]
+    },
+    {
+      "id": "step5-t", "type": "text", "x": 220, "y": 378, "width": 180, "height": 56,
+      "text": "PR merged\narch + app code merge to main",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step5", "originalText": "PR merged\narch + app code merge to main"
+    },
+    {
+      "id": "step6", "type": "rectangle", "x": 210, "y": 460, "width": 200, "height": 64,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 4, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "step6-t"}]
+    },
+    {
+      "id": "step6-t", "type": "text", "x": 210, "y": 460, "width": 200, "height": 64,
+      "text": "calm hub push\nnew architecture version published\nHub holds new canonical version",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "step6", "originalText": "calm hub push\nnew architecture version published\nHub holds new canonical version"
+    },
+    {
+      "id": "track7a", "type": "rectangle", "x": 68, "y": 566, "width": 194, "height": 56,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "track7a-t"}]
+    },
+    {
+      "id": "track7a-t", "type": "text", "x": 68, "y": 566, "width": 194, "height": 56,
+      "text": "CALM Guard\npulls from Hub → compliance check",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "track7a", "originalText": "CALM Guard\npulls from Hub → compliance check"
+    },
+    {
+      "id": "alert-box", "type": "rectangle", "x": 80, "y": 644, "width": 170, "height": 38,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "alert-box-t"}]
+    },
+    {
+      "id": "alert-box-t", "type": "text", "x": 80, "y": 644, "width": 170, "height": 38,
+      "text": "alert if non-compliant\nevidence package generated",
+      "fontSize": 9, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "alert-box", "originalText": "alert if non-compliant\nevidence package generated"
+    },
+    {
+      "id": "track7b", "type": "rectangle", "x": 358, "y": 566, "width": 194, "height": 56,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "track7b-t"}]
+    },
+    {
+      "id": "track7b-t", "type": "text", "x": 358, "y": 566, "width": 194, "height": 56,
+      "text": "Terraform / IaC\napplies infrastructure to match arch",
+      "fontSize": 12, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "track7b", "originalText": "Terraform / IaC\napplies infrastructure to match arch"
+    },
+    {
+      "id": "deploy-box", "type": "rectangle", "x": 380, "y": 644, "width": 150, "height": 38,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "deploy-box-t"}]
+    },
+    {
+      "id": "deploy-box-t", "type": "text", "x": 380, "y": 644, "width": 150, "height": 38,
+      "text": "Deploy\ninfrastructure matches architecture",
+      "fontSize": 10, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "deploy-box", "originalText": "Deploy\ninfrastructure matches architecture"
+    },
+    {
+      "id": "bottom-caption", "type": "rectangle", "x": 100, "y": 700, "width": 600, "height": 42,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid",
+      "strokeWidth": 1.5, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "bottom-caption-t"}]
+    },
+    {
+      "id": "bottom-caption-t", "type": "text", "x": 100, "y": 700, "width": 600, "height": 42,
+      "text": "No merge without valid architecture.\nNo deploy without Hub-published architecture.",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "center", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": "bottom-caption",
+      "originalText": "No merge without valid architecture.\nNo deploy without Hub-published architecture."
     }
   ],
-  "appState": {
-    "gridSize": null,
-    "viewBackgroundColor": "#ffffff"
-  },
+  "appState": {"gridSize": null, "viewBackgroundColor": "#ffffff"},
   "files": {}
 }

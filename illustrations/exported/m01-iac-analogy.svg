@@ -1,15 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="white" stroke="#cccccc" stroke-width="2"/>
-  <text x="400" y="155" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#666666">
-    [Illustration placeholder: m01-iac-analogy]
-  </text>
-  <text x="400" y="190" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    IaC vs AaC Comparison — Two-column table: Infrastructure (Terraform) | Architecture (CALM)
-  </text>
-  <text x="400" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Author in Excalidraw: illustrations/source/m01-iac-analogy.excalidraw
-  </text>
-  <text x="400" y="250" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Then run: bash scripts/export-excalidraw.sh m01-iac-analogy
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="800" height="520" style="background:#ffffff">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="32" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="20" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Infrastructure as Code vs Architecture as Code</text>
+
+  <!-- Table outer border -->
+  <rect x="30" y="48" width="740" height="390" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="2.5"/>
+
+  <!-- Column dividers: row-label | terraform | CALM -->
+  <line x1="190" y1="48" x2="190" y2="438" stroke="#1e1e1e" stroke-width="1.5"/>
+  <line x1="510" y1="48" x2="510" y2="438" stroke="#1e1e1e" stroke-width="1.5"/>
+
+  <!-- Header row fill -->
+  <rect x="30" y="48" width="740" height="46" rx="4" fill="#e8e8e8" stroke="none"/>
+  <line x1="30" y1="94" x2="770" y2="94" stroke="#1e1e1e" stroke-width="2"/>
+
+  <!-- Header text -->
+  <text x="110" y="77" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Aspect</text>
+  <text x="350" y="77" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Infrastructure (Terraform)</text>
+  <text x="640" y="77" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Architecture (CALM)</text>
+
+  <!-- Row separators -->
+  <line x1="30" y1="150" x2="770" y2="150" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="30" y1="206" x2="770" y2="206" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="30" y1="262" x2="770" y2="262" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="30" y1="318" x2="770" y2="318" stroke="#1e1e1e" stroke-width="1"/>
+  <line x1="30" y1="374" x2="770" y2="374" stroke="#1e1e1e" stroke-width="1"/>
+
+  <!-- Row 1: Before -->
+  <text x="110" y="127" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Before</text>
+  <text x="350" y="121" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">ClickOps, snowflake servers</text>
+  <text x="640" y="121" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Visio diagrams, Confluence pages</text>
+
+  <!-- Row 2: After -->
+  <text x="110" y="183" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">After</text>
+  <text x="350" y="177" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">HCL files, version-controlled,</text>
+  <text x="350" y="194" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">automatable</text>
+  <text x="640" y="177" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">JSON schema, version-controlled,</text>
+  <text x="640" y="194" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">AI-consumable</text>
+
+  <!-- Row 3: Key artifact -->
+  <text x="110" y="239" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Key artifact</text>
+  <text x="350" y="239" font-family="monospace, 'Courier New', Courier" font-size="14" text-anchor="middle" fill="#1e1e1e">.tf</text>
+  <text x="640" y="239" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">.architecture.json</text>
+
+  <!-- Row 4: Source of truth -->
+  <text x="110" y="295" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Source of truth</text>
+  <text x="350" y="295" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">Terraform state</text>
+  <text x="640" y="295" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#1e1e1e">CALM Hub</text>
+
+  <!-- Row 5: Validation -->
+  <text x="110" y="351" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Validation</text>
+  <text x="350" y="351" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">terraform plan</text>
+  <text x="640" y="351" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">calm validate</text>
+
+  <!-- Row 6: CI gate -->
+  <text x="110" y="412" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">CI gate</text>
+  <text x="350" y="412" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Terraform CI check</text>
+  <text x="640" y="412" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">CALM Guard</text>
+
+  <!-- Bottom caption -->
+  <text x="400" y="462" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-style="italic" text-anchor="middle" fill="#1e1e1e">We solved this before — for infrastructure. CALM does it for architecture.</text>
+  <text x="400" y="498" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#757575">The pattern is proven. The problem is the same. The solution is CALM.</text>
 </svg>

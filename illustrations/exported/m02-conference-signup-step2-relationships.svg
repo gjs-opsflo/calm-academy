@@ -1,15 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400">
-  <rect width="800" height="400" fill="white" stroke="#cccccc" stroke-width="2"/>
-  <text x="400" y="155" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#666666">
-    [Illustration placeholder: m02-conference-signup-step2-relationships]
-  </text>
-  <text x="400" y="190" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Conference signup step 2: same 6 nodes with 5 relationships (interacts, connects x3, deployed-in)
-  </text>
-  <text x="400" y="220" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Author in Excalidraw: illustrations/source/m02-conference-signup-step2-relationships.excalidraw
-  </text>
-  <text x="400" y="250" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#999999">
-    Then run: bash scripts/export-excalidraw.sh m02-conference-signup-step2-relationships
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" style="background:#ffffff">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+    <marker id="arr-open" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
+    </marker>
+  </defs>
+  <style>text { font-family: Virgil, 'Segoe UI Emoji', cursive; fill: #1e1e1e; }</style>
+
+  <!-- Title -->
+  <text x="400" y="24" font-size="18" text-anchor="middle" font-weight="bold">Conference Signup — Step 2: Add Relationships</text>
+
+  <!-- k8s-cluster (system) — large dashed rect (drawn first / behind) -->
+  <rect x="310" y="46" width="464" height="280" rx="10" ry="10" stroke="#1e1e1e" stroke-width="2" stroke-dasharray="8,4" fill="#ffffff"/>
+  <text x="360" y="64" font-size="12" fill="#757575">k8s-cluster (system)</text>
+
+  <!-- NODE 1: conference-attendee (actor) -->
+  <circle cx="58" cy="100" r="20" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <line x1="58" y1="120" x2="58" y2="158" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="34" y1="138" x2="82" y2="138" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="58" y1="158" x2="38" y2="186" stroke="#1e1e1e" stroke-width="2"/>
+  <line x1="58" y1="158" x2="78" y2="186" stroke="#1e1e1e" stroke-width="2"/>
+  <text x="58" y="206" font-size="10" text-anchor="middle">conference-attendee</text>
+  <text x="58" y="219" font-size="10" text-anchor="middle" fill="#757575">(actor)</text>
+
+  <!-- NODE 2: conference-website (webclient) -->
+  <rect x="130" y="76" width="140" height="86" rx="4" ry="4" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <rect x="130" y="76" width="140" height="22" rx="4" ry="4" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <line x1="130" y1="98" x2="270" y2="98" stroke="#1e1e1e" stroke-width="1.5"/>
+  <circle cx="144" cy="87" r="4" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <circle cx="157" cy="87" r="4" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <rect x="168" y="81" width="62" height="12" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1" fill="#ffffff"/>
+  <text x="200" y="140" font-size="10" text-anchor="middle">conference-website</text>
+  <text x="200" y="153" font-size="10" text-anchor="middle" fill="#757575">(webclient)</text>
+
+  <!-- NODE 3: load-balancer (network) — cloud inside k8s -->
+  <path d="M355,106 Q347,90 363,86 Q367,76 377,80 Q381,68 391,72 Q401,62 409,74 Q419,68 425,82 Q437,80 439,94 Q447,96 445,108 Q445,124 431,122 Q423,132 411,126 Q403,136 391,130 Q379,140 369,132 Q353,132 355,106 Z"
+        stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="397" y="152" font-size="10" text-anchor="middle">load-balancer</text>
+  <text x="397" y="165" font-size="10" text-anchor="middle" fill="#757575">(network)</text>
+
+  <!-- NODE 4: attendees (service) — hexagon -->
+  <polygon points="538,86 572,104 572,140 538,158 504,140 504,104" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="538" y="126" font-size="10" text-anchor="middle">attendees</text>
+  <text x="538" y="172" font-size="10" text-anchor="middle" fill="#757575">(service)</text>
+
+  <!-- NODE 5: attendees-store (database) — cylinder -->
+  <ellipse cx="686" cy="100" rx="50" ry="11" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <rect x="636" y="100" width="100" height="52" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <ellipse cx="686" cy="152" rx="50" ry="11" stroke="#1e1e1e" stroke-width="2" fill="#ffffff"/>
+  <text x="686" y="177" font-size="10" text-anchor="middle">attendees-store</text>
+  <text x="686" y="190" font-size="10" text-anchor="middle" fill="#757575">(database)</text>
+
+  <!-- RELATIONSHIP 1: interacts — conference-attendee → conference-website -->
+  <line x1="78" y1="130" x2="130" y2="120" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="104" y="118" font-size="10" text-anchor="middle" font-style="italic">interacts</text>
+
+  <!-- RELATIONSHIP 2: connects HTTPS — conference-website → load-balancer -->
+  <line x1="270" y1="112" x2="350" y2="112" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- HTTPS badge -->
+  <rect x="287" y="96" width="44" height="14" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="309" y="107" font-size="9" text-anchor="middle" font-weight="bold">HTTPS</text>
+  <text x="309" y="128" font-size="9" text-anchor="middle" font-style="italic">connects</text>
+
+  <!-- RELATIONSHIP 3: connects mTLS — load-balancer → attendees -->
+  <line x1="445" y1="108" x2="504" y2="116" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- mTLS badge -->
+  <rect x="456" y="94" width="40" height="14" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="476" y="105" font-size="9" text-anchor="middle" font-weight="bold">mTLS</text>
+  <text x="480" y="126" font-size="9" text-anchor="middle" font-style="italic">connects</text>
+
+  <!-- RELATIONSHIP 4: connects JDBC — attendees → attendees-store -->
+  <line x1="572" y1="122" x2="636" y2="122" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
+  <!-- JDBC badge -->
+  <rect x="584" y="108" width="40" height="14" rx="3" ry="3" stroke="#1e1e1e" stroke-width="1.5" fill="#ffffff"/>
+  <text x="604" y="119" font-size="9" text-anchor="middle" font-weight="bold">JDBC</text>
+  <text x="604" y="136" font-size="9" text-anchor="middle" font-style="italic">connects</text>
+
+  <!-- RELATIONSHIP 5: deployed-in — dashed lines from k8s-cluster border to inner nodes -->
+  <line x1="310" y1="140" x2="370" y2="128" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="310" y1="162" x2="504" y2="140" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="310" y1="180" x2="636" y2="155" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="325" y="190" font-size="10" fill="#757575" font-style="italic">deployed-in</text>
+
+  <!-- Caption -->
+  <text x="400" y="368" font-size="13" text-anchor="middle" font-style="italic">Step 2 — connect them. 5 relationships, 4 relationship types.</text>
+
+  <!-- Bottom note -->
+  <rect x="18" y="386" width="764" height="22" rx="3" ry="3" stroke="#cccccc" stroke-width="1" fill="#ffffff"/>
+  <text x="400" y="402" font-size="11" text-anchor="middle" fill="#757575">interacts (1) + connects x3 (HTTPS, mTLS, JDBC) + deployed-in (1) = 5 relationships total</text>
 </svg>

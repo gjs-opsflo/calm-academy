@@ -4,34 +4,136 @@
   "source": "https://excalidraw.com",
   "elements": [
     {
-      "id": "spec-text",
-      "type": "text",
-      "x": 20,
-      "y": 20,
-      "width": 760,
-      "height": 520,
-      "text": "DIAGRAM SPEC — CALM Studio Canvas Anatomy (Chapter 3.2)\n\nLayout: A wireframe of the Studio web application window with four labelled regions.\n\nLEFT PANEL (~15% width):\n  Label: 'Node palette'\n  Content: Vertical list of 9 node type icons with labels:\n    - actor (person silhouette)\n    - ecosystem (cloud outline)\n    - system (bold rectangle)\n    - service (hexagon)\n    - database (cylinder)\n    - network (shield shape)\n    - webclient (monitor screen)\n    - ldap (directory stack)\n    - data-asset (document stack)\n  Sub-label below panel: 'Drag to canvas'\n\nCENTER PANEL (~60% width):\n  Label: 'Canvas'\n  Content: 3-4 CALM nodes connected by arrows;\n    one deployed-in containment panel visible (dashed border containing a service node)\n    Nodes: webclient -> service (solid arrow), service inside network (dashed container)\n  Sub-label: 'Drag, connect, arrange. Canvas↔JSON sync.'\n\nRIGHT PANEL (~25% width):\n  Label: 'JSON code editor'\n  Content: Monospace code snippet showing a few lines of CALM JSON\n    (unique-id, name, node-type fields visible)\n  Sub-label: 'Edit JSON directly. Canvas updates instantly.'\n\nBOTTOM STRIP (full width, below canvas):\n  Label: 'Properties panel'\n  Content: Form fields showing selected node name, type, description\n  Sub-label: 'Click any node or edge to inspect and edit.'\n\nTitle above all panels: 'CALM Studio canvas anatomy'\nStyle: B&W only. Clean wireframe style. No colour. Borders for each panel region.",
-      "fontSize": 14,
-      "fontFamily": 1,
-      "textAlign": "left",
-      "verticalAlign": "top",
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "fillStyle": "solid",
-      "strokeWidth": 2,
-      "strokeStyle": "solid",
-      "roughness": 1,
-      "opacity": 100,
-      "angle": 0,
-      "baseline": 18,
-      "lineHeight": 1.25,
-      "containerId": null,
-      "originalText": "DIAGRAM SPEC — CALM Studio Canvas Anatomy (Chapter 3.2)\n\nLayout: A wireframe of the Studio web application window with four labelled regions.\n\nLEFT PANEL (~15% width):\n  Label: 'Node palette'\n  Content: Vertical list of 9 node type icons with labels:\n    - actor (person silhouette)\n    - ecosystem (cloud outline)\n    - system (bold rectangle)\n    - service (hexagon)\n    - database (cylinder)\n    - network (shield shape)\n    - webclient (monitor screen)\n    - ldap (directory stack)\n    - data-asset (document stack)\n  Sub-label below panel: 'Drag to canvas'\n\nCENTER PANEL (~60% width):\n  Label: 'Canvas'\n  Content: 3-4 CALM nodes connected by arrows;\n    one deployed-in containment panel visible (dashed border containing a service node)\n    Nodes: webclient -> service (solid arrow), service inside network (dashed container)\n  Sub-label: 'Drag, connect, arrange. Canvas↔JSON sync.'\n\nRIGHT PANEL (~25% width):\n  Label: 'JSON code editor'\n  Content: Monospace code snippet showing a few lines of CALM JSON\n    (unique-id, name, node-type fields visible)\n  Sub-label: 'Edit JSON directly. Canvas updates instantly.'\n\nBOTTOM STRIP (full width, below canvas):\n  Label: 'Properties panel'\n  Content: Form fields showing selected node name, type, description\n  Sub-label: 'Click any node or edge to inspect and edit.'\n\nTitle above all panels: 'CALM Studio canvas anatomy'\nStyle: B&W only. Clean wireframe style. No colour. Borders for each panel region."
+      "id": "title", "type": "text", "x": 100, "y": 10, "width": 600, "height": 32,
+      "text": "CALM Studio canvas anatomy", "fontSize": 20, "fontFamily": 1,
+      "textAlign": "center", "verticalAlign": "top", "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent", "fillStyle": "solid", "strokeWidth": 1,
+      "strokeStyle": "solid", "roughness": 1, "opacity": 100, "angle": 0,
+      "containerId": null, "originalText": "CALM Studio canvas anatomy"
+    },
+    {
+      "id": "window", "type": "rectangle", "x": 10, "y": 42, "width": 780, "height": 450,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": []
+    },
+    {
+      "id": "titlebar", "type": "rectangle", "x": 10, "y": 42, "width": 780, "height": 26,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f0f0f0", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": []
+    },
+    {
+      "id": "panel-palette", "type": "rectangle", "x": 10, "y": 68, "width": 120, "height": 380,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#fafafa", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 0}, "boundElements": []
+    },
+    {
+      "id": "lbl-palette", "type": "text", "x": 15, "y": 74, "width": 110, "height": 18,
+      "text": "Node palette", "fontSize": 12, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "top", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": null, "originalText": "Node palette"
+    },
+    {
+      "id": "nodes-list", "type": "text", "x": 18, "y": 100, "width": 104, "height": 160,
+      "text": "actor\necosystem\nsystem\nservice\ndatabase\nnetwork\nwebclient\nldap\ndata-asset",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": null, "originalText": "actor\necosystem\nsystem\nservice\ndatabase\nnetwork\nwebclient\nldap\ndata-asset"
+    },
+    {
+      "id": "palette-sublabel", "type": "text", "x": 18, "y": 270, "width": 104, "height": 30,
+      "text": "Drag to canvas", "fontSize": 10, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "top", "strokeColor": "#555555", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": null, "originalText": "Drag to canvas"
+    },
+    {
+      "id": "panel-canvas", "type": "rectangle", "x": 130, "y": 68, "width": 450, "height": 380,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 0}, "boundElements": []
+    },
+    {
+      "id": "lbl-canvas", "type": "text", "x": 135, "y": 74, "width": 440, "height": 18,
+      "text": "Canvas", "fontSize": 12, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "top", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": null, "originalText": "Canvas"
+    },
+    {
+      "id": "net-container", "type": "rectangle", "x": 160, "y": 110, "width": 380, "height": 230,
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "dashed", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": []
+    },
+    {
+      "id": "node-webclient", "type": "rectangle", "x": 175, "y": 145, "width": 100, "height": 44,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "node-webclient-t"}]
+    },
+    {
+      "id": "node-webclient-t", "type": "text", "x": 175, "y": 145, "width": 100, "height": 44,
+      "text": "webclient", "fontSize": 11, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "node-webclient", "originalText": "webclient"
+    },
+    {
+      "id": "node-service", "type": "rectangle", "x": 340, "y": 145, "width": 100, "height": 44,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#ffffff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 3}, "boundElements": [{"type": "text", "id": "node-service-t"}]
+    },
+    {
+      "id": "node-service-t", "type": "text", "x": 340, "y": 145, "width": 100, "height": 44,
+      "text": "service", "fontSize": 11, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "middle", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": "node-service", "originalText": "service"
+    },
+    {
+      "id": "panel-json", "type": "rectangle", "x": 580, "y": 68, "width": 210, "height": 380,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f9f9f9", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 0}, "boundElements": []
+    },
+    {
+      "id": "lbl-json", "type": "text", "x": 585, "y": 74, "width": 200, "height": 18,
+      "text": "JSON code editor", "fontSize": 12, "fontFamily": 1, "textAlign": "center",
+      "verticalAlign": "top", "strokeColor": "#1e1e1e", "backgroundColor": "transparent",
+      "fillStyle": "solid", "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1,
+      "opacity": 100, "angle": 0, "containerId": null, "originalText": "JSON code editor"
+    },
+    {
+      "id": "json-code", "type": "text", "x": 590, "y": 100, "width": 196, "height": 200,
+      "text": "{\n  \"$schema\": \"calm/1.2\",\n  \"nodes\": [\n    {\n      \"unique-id\":\n        \"browser\",\n      \"node-type\":\n        \"webclient\",\n      \"name\":\n        \"Browser\"\n    }\n  ]\n}",
+      "fontSize": 9, "fontFamily": 3, "textAlign": "left", "verticalAlign": "top",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": null,
+      "originalText": "{\n  \"$schema\": \"calm/1.2\",\n  \"nodes\": [\n    {\n      \"unique-id\":\n        \"browser\",\n      \"node-type\":\n        \"webclient\",\n      \"name\":\n        \"Browser\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "panel-props", "type": "rectangle", "x": 10, "y": 448, "width": 780, "height": 44,
+      "strokeColor": "#1e1e1e", "backgroundColor": "#f5f5f5", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "roundness": {"type": 0}, "boundElements": []
+    },
+    {
+      "id": "lbl-props", "type": "text", "x": 20, "y": 456, "width": 760, "height": 30,
+      "text": "Properties panel  |  name: browser  |  type: webclient  |  description: User's browser",
+      "fontSize": 11, "fontFamily": 1, "textAlign": "left", "verticalAlign": "middle",
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 1, "strokeStyle": "solid", "roughness": 1, "opacity": 100,
+      "angle": 0, "containerId": null,
+      "originalText": "Properties panel  |  name: browser  |  type: webclient  |  description: User's browser"
     }
   ],
-  "appState": {
-    "gridSize": null,
-    "viewBackgroundColor": "#ffffff"
-  },
+  "appState": {"gridSize": null, "viewBackgroundColor": "#ffffff"},
   "files": {}
 }
