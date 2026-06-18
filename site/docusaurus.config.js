@@ -22,6 +22,7 @@ export default {
           path: '../content',
           sidebarPath: './sidebars.js',
           routeBasePath: 'docs',
+          exclude: ['README.md'],
         },
         blog: false,
         theme: {
