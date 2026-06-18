@@ -28,3 +28,25 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* ─── WCAG 2.1 AA Accessibility Fixes ─────────────────────────────────────
+ * Fixes for color-contrast violations found by axe-core 4.11.4 (2026-06-18).
+ * All contrast ratios verified against WCAG AA minimum of 4.5:1 for normal text.
+ */
+
+/* Fix 1: Breadcrumb active link contrast
+ * Violation: #2e8555 on #f2f2f2 = 4.07:1 (needs 4.5:1)
+ * Fix: use primary-darkest (#205d3b) = 6.97:1 — passes AA for normal text
+ */
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--ifm-color-primary-darkest);
+}
+
+/* Fix 2: Prism code comment token contrast in dark theme
+ * Violation: #697098 on #292d3e = 2.84:1 (needs 4.5:1)
+ * Fix: #9aa5cc on #292d3e = 5.61:1 — passes AA with comfortable margin
+ * !important required to override Prism inline style attribute
+ */
+[data-theme='dark'] .token.comment {
+  color: #9aa5cc !important;
+}
