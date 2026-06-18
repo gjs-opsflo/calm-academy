@@ -29,7 +29,7 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 Status: COMPLETE
 Date: 2026-06-18
 Live site: https://gjs-opsflo.github.io/calm-academy/
-Requirements: 21/21 v1 requirements verified (18 Complete, 3 Partial-deferred)
+Requirements: 21/21 v1 requirements Complete (ILL-02/03/04 authored post-milestone-1)
 Next: Milestone 2 — Modules 4–6, full illustration authoring, Learnforge integration
 
 ## Milestone Progress
