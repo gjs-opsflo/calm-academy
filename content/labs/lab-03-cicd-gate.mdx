@@ -1,0 +1,129 @@
+---
+title: "Lab 3: Build a CALM Architecture Gate in GitHub Actions"
+slug: lab-03-cicd-gate
+sidebar_label: "Lab 3 — CI/CD Gate"
+sidebar_position: 3
+module: 3
+chapter: 3.7
+estimated_minutes: 35
+difficulty: 2
+---
+
+:::info Lab details
+| | |
+|---|---|
+| **Time** | 35 minutes |
+| **Difficulty** | Intermediate |
+| **Prerequisites** | [Lab 2 — Conference Signup](./lab-02-conference-signup) |
+| **Docker required** | No |
+:::
+
+**Objectives:**
+- Fork the starter repo and clone it locally
+- Verify that the valid architecture (secure-api.calm.json) passes `calm validate`
+- Complete the stub GitHub Actions workflow to add `calm validate`
+- Push the completed workflow and observe the CI gate pass
+- Fix the broken architecture (broken-api.calm.json) and push again
+
+# Lab 3: Build a CALM Architecture Gate in GitHub Actions
+
+## Goal
+
+Set up a complete CALM architecture validation gate in GitHub Actions. By the end of this lab, any PR to your repository will automatically validate the CALM architecture — passing architecture gets merged, failing architecture gets blocked.
+
+## Setup
+
+No Docker required. You need: a GitHub account (free), Node.js 22+, and the CALM CLI (installed automatically in the GitHub Actions step).
+
+For a fully local workflow without GitHub, install `act`:
+
+```bash
+brew install act    # macOS
+# or: https://github.com/nektos/act
+act push            # runs the workflow locally
+```
+
+## Walkthrough
+
+### Step 1: Set up the starter
+
+The starter directory contains a pre-built repo scaffold. In a production setup, you would fork this as a GitHub template repository. For this lab, work directly in `labs/lab-03-cicd-gate/starter/`:
+
+```bash
+cd labs/lab-03-cicd-gate/starter
+git init && git add . && git commit -m "initial commit"
+```
+
+If you have a GitHub account, create a new repo and push:
+
+```bash
+git remote add origin https://github.com/<your-username>/calm-lab-03
+git push -u origin main
+```
+
+The check verifies that `.github/workflows/calm-gate.yml` exists — it does in the starter already. You just need to be in the right directory.
+
+### Step 2: Verify the valid architecture
+
+The starter contains two architecture files. The valid one should pass `calm validate`:
+
+```bash
+npx @finos/calm-cli validate -a architectures/secure-api.calm.json -f pretty
+# Expected: 0 errors, 0 warnings
+```
+
+The broken one should fail:
+
+```bash
+npx @finos/calm-cli validate -a architectures/broken-api.calm.json -f pretty
+# Expected: errors about missing required fields
+```
+
+This is intentional — `broken-api.calm.json` is missing a required `description` field on one node. You will fix this in Step 5.
+
+### Step 3: Complete the workflow stub
+
+Open `.github/workflows/calm-gate.yml`. You will see a stub with a `# TODO: add calm validate step here` comment. Replace it with the validation steps from Chapter 3.7. The minimum is:
+
+```yaml
+- name: Validate architecture against schema
+  run: calm validate -a architectures/secure-api.calm.json -f pretty
+```
+
+The full solution (in `solution/`) adds pattern validation and JUnit output too.
+
+After editing, the file must contain the string `calm validate` — the step-3 check verifies this with a content regex.
+
+### Step 4: Push and observe the gate
+
+Commit your workflow update and push:
+
+```bash
+git add .github/workflows/calm-gate.yml
+git commit -m "feat: add CALM architecture gate"
+git push origin main
+```
+
+In your GitHub repo, navigate to the **Actions** tab. You should see the "CALM Architecture Gate" workflow run. All steps should be green.
+
+If using `act` locally: `act push` — watch the output for "Job validate-architecture succeeded."
+
+### Step 5: Fix the broken architecture
+
+The broken-api.calm.json file is intentionally missing a required field. Inspect what is wrong:
+
+```bash
+npx @finos/calm-cli validate -a architectures/broken-api.calm.json -f pretty
+```
+
+The validator will tell you exactly which field is missing and on which node. Add the missing `description` field to that node, re-validate, and push again. The gate should now pass for both architectures.
+
+## Stretch Goals
+
+- Add `calm diff --exit-code` between the two architecture versions (v1 vs v2) to the workflow to gate on unexpected architecture changes
+- Add a Hub publish step: install `calm hub push architecture` and push to a local Hub Docker instance (`cd calm-hub/deploy && docker-compose up`)
+- Add the JUnit test report upload step and verify it appears in the Actions UI under the "Tests" tab
+
+## Solution
+
+See [lab-03-cicd-gate/solution](https://github.com/gjs-opsflo/calm-academy/tree/main/labs/lab-03-cicd-gate/solution) for the complete working workflow. Try the lab without peeking first.
