@@ -9,22 +9,22 @@ Milestone 1 scope: Modules 0–3 delivered end-to-end (text + labs + quizzes + i
 
 ### Module Content (Text Lessons)
 
-- [ ] **MOD-01**: Module 0 has 5 fully-authored MDX chapters covering the three paths to first CALM doc, live demo walkthrough, why the AI approach works, environment setup, and hands-on exercise
-- [ ] **MOD-02**: Module 1 has 5 fully-authored MDX chapters covering architecture debt crisis, lessons from IaC adoption, CALM introduction and positioning, FINOS ecosystem overview, and governance landscape
-- [ ] **MOD-03**: Module 2 has 7 fully-authored MDX chapters covering all CALM language constructs: nodes (9 core types), relationships, interfaces, controls, decorators, metadata, and building a first full architecture
+- [x] **MOD-01**: Module 0 has 5 fully-authored MDX chapters covering the three paths to first CALM doc, live demo walkthrough, why the AI approach works, environment setup, and hands-on exercise
+- [x] **MOD-02**: Module 1 has 5 fully-authored MDX chapters covering architecture debt crisis, lessons from IaC adoption, CALM introduction and positioning, FINOS ecosystem overview, and governance landscape
+- [x] **MOD-03**: Module 2 has 7 fully-authored MDX chapters covering all CALM language constructs: nodes (9 core types), relationships, interfaces, controls, decorators, metadata, and building a first full architecture
 - [x] **MOD-04**: Module 3 has 7 fully-authored MDX chapters covering the full CALM toolchain: CLI, CALM Studio, CALM Hub, CALM Server, VSCode extension, pattern library, and CI/CD integration
 
 ### Labs
 
-- [ ] **LAB-01**: Lab 0 is a Docker-free 15-minute on-ramp where learner describes a system in 3 sentences, gets a `.calm.json`, runs `calm validate`, and visualizes in CALM Studio — no prior spec knowledge required
-- [ ] **LAB-02**: Lab 2 (conference signup architecture) is a cumulative hands-on lab where learner writes a complete valid CALM JSON document by hand from a spec description, passes `calm validate`, and reviews it in Studio
+- [x] **LAB-01**: Lab 0 is a Docker-free 15-minute on-ramp where learner describes a system in 3 sentences, gets a `.calm.json`, runs `calm validate`, and visualizes in CALM Studio — no prior spec knowledge required
+- [x] **LAB-02**: Lab 2 (conference signup architecture) is a cumulative hands-on lab where learner writes a complete valid CALM JSON document by hand from a spec description, passes `calm validate`, and reviews it in Studio
 - [x] **LAB-03**: Lab 3 (CI/CD gate) adds `calm validate` to a GitHub Actions pipeline and demonstrates a passing and failing architecture check — lab runs end-to-end without external dependencies
 
 ### Quizzes
 
-- [ ] **QUIZ-01**: Module 0 quiz (YAML format, auto-gradeable) — tests: setup completed, first CALM doc produced, three AI paths understood
-- [ ] **QUIZ-02**: Module 1 quiz — tests: AaC value proposition, CALM vs static diagrams, FINOS ecosystem relationships, Gemara/AIGF/SAIF at a glance
-- [ ] **QUIZ-03**: Module 2 quiz — comprehensive vocabulary coverage: all 9 core node types, relationship types, interface shapes, control patterns, decorator syntax
+- [x] **QUIZ-01**: Module 0 quiz (YAML format, auto-gradeable) — tests: setup completed, first CALM doc produced, three AI paths understood
+- [x] **QUIZ-02**: Module 1 quiz — tests: AaC value proposition, CALM vs static diagrams, FINOS ecosystem relationships, Gemara/AIGF/SAIF at a glance
+- [x] **QUIZ-03**: Module 2 quiz — comprehensive vocabulary coverage: all 9 core node types, relationship types, interface shapes, control patterns, decorator syntax
 - [x] **QUIZ-04**: Module 3 quiz — tests: CLI commands, Studio workflow, Hub publish/consume, CI/CD gate pattern, pattern reuse concepts
 
 ### Illustrations
@@ -32,22 +32,22 @@ Milestone 1 scope: Modules 0–3 delivered end-to-end (text + labs + quizzes + i
 - [ ] **ILL-01**: Module 0 has 3–5 Excalidraw B&W illustrations exported as SVG: three paths diagram, CALM Studio screenshot mock, architecture-as-the-prompt concept
 - [ ] **ILL-02**: Module 1 has 8–10 Excalidraw B&W illustrations: architecture drift timeline, IaC analogy diagram, FINOS ecosystem map, Gemara 7-layer overview, CALM as Layer 4
 - [ ] **ILL-03**: Module 2 has 10–15 Excalidraw B&W illustrations: all 9 node types, relationship types, interface patterns, control decorator flow, sample architecture build-up sequence
-- [x] **ILL-04**: Module 3 has 8–10 Excalidraw B&W illustrations: CLI workflow, Studio canvas overview, Hub publish/consume flow, CI/CD pipeline gate, pattern inheritance
+- [ ] **ILL-04**: Module 3 has 8–10 Excalidraw B&W illustrations: CLI workflow, Studio canvas overview, Hub publish/consume flow, CI/CD pipeline gate, pattern inheritance
 
 ### Slide Decks
 
-- [ ] **SLIDE-01**: Module 1 slide deck (Marp/Reveal.js) — 20–30 slides covering module chapters, inline illustrations, speaker notes matching text chapters
-- [ ] **SLIDE-02**: Module 2 slide deck — 30–40 slides with all node types and relationship visual examples
+- [x] **SLIDE-01**: Module 1 slide deck (Marp/Reveal.js) — 20–30 slides covering module chapters, inline illustrations, speaker notes matching text chapters
+- [x] **SLIDE-02**: Module 2 slide deck — 30–40 slides with all node types and relationship visual examples
 - [x] **SLIDE-03**: Module 3 slide deck — 25–35 slides covering toolchain demos and CI/CD examples
 
 ### Code Examples
 
-- [ ] **CODE-01**: Every `.calm.json` file in `code-examples/` passes `calm validate` — enforced by CI check
-- [ ] **CODE-02**: Module 2 cheatsheet published — 1-page printable reference covering all node types, relationship types, and key metadata fields
+- [x] **CODE-01**: Every `.calm.json` file in `code-examples/` passes `calm validate` — enforced by CI check
+- [x] **CODE-02**: Module 2 cheatsheet published — 1-page printable reference covering all node types, relationship types, and key metadata fields
 
 ### Site
 
-- [ ] **SITE-01**: Docusaurus site is production-ready: all Module 0–3 content published, search working, quizzes rendering via custom MDX component, lab links active, mobile-responsive
+- [x] **SITE-01**: Docusaurus site is production-ready: all Module 0–3 content published, search working, quizzes rendering via custom MDX component, lab links active, mobile-responsive
 
 ## v2 Requirements
 
@@ -100,26 +100,26 @@ Updated by roadmapper. Each requirement maps to exactly one phase.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| MOD-01 | Phase 1 | Pending |
-| LAB-01 | Phase 1 | Pending |
-| QUIZ-01 | Phase 1 | Pending |
-| ILL-01 | Phase 1 | Pending |
-| MOD-02 | Phase 2 | Pending |
-| QUIZ-02 | Phase 2 | Pending |
-| ILL-02 | Phase 2 | Pending |
-| SLIDE-01 | Phase 2 | Pending |
-| MOD-03 | Phase 4 | Pending |
-| LAB-02 | Phase 4 | Pending |
-| QUIZ-03 | Phase 4 | Pending |
-| ILL-03 | Phase 4 | Pending |
-| SLIDE-02 | Phase 4 | Pending |
-| CODE-01 | Phase 4 | Pending |
-| CODE-02 | Phase 4 | Pending |
-| MOD-04 | Phase 5 | Complete |
-| LAB-03 | Phase 5 | Complete |
-| QUIZ-04 | Phase 5 | Complete |
-| ILL-04 | Phase 5 | Complete |
-| SLIDE-03 | Phase 5 | Complete |
+| MOD-01 | Phase 1 | Complete |
+| LAB-01 | Phase 1 | Complete |
+| QUIZ-01 | Phase 1 | Complete |
+| ILL-01 | Phase 1 | Partial — user authoring deferred (D1 in Phase 6 Plan 03) |
+| MOD-02 | Phase 2 | Complete |
+| QUIZ-02 | Phase 2 | Complete |
+| ILL-02 | Phase 2 | Partial — deferred to Milestone 2 |
+| SLIDE-01 | Phase 2 | Complete |
+| MOD-03 | Phase 3 | Complete |
+| LAB-02 | Phase 3 | Complete |
+| QUIZ-03 | Phase 3 | Complete |
+| ILL-03 | Phase 3 | Partial — deferred to Milestone 2 |
+| SLIDE-02 | Phase 3 | Complete |
+| CODE-01 | Phase 3 | Complete — CI gap closed Phase 6 (architecture.json validation added) |
+| CODE-02 | Phase 3 | Complete |
+| MOD-04 | Phase 4 | Complete |
+| LAB-03 | Phase 4 | Complete |
+| QUIZ-04 | Phase 4 | Complete |
+| ILL-04 | Phase 4 | Partial — deferred to Milestone 2 |
+| SLIDE-03 | Phase 4 | Complete |
 | SITE-01 | Phase 5 | Complete |
 
 **Coverage:**
@@ -127,7 +127,10 @@ Updated by roadmapper. Each requirement maps to exactly one phase.
 - v1 requirements: 21 total
 - Mapped to phases: 21
 - Unmapped: 0 ✓
+- Complete: 17 (MOD-01–04, LAB-01–03, QUIZ-01–04, SLIDE-01–03, CODE-01, CODE-02, SITE-01)
+- Partial — deferred: 4 (ILL-01, ILL-02, ILL-03, ILL-04 — placeholder SVG stubs; user authoring deferred to Milestone 2)
+- Pending: 0
 
 ---
 *Requirements defined: 2026-06-15*
-*Last updated: 2026-06-15 after initial definition*
+*Last updated: 2026-06-18 after Phase 6 traceability audit (06-RESEARCH.md evidence)*

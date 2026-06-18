@@ -2,9 +2,35 @@
 ## A Proposal to FINOS and the Linux Foundation for the Official Architecture as Code Educational Program
 
 **Submitted by:** Gourav Shah (`@gjs-opsflo`)
-**Status:** Draft — for FINOS Working Group review
+**Status:** Live demo available — ready for FINOS Working Group review
 **Repository:** https://github.com/gjs-opsflo/calm-academy
+**Live site:** https://gjs-opsflo.github.io/calm-academy/
 **Target program tier:** FINOS Working Group sponsored + Linux Foundation Training (LF EdX) co-delivered
+
+---
+
+## Current Status (as of 2026-06-18)
+
+Modules 0–3 are complete and live:
+
+| Deliverable | Status |
+|-------------|--------|
+| Module 0 — 15-Minute On-Ramp | Live |
+| Module 1 — The Case for AaC | Live |
+| Module 2 — CALM Language Fundamentals | Live |
+| Module 3 — The CALM Ecosystem | Live |
+| Lab 0 — Docker-free on-ramp | Complete |
+| Lab 2 — Conference signup architecture | Complete |
+| Lab 3 — CI/CD gate | Complete |
+| Quizzes (Modules 0–3) | Live — interactive, auto-graded |
+| Slide decks (Modules 1–3) | Complete |
+| Module 2 cheatsheet | Complete |
+| Docusaurus site — CI/CD auto-deploy | Live |
+
+**Live demo:** https://gjs-opsflo.github.io/calm-academy/
+
+Next: Modules 4–6 (Governance, AI-native architecture, Enterprise capstones), illustration
+authoring, and Learnforge integration — scoped to Milestone 2.
 
 ---
 
