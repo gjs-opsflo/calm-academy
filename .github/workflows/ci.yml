@@ -34,6 +34,8 @@ jobs:
             echo "Validating $f"
             calm validate -a "$f" || exit 1
           done
+      - name: Validate legacy architecture.json examples
+        run: bash scripts/validate-calm.sh
 
   check-excalidraw-freshness:
     runs-on: ubuntu-latest
