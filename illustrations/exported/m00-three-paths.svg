@@ -6,25 +6,25 @@
   </defs>
 
   <!-- Title -->
-  <text x="400" y="28" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="20" fill="#1e1e1e">Three Paths to Your First CALM Document</text>
+  <text x="400" y="28" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#1e1e1e">Three Paths to Your First CALM Document</text>
 
   <!-- Lane headers -->
-  <text x="133" y="58" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="18" fill="#1e1e1e">Path A: Talk</text>
-  <text x="400" y="58" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="18" fill="#1e1e1e">Path B: Sketch</text>
-  <text x="667" y="58" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="18" fill="#1e1e1e">Path C: Markdown</text>
+  <text x="133" y="58" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#1e1e1e">Path A: Talk</text>
+  <text x="400" y="58" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#1e1e1e">Path B: Sketch</text>
+  <text x="667" y="58" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#1e1e1e">Path C: Markdown</text>
 
   <!-- Row 1: Inputs -->
   <rect x="43" y="70" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="133" y="95" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="15" fill="#1e1e1e">Plain English</text>
-  <text x="133" y="115" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="15" fill="#1e1e1e">description</text>
+  <text x="133" y="95" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#1e1e1e">Plain English</text>
+  <text x="133" y="115" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#1e1e1e">description</text>
 
   <rect x="310" y="70" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="400" y="95" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="15" fill="#1e1e1e">Whiteboard sketch</text>
-  <text x="400" y="115" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="15" fill="#1e1e1e">or photo</text>
+  <text x="400" y="95" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#1e1e1e">Whiteboard sketch</text>
+  <text x="400" y="115" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#1e1e1e">or photo</text>
 
   <rect x="577" y="70" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="667" y="95" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="15" fill="#1e1e1e">Architecture</text>
-  <text x="667" y="115" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="15" fill="#1e1e1e">markdown doc</text>
+  <text x="667" y="95" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#1e1e1e">Architecture</text>
+  <text x="667" y="115" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#1e1e1e">markdown doc</text>
 
   <!-- Arrows: inputs to calmstudio-mcp -->
   <line x1="133" y1="130" x2="133" y2="177" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
@@ -33,13 +33,13 @@
 
   <!-- Row 2: calmstudio-mcp -->
   <rect x="43" y="180" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="133" y="215" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="16" fill="#1e1e1e">calmstudio-mcp</text>
+  <text x="133" y="215" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#1e1e1e">calmstudio-mcp</text>
 
   <rect x="310" y="180" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="400" y="215" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="16" fill="#1e1e1e">calmstudio-mcp</text>
+  <text x="400" y="215" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#1e1e1e">calmstudio-mcp</text>
 
   <rect x="577" y="180" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="667" y="215" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="16" fill="#1e1e1e">calmstudio-mcp</text>
+  <text x="667" y="215" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#1e1e1e">calmstudio-mcp</text>
 
   <!-- Arrows: calmstudio-mcp to .calm.json -->
   <line x1="133" y1="240" x2="133" y2="287" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
@@ -48,13 +48,13 @@
 
   <!-- Row 3: .calm.json per lane -->
   <rect x="43" y="290" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="133" y="325" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="16" fill="#1e1e1e">.calm.json</text>
+  <text x="133" y="325" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#1e1e1e">.calm.json</text>
 
   <rect x="310" y="290" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="400" y="325" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="16" fill="#1e1e1e">.calm.json</text>
+  <text x="400" y="325" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#1e1e1e">.calm.json</text>
 
   <rect x="577" y="290" width="180" height="60" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="667" y="325" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="16" fill="#1e1e1e">.calm.json</text>
+  <text x="667" y="325" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#1e1e1e">.calm.json</text>
 
   <!-- Converging arrows -->
   <line x1="133" y1="350" x2="397" y2="448" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
@@ -63,8 +63,8 @@
 
   <!-- Final consolidated .calm.json -->
   <rect x="310" y="450" width="180" height="65" rx="8" fill="#ffffff" stroke="#1e1e1e" stroke-width="3"/>
-  <text x="400" y="489" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="18" fill="#1e1e1e" font-weight="bold">.calm.json</text>
+  <text x="400" y="489" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#1e1e1e" font-weight="bold">.calm.json</text>
 
   <!-- Caption -->
-  <text x="400" y="548" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="15" fill="#757575">All three paths produce identical output</text>
+  <text x="400" y="548" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#757575">All three paths produce identical output</text>
 </svg>

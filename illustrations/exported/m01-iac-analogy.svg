@@ -6,7 +6,7 @@
   </defs>
 
   <!-- Title -->
-  <text x="400" y="32" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="20" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Infrastructure as Code vs Architecture as Code</text>
+  <text x="400" y="32" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Infrastructure as Code vs Architecture as Code</text>
 
   <!-- Table outer border -->
   <rect x="30" y="48" width="740" height="390" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="2.5"/>
@@ -20,9 +20,9 @@
   <line x1="30" y1="94" x2="770" y2="94" stroke="#1e1e1e" stroke-width="2"/>
 
   <!-- Header text -->
-  <text x="110" y="77" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Aspect</text>
-  <text x="350" y="77" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Infrastructure (Terraform)</text>
-  <text x="640" y="77" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Architecture (CALM)</text>
+  <text x="110" y="77" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Aspect</text>
+  <text x="350" y="77" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Infrastructure (Terraform)</text>
+  <text x="640" y="77" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Architecture (CALM)</text>
 
   <!-- Row separators -->
   <line x1="30" y1="150" x2="770" y2="150" stroke="#1e1e1e" stroke-width="1"/>
@@ -32,38 +32,38 @@
   <line x1="30" y1="374" x2="770" y2="374" stroke="#1e1e1e" stroke-width="1"/>
 
   <!-- Row 1: Before -->
-  <text x="110" y="127" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Before</text>
-  <text x="350" y="121" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">ClickOps, snowflake servers</text>
-  <text x="640" y="121" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Visio diagrams, Confluence pages</text>
+  <text x="110" y="127" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Before</text>
+  <text x="350" y="121" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">ClickOps, snowflake servers</text>
+  <text x="640" y="121" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">Visio diagrams, Confluence pages</text>
 
   <!-- Row 2: After -->
-  <text x="110" y="183" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">After</text>
-  <text x="350" y="177" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">HCL files, version-controlled,</text>
-  <text x="350" y="194" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">automatable</text>
-  <text x="640" y="177" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">JSON schema, version-controlled,</text>
-  <text x="640" y="194" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">AI-consumable</text>
+  <text x="110" y="183" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">After</text>
+  <text x="350" y="177" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">HCL files, version-controlled,</text>
+  <text x="350" y="194" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">automatable</text>
+  <text x="640" y="177" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">JSON schema, version-controlled,</text>
+  <text x="640" y="194" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">AI-consumable</text>
 
   <!-- Row 3: Key artifact -->
-  <text x="110" y="239" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Key artifact</text>
+  <text x="110" y="239" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Key artifact</text>
   <text x="350" y="239" font-family="monospace, 'Courier New', Courier" font-size="14" text-anchor="middle" fill="#1e1e1e">.tf</text>
   <text x="640" y="239" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">.architecture.json</text>
 
   <!-- Row 4: Source of truth -->
-  <text x="110" y="295" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Source of truth</text>
+  <text x="110" y="295" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Source of truth</text>
   <text x="350" y="295" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">Terraform state</text>
-  <text x="640" y="295" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#1e1e1e">CALM Hub</text>
+  <text x="640" y="295" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" fill="#1e1e1e">CALM Hub</text>
 
   <!-- Row 5: Validation -->
-  <text x="110" y="351" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Validation</text>
+  <text x="110" y="351" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Validation</text>
   <text x="350" y="351" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">terraform plan</text>
   <text x="640" y="351" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">calm validate</text>
 
   <!-- Row 6: CI gate -->
-  <text x="110" y="412" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">CI gate</text>
-  <text x="350" y="412" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Terraform CI check</text>
-  <text x="640" y="412" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">CALM Guard</text>
+  <text x="110" y="412" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#1e1e1e">CI gate</text>
+  <text x="350" y="412" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">Terraform CI check</text>
+  <text x="640" y="412" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">CALM Guard</text>
 
   <!-- Bottom caption -->
-  <text x="400" y="462" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-style="italic" text-anchor="middle" fill="#1e1e1e">We solved this before — for infrastructure. CALM does it for architecture.</text>
-  <text x="400" y="498" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#757575">The pattern is proven. The problem is the same. The solution is CALM.</text>
+  <text x="400" y="462" font-family="Inter, system-ui, sans-serif" font-size="14" font-style="italic" text-anchor="middle" fill="#1e1e1e">We solved this before — for infrastructure. CALM does it for architecture.</text>
+  <text x="400" y="498" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" fill="#757575">The pattern is proven. The problem is the same. The solution is CALM.</text>
 </svg>

@@ -20,10 +20,10 @@
 
   <!-- Address bar -->
   <rect x="130" y="38" width="460" height="20" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
-  <text x="360" y="53" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" fill="#757575">localhost:3000/calm-studio</text>
+  <text x="360" y="53" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#757575">localhost:3000/calm-studio</text>
 
   <!-- App label -->
-  <text x="680" y="53" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" fill="#1e1e1e">CALM Studio</text>
+  <text x="680" y="53" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#1e1e1e">CALM Studio</text>
 
   <!-- Canvas area background grid hint -->
   <rect x="30" y="66" width="740" height="384" fill="#fafafa" stroke="none"/>
@@ -41,8 +41,8 @@
   <!-- Right leg -->
   <line x1="120" y1="210" x2="140" y2="240" stroke="#1e1e1e" stroke-width="2"/>
   <!-- Label -->
-  <text x="120" y="265" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" fill="#1e1e1e">User</text>
-  <text x="120" y="282" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" fill="#757575">(actor)</text>
+  <text x="120" y="265" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#1e1e1e">User</text>
+  <text x="120" y="282" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#757575">(actor)</text>
 
   <!-- Node: Webclient "Todo Web App" - browser frame shape -->
   <rect x="230" y="120" width="185" height="90" rx="6" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
@@ -53,13 +53,13 @@
   <!-- URL bar inside header -->
   <rect x="246" y="125" width="90" height="13" rx="3" fill="#ffffff" stroke="#1e1e1e" stroke-width="1"/>
   <!-- Label -->
-  <text x="322" y="165" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" fill="#1e1e1e">Todo Web App</text>
-  <text x="322" y="200" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" fill="#757575">(webclient)</text>
+  <text x="322" y="165" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#1e1e1e">Todo Web App</text>
+  <text x="322" y="200" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#757575">(webclient)</text>
 
   <!-- Node: Service "Todo API" - hexagon-style diamond -->
   <rect x="430" y="245" width="160" height="60" rx="6" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="510" y="272" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" fill="#1e1e1e">Todo API</text>
-  <text x="510" y="293" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" fill="#757575">(service)</text>
+  <text x="510" y="272" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#1e1e1e">Todo API</text>
+  <text x="510" y="293" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#757575">(service)</text>
 
   <!-- Node: Database "Todo Database" - cylinder shape -->
   <!-- Left side line -->
@@ -71,8 +71,8 @@
   <!-- Bottom arc -->
   <path d="M 535 398 A 75 14 0 0 0 685 398" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
   <!-- Label -->
-  <text x="610" y="378" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" fill="#1e1e1e">Todo Database</text>
-  <text x="610" y="418" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" fill="#757575">(database)</text>
+  <text x="610" y="378" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#1e1e1e">Todo Database</text>
+  <text x="610" y="418" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#757575">(database)</text>
 
   <!-- Connections -->
   <!-- User → Todo Web App -->
@@ -85,5 +85,5 @@
   <line x1="540" y1="305" x2="580" y2="347" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
 
   <!-- Caption -->
-  <text x="400" y="472" text-anchor="middle" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="15" fill="#757575">CALM Studio — your architecture visualized</text>
+  <text x="400" y="472" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#757575">CALM Studio — your architecture visualized</text>
 </svg>

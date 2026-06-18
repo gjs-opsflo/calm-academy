@@ -7,7 +7,7 @@
       <polygon points="10 0, 0 3.5, 10 7" fill="#1e1e1e"/>
     </marker>
   </defs>
-  <style>text { font-family: Virgil, 'Segoe UI Emoji', cursive; fill: #1e1e1e; }</style>
+  <style>text { font-family: Inter, system-ui, sans-serif; fill: #1e1e1e; }</style>
 
   <!-- Title -->
   <text x="400" y="30" font-size="20" text-anchor="middle" font-weight="bold">CALM Studio bidirectional sync</text>

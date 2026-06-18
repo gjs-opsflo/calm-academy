@@ -12,53 +12,53 @@
   </defs>
 
   <!-- Title -->
-  <text x="400" y="32" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="20" font-weight="bold" text-anchor="middle" fill="#1e1e1e">The Architecture as Code Stack</text>
+  <text x="400" y="32" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#1e1e1e">The Architecture as Code Stack</text>
 
   <!-- ===== TOP LAYER: Policy / Compliance ===== -->
   <rect x="60" y="55" width="560" height="100" rx="6" fill="url(#hatch-light)" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="340" y="82" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Policy / Compliance</text>
+  <text x="340" y="82" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Policy / Compliance</text>
   <!-- sub-item badges -->
   <rect x="160" y="92" width="60" height="26" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
-  <text x="190" y="110" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">OPA</text>
+  <text x="190" y="110" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">OPA</text>
   <rect x="240" y="92" width="60" height="26" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
-  <text x="270" y="110" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Rego</text>
+  <text x="270" y="110" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">Rego</text>
   <rect x="320" y="92" width="110" height="26" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
-  <text x="375" y="110" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">CALM Guard</text>
+  <text x="375" y="110" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">CALM Guard</text>
   <!-- Caption for top layer -->
-  <text x="340" y="166" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" font-style="italic" text-anchor="middle" fill="#555555">What rules must it follow?</text>
+  <text x="340" y="166" font-family="Inter, system-ui, sans-serif" font-size="12" font-style="italic" text-anchor="middle" fill="#555555">What rules must it follow?</text>
 
   <!-- Upward arrow: middle → top -->
   <line x1="340" y1="220" x2="340" y2="159" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="360" y="198" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="start" fill="#1e1e1e">validated against</text>
+  <text x="360" y="198" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="start" fill="#1e1e1e">validated against</text>
 
   <!-- ===== MIDDLE LAYER: Architecture (CALM) — HEAVY BORDER ===== -->
   <rect x="56" y="225" width="568" height="100" rx="6" fill="url(#hatch-medium)" stroke="#1e1e1e" stroke-width="4"/>
-  <text x="340" y="252" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="17" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Architecture (CALM)</text>
+  <text x="340" y="252" font-family="Inter, system-ui, sans-serif" font-size="17" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Architecture (CALM)</text>
   <!-- central artifact box -->
   <rect x="255" y="262" width="170" height="30" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="2"/>
   <text x="340" y="282" font-family="monospace, 'Courier New', Courier" font-size="13" text-anchor="middle" fill="#1e1e1e">.architecture.json</text>
   <!-- Caption -->
-  <text x="340" y="336" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" font-style="italic" text-anchor="middle" fill="#555555">What does it mean? How does it connect?</text>
+  <text x="340" y="336" font-family="Inter, system-ui, sans-serif" font-size="12" font-style="italic" text-anchor="middle" fill="#555555">What does it mean? How does it connect?</text>
   <!-- Right-side annotation -->
-  <text x="645" y="278" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" text-anchor="start" fill="#1e1e1e">← the missing middle layer</text>
+  <text x="645" y="278" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" text-anchor="start" fill="#1e1e1e">← the missing middle layer</text>
 
   <!-- Upward arrow: bottom → middle -->
   <line x1="340" y1="380" x2="340" y2="329" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="360" y="362" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="start" fill="#1e1e1e">described by</text>
+  <text x="360" y="362" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="start" fill="#1e1e1e">described by</text>
 
   <!-- ===== BOTTOM LAYER: Infrastructure ===== -->
   <rect x="60" y="385" width="560" height="100" rx="6" fill="url(#hatch-light)" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="340" y="413" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Infrastructure (Terraform / IaC)</text>
+  <text x="340" y="413" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Infrastructure (Terraform / IaC)</text>
   <!-- sub-item badges -->
   <rect x="150" y="422" width="80" height="26" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
-  <text x="190" y="440" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Terraform</text>
+  <text x="190" y="440" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">Terraform</text>
   <rect x="250" y="422" width="76" height="26" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
-  <text x="288" y="440" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">AWS CDK</text>
+  <text x="288" y="440" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">AWS CDK</text>
   <rect x="346" y="422" width="60" height="26" rx="4" fill="#ffffff" stroke="#1e1e1e" stroke-width="1.5"/>
-  <text x="376" y="440" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Pulumi</text>
+  <text x="376" y="440" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">Pulumi</text>
   <!-- Caption -->
-  <text x="340" y="498" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" font-style="italic" text-anchor="middle" fill="#555555">What is deployed?</text>
+  <text x="340" y="498" font-family="Inter, system-ui, sans-serif" font-size="12" font-style="italic" text-anchor="middle" fill="#555555">What is deployed?</text>
 
   <!-- Bottom annotation -->
-  <text x="400" y="508" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#757575">Each layer answers a different question. CALM is the answer to "what does this system actually mean?"</text>
+  <text x="400" y="508" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" fill="#757575">Each layer answers a different question. CALM is the answer to "what does this system actually mean?"</text>
 </svg>

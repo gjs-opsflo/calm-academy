@@ -4,7 +4,7 @@
       <polygon points="0 0, 10 3.5, 0 7" fill="#1e1e1e"/>
     </marker>
   </defs>
-  <style>text { font-family: Virgil, 'Segoe UI Emoji', cursive; fill: #1e1e1e; }</style>
+  <style>text { font-family: Inter, system-ui, sans-serif; fill: #1e1e1e; }</style>
 
   <!-- Title -->
   <text x="400" y="28" font-size="19" text-anchor="middle" font-weight="bold">CALM Tools for VS Code — 4 panels in one editor</text>

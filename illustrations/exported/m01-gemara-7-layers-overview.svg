@@ -18,72 +18,72 @@
   </defs>
 
   <!-- Title -->
-  <text x="400" y="30" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="20" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Gemara — the GRC Engineering Model</text>
+  <text x="400" y="30" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Gemara — the GRC Engineering Model</text>
 
   <!-- Layer rows top→bottom: L7..L1 -->
   <!-- Row heights: 52px each, starting y=50. Total 7 rows = 364px. -->
 
   <!-- L7: heavy shading -->
   <rect x="40" y="50" width="630" height="52" rx="3" fill="url(#hatch-heavy)" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="65" y="82" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" fill="#1e1e1e">L7</text>
-  <text x="120" y="82" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" fill="#1e1e1e">Audit &amp; Continuous Monitoring</text>
+  <text x="65" y="82" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1e1e1e">L7</text>
+  <text x="120" y="82" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#1e1e1e">Audit &amp; Continuous Monitoring</text>
 
   <!-- L6: heavy shading -->
   <rect x="40" y="106" width="630" height="52" rx="3" fill="url(#hatch-heavy)" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="65" y="138" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" fill="#1e1e1e">L6</text>
-  <text x="120" y="138" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" fill="#1e1e1e">Preventive &amp; Remediative Enforcement</text>
+  <text x="65" y="138" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1e1e1e">L6</text>
+  <text x="120" y="138" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#1e1e1e">Preventive &amp; Remediative Enforcement</text>
 
   <!-- L5: medium shading -->
   <rect x="40" y="162" width="630" height="52" rx="3" fill="url(#hatch-medium)" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="65" y="194" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" fill="#1e1e1e">L5</text>
-  <text x="120" y="194" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" fill="#1e1e1e">Intent &amp; Behavioral Evaluation</text>
+  <text x="65" y="194" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1e1e1e">L5</text>
+  <text x="120" y="194" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#1e1e1e">Intent &amp; Behavioral Evaluation</text>
 
   <!-- PIVOT separator -->
   <rect x="40" y="218" width="630" height="14" rx="2" fill="#1e1e1e"/>
-  <text x="670" y="229" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" font-weight="bold" text-anchor="start" fill="#1e1e1e">PIVOT POINT</text>
+  <text x="670" y="229" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="bold" text-anchor="start" fill="#1e1e1e">PIVOT POINT</text>
 
   <!-- L4: medium shading, HEAVY border (the pivot) -->
   <rect x="38" y="232" width="634" height="60" rx="3" fill="url(#hatch-medium)" stroke="#1e1e1e" stroke-width="4"/>
-  <text x="65" y="269" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-weight="bold" fill="#1e1e1e">L4</text>
-  <text x="120" y="261" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-weight="bold" fill="#1e1e1e">Sensitive Activities</text>
-  <text x="120" y="280" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" fill="#1e1e1e">← CALM LIVES HERE</text>
+  <text x="65" y="269" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="bold" fill="#1e1e1e">L4</text>
+  <text x="120" y="261" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="bold" fill="#1e1e1e">Sensitive Activities</text>
+  <text x="120" y="280" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#1e1e1e">← CALM LIVES HERE</text>
 
   <!-- separator -->
   <line x1="40" y1="296" x2="670" y2="296" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="6,4"/>
 
   <!-- L3: light shading -->
   <rect x="40" y="300" width="630" height="52" rx="3" fill="url(#hatch-light)" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="65" y="332" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" fill="#1e1e1e">L3</text>
-  <text x="120" y="332" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" fill="#1e1e1e">Risks &amp; Policy</text>
+  <text x="65" y="332" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1e1e1e">L3</text>
+  <text x="120" y="332" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#1e1e1e">Risks &amp; Policy</text>
 
   <!-- L2: light shading -->
   <rect x="40" y="356" width="630" height="52" rx="3" fill="url(#hatch-light)" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="65" y="388" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" fill="#1e1e1e">L2</text>
-  <text x="120" y="382" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" fill="#1e1e1e">Threats &amp; Controls</text>
-  <text x="120" y="399" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" font-style="italic" fill="#555555">FINOS CCC cited at L2</text>
+  <text x="65" y="388" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1e1e1e">L2</text>
+  <text x="120" y="382" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#1e1e1e">Threats &amp; Controls</text>
+  <text x="120" y="399" font-family="Inter, system-ui, sans-serif" font-size="11" font-style="italic" fill="#555555">FINOS CCC cited at L2</text>
 
   <!-- L1: light shading -->
   <rect x="40" y="412" width="630" height="52" rx="3" fill="url(#hatch-light)" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="65" y="444" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" font-weight="bold" fill="#1e1e1e">L1</text>
-  <text x="120" y="444" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" fill="#1e1e1e">Vectors &amp; Guidance</text>
+  <text x="65" y="444" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="bold" fill="#1e1e1e">L1</text>
+  <text x="120" y="444" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#1e1e1e">Vectors &amp; Guidance</text>
 
   <!-- Right side bracket: L5-L7 = Measurement layers -->
   <line x1="690" y1="50" x2="700" y2="50" stroke="#1e1e1e" stroke-width="2"/>
   <line x1="700" y1="50" x2="700" y2="214" stroke="#1e1e1e" stroke-width="2"/>
   <line x1="700" y1="214" x2="690" y2="214" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="760" y="133" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e" transform="rotate(-90,760,133)">Measurement layers</text>
+  <text x="760" y="133" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e" transform="rotate(-90,760,133)">Measurement layers</text>
 
   <!-- Right side bracket: L1-L3 = Definition layers -->
   <line x1="690" y1="300" x2="700" y2="300" stroke="#1e1e1e" stroke-width="2"/>
   <line x1="700" y1="300" x2="700" y2="464" stroke="#1e1e1e" stroke-width="2"/>
   <line x1="700" y1="464" x2="690" y2="464" stroke="#1e1e1e" stroke-width="2"/>
-  <text x="760" y="382" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e" transform="rotate(-90,760,382)">Definition layers</text>
+  <text x="760" y="382" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e" transform="rotate(-90,760,382)">Definition layers</text>
 
   <!-- L4 PIVOT annotation -->
-  <text x="760" y="265" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e" font-weight="bold">PIVOT</text>
+  <text x="760" y="265" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e" font-weight="bold">PIVOT</text>
   <line x1="750" y1="255" x2="750" y2="278" stroke="#1e1e1e" stroke-width="2" marker-start="url(#arr2)" marker-end="url(#arr)"/>
 
   <!-- Caption -->
-  <text x="400" y="494" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-style="italic" text-anchor="middle" fill="#1e1e1e">CALM is the Layer 4 schema Gemara calls for.</text>
-  <text x="400" y="520" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#757575">L4 is the pivot: definitions below it, measurements above it — CALM connects both.</text>
+  <text x="400" y="494" font-family="Inter, system-ui, sans-serif" font-size="14" font-style="italic" text-anchor="middle" fill="#1e1e1e">CALM is the Layer 4 schema Gemara calls for.</text>
+  <text x="400" y="520" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" fill="#757575">L4 is the pivot: definitions below it, measurements above it — CALM connects both.</text>
 </svg>

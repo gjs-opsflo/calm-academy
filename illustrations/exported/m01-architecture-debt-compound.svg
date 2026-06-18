@@ -13,7 +13,7 @@
   </defs>
 
   <!-- Title -->
-  <text x="400" y="30" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="19" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Architecture debt compounds like technical debt</text>
+  <text x="400" y="30" font-family="Inter, system-ui, sans-serif" font-size="19" font-weight="bold" text-anchor="middle" fill="#1e1e1e">Architecture debt compounds like technical debt</text>
 
   <!-- Chart area -->
   <!-- Y axis -->
@@ -22,15 +22,15 @@
   <line x1="100" y1="390" x2="730" y2="390" stroke="#1e1e1e" stroke-width="2" marker-end="url(#arr)"/>
 
   <!-- Y axis label -->
-  <text x="52" y="230" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#1e1e1e" transform="rotate(-90,52,230)">cost / pain</text>
+  <text x="52" y="230" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" fill="#1e1e1e" transform="rotate(-90,52,230)">cost / pain</text>
 
   <!-- X axis time labels -->
-  <text x="100" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Launch</text>
-  <text x="210" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">M6</text>
-  <text x="320" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">M12</text>
-  <text x="430" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">M18</text>
-  <text x="540" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Y2</text>
-  <text x="700" y="408" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="12" text-anchor="middle" fill="#1e1e1e">Y3</text>
+  <text x="100" y="408" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">Launch</text>
+  <text x="210" y="408" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">M6</text>
+  <text x="320" y="408" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">M12</text>
+  <text x="430" y="408" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">M18</text>
+  <text x="540" y="408" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">Y2</text>
+  <text x="700" y="408" font-family="Inter, system-ui, sans-serif" font-size="12" text-anchor="middle" fill="#1e1e1e">Y3</text>
 
   <!-- Tick marks on X axis -->
   <line x1="210" y1="386" x2="210" y2="394" stroke="#1e1e1e" stroke-width="1.5"/>
@@ -56,35 +56,35 @@
             fill="none" stroke="#1e1e1e" stroke-width="3"/>
 
   <!-- Curve A label -->
-  <text x="710" y="287" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" text-anchor="start" fill="#1e1e1e">linear effort</text>
-  <text x="710" y="300" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" text-anchor="start" fill="#1e1e1e">if kept current</text>
+  <text x="710" y="287" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="start" fill="#1e1e1e">linear effort</text>
+  <text x="710" y="300" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="start" fill="#1e1e1e">if kept current</text>
 
   <!-- Curve B label -->
-  <text x="710" y="78" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" text-anchor="start" fill="#1e1e1e">actual cost</text>
-  <text x="710" y="91" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="11" text-anchor="start" fill="#1e1e1e">of letting it drift</text>
+  <text x="710" y="78" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="start" fill="#1e1e1e">actual cost</text>
+  <text x="710" y="91" font-family="Inter, system-ui, sans-serif" font-size="11" text-anchor="start" fill="#1e1e1e">of letting it drift</text>
 
   <!-- Gap label: "the debt" -->
-  <text x="360" y="295" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e" transform="rotate(-20,360,295)">the debt</text>
+  <text x="360" y="295" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#1e1e1e" transform="rotate(-20,360,295)">the debt</text>
 
   <!-- Annotation dots + labels on curve B -->
   <circle cx="210" cy="345" r="5" fill="#1e1e1e"/>
   <line x1="210" y1="340" x2="210" y2="300" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <text x="215" y="295" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="10" fill="#1e1e1e">first onboarding friction</text>
+  <text x="215" y="295" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#1e1e1e">first onboarding friction</text>
 
   <circle cx="320" cy="305" r="5" fill="#1e1e1e"/>
   <line x1="320" y1="300" x2="260" y2="265" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <text x="140" y="261" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="10" fill="#1e1e1e">first compliance audit pain</text>
+  <text x="140" y="261" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#1e1e1e">first compliance audit pain</text>
 
   <circle cx="430" cy="255" r="5" fill="#1e1e1e"/>
   <line x1="430" y1="250" x2="430" y2="210" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <text x="435" y="206" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="10" fill="#1e1e1e">first major incident</text>
+  <text x="435" y="206" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#1e1e1e">first major incident</text>
 
   <circle cx="540" cy="185" r="5" fill="#1e1e1e"/>
   <line x1="540" y1="180" x2="540" y2="145" stroke="#1e1e1e" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <text x="545" y="141" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="10" fill="#1e1e1e">rewrite considered</text>
+  <text x="545" y="141" font-family="Inter, system-ui, sans-serif" font-size="10" fill="#1e1e1e">rewrite considered</text>
 
   <!-- Caption -->
-  <text x="400" y="440" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="14" font-style="italic" text-anchor="middle" fill="#1e1e1e">The longer the diagram lies, the more expensive the truth becomes.</text>
-  <text x="400" y="464" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#757575">Solid line = actual drift cost. Dashed line = maintenance cost if kept current. Gap = architecture debt.</text>
-  <text x="400" y="490" font-family="Virgil, 'Segoe UI Emoji', cursive" font-size="13" text-anchor="middle" fill="#757575">CALM prevents the gap from opening.</text>
+  <text x="400" y="440" font-family="Inter, system-ui, sans-serif" font-size="14" font-style="italic" text-anchor="middle" fill="#1e1e1e">The longer the diagram lies, the more expensive the truth becomes.</text>
+  <text x="400" y="464" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" fill="#757575">Solid line = actual drift cost. Dashed line = maintenance cost if kept current. Gap = architecture debt.</text>
+  <text x="400" y="490" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" fill="#757575">CALM prevents the gap from opening.</text>
 </svg>
