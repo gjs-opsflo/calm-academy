@@ -120,7 +120,7 @@ Updated by roadmapper. Each requirement maps to exactly one phase.
 | QUIZ-04 | Phase 5 | Complete |
 | ILL-04 | Phase 5 | Complete |
 | SLIDE-03 | Phase 5 | Complete |
-| SITE-01 | Phase 6 | Pending |
+| SITE-01 | Phase 5 | Complete |
 
 **Coverage:**
 

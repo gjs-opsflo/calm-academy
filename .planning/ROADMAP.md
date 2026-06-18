@@ -165,19 +165,19 @@ Plans:
 
 **Wave 1** *(foundational vertical slice — Module 0 ch 0.1 renders with images locally)*
 
-- [ ] 05-01-PLAN.md — Scaffold Docusaurus 3.10.1 in `site/`, configure with `docs.path: '../content'`, create `site/static/img` → `../../illustrations/exported/` symlink, add `.nojekyll`, fix all 35 broken image paths across 21 MDX files to `/img/<file>.svg`, remove 5 empty placeholder content directories. End-to-end: `npm run build` succeeds; Module 0 chapter 0.1 renders with images in dev mode.
+- [x] 05-01-PLAN.md — Scaffold Docusaurus 3.10.1 in `site/`, configure with `docs.path: '../content'`, create `site/static/img` → `../../illustrations/exported/` symlink, add `.nojekyll`, fix all 35 broken image paths across 21 MDX files to `/img/<file>.svg`, remove 5 empty placeholder content directories. End-to-end: `npm run build` succeeds; Module 0 chapter 0.1 renders with images in dev mode.
 
 **Wave 2** *(navigation vertical slice — sidebar shows all 24 chapters in pedagogical order)*
 
-- [ ] 05-02-PLAN.md — Add 4 `_category_.json` files (module 0–3 labels + positions) and add `sidebar_position` frontmatter to all 24 MDX files (derived from existing `chapter: M.N` → `sidebar_position: N`). End-to-end: sitemap confirms chapters render numerically, not alphabetically.
+- [x] 05-02-PLAN.md — Add 4 `_category_.json` files (module 0–3 labels + positions) and add `sidebar_position` frontmatter to all 24 MDX files (derived from existing `chapter: M.N` → `sidebar_position: N`). End-to-end: sitemap confirms chapters render numerically, not alphabetically.
 
 **Wave 3** *(assessment vertical slice — user can take any of 4 quizzes end-to-end locally)*
 
-- [ ] 05-03-PLAN.md — Build prebuild YAML→JSON converter (`scripts/convert-quiz-yaml.mjs`), implement `site/src/components/Quiz.tsx` per UI-SPEC (all 9 interaction states, 16 verbatim copy strings, accessibility contract, --ifm-* CSS variables only), wire `<Quiz />` into all 4 final-chapter MDX files (Module 0 → `your-first-calm-document.mdx`; Module 1 → `governance-frameworks-and-aac.mdx`; Module 2 → `building-your-first-architecture.mdx`; Module 3 → `cicd-integration.mdx`). End-to-end: at least one quiz takeable in dev mode browser with score display + Retake.
+- [x] 05-03-PLAN.md — Build prebuild YAML→JSON converter (`scripts/convert-quiz-yaml.mjs`), implement `site/src/components/Quiz.tsx` per UI-SPEC (all 9 interaction states, 16 verbatim copy strings, accessibility contract, --ifm-* CSS variables only), wire `<Quiz />` into all 4 final-chapter MDX files (Module 0 → `your-first-calm-document.mdx`; Module 1 → `governance-frameworks-and-aac.mdx`; Module 2 → `building-your-first-architecture.mdx`; Module 3 → `cicd-integration.mdx`). End-to-end: at least one quiz takeable in dev mode browser with score display + Retake.
 
 **Wave 4** *(public deployment vertical slice — anyone can reach live URL with all 4 quizzes)* `[autonomous: false — requires user to enable Pages in repo settings]`
 
-- [ ] 05-04-PLAN.md — Create `.github/workflows/site-deploy.yml` with GitHub Actions native Pages workflow (Node 22, NOT Node 20 per RESEARCH.md Critical Finding #3; `actions/configure-pages` + `upload-pages-artifact` + `deploy-pages`; no `peaceiris/actions-gh-pages`). One-time human action: enable GitHub Pages with source "GitHub Actions" in repo settings. End-to-end: `https://gjs-opsflo.github.io/calm-academy/` returns HTTP 200; human verifies mobile responsive + at least one full quiz interaction on live site.
+- [x] 05-04-PLAN.md — Create `.github/workflows/site-deploy.yml` with GitHub Actions native Pages workflow (Node 22, NOT Node 20 per RESEARCH.md Critical Finding #3; `actions/configure-pages` + `upload-pages-artifact` + `deploy-pages`; no `peaceiris/actions-gh-pages`). One-time human action: enable GitHub Pages with source "GitHub Actions" in repo settings. End-to-end: `https://gjs-opsflo.github.io/calm-academy/` returns HTTP 200; human verifies mobile responsive + at least one full quiz interaction on live site. **COMPLETE — first deploy succeeded 2026-06-17, live site verified.**
 
 **Cross-cutting constraints:**
 
@@ -225,7 +225,7 @@ Plans:
 | 2 | 2/2 | Complete   | 2026-06-15 |
 | 3 | 4/4 | Complete   | 2026-06-16 |
 | 4 | 5/5 | Complete    | 2026-06-16 |
-| 5 | Site Launch Prep | SITE-01 | 1 week |
+| 5 | 4/4 | Complete | 2026-06-18 |
 | 6 | Polish + Milestone Close | (all 21) | 1 week |
 
 **Total estimated:** 9 weeks part-time

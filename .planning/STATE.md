@@ -4,13 +4,13 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 5
 status: executing
-last_updated: "2026-06-17T15:15:00Z"
+last_updated: "2026-06-18T09:00:00.000Z"
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 18
-  completed_plans: 16
-  percent: 78
+  completed_plans: 19
+  percent: 86
 ---
 
 # Project State: CALM Academy
@@ -32,7 +32,7 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 - Phase 2: Module 1 — Case for AaC → not started
 - Phase 3: Module 2 — CALM Fundamentals → not started
 - Phase 4: Module 3 — Ecosystem → not started
-- Phase 5: Site Launch Prep → not started
+- Phase 5: Site Launch Prep → **complete (4/4 plans done)**
 - Phase 6: Polish + Milestone Close → not started
 
 ## Key Decisions
@@ -44,6 +44,8 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 | Skip research phase | 2026-06-15 | Gemara + FINOS ecosystem research already exists in .planning/research/ |
 | YOLO mode | 2026-06-15 | Auto-approve; user wants to move fast |
 | Sidebar order verified via HTML not sitemap | 2026-06-17 | Docusaurus sitemap plugin sorts URLs alphabetically regardless of sidebar_position; menu__link HTML structure is the correct verification artifact |
+| Node 22 in deploy workflow (not Node 20) | 2026-06-18 | Node 20 EOL April 2026; ci.yml already uses 22 — deploy workflow matches |
+| Native GitHub Pages OIDC (not peaceiris) | 2026-06-18 | actions/configure-pages + upload-pages-artifact + deploy-pages is the officially supported pattern; no long-lived tokens |
 
 ## Blockers
 
@@ -58,4 +60,4 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 
 ---
 *Initialized: 2026-06-15*
-*Last updated: 2026-06-17 after Phase 5 Plan 03 complete (Quiz component TDD — 15 tests RED/GREEN, prebuild script, embedded in 4 modules)*
+*Last updated: 2026-06-18 after Phase 5 Plan 04 complete (GitHub Actions deploy — native Pages OIDC workflow, first deploy succeeded, live site verified end-to-end)*
