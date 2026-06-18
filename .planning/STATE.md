@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 5
-status: executing
+status: complete
 last_updated: "2026-06-18T09:00:00.000Z"
 progress:
   total_phases: 6
@@ -60,4 +60,4 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 
 ---
 *Initialized: 2026-06-15*
-*Last updated: 2026-06-18 after Phase 5 Plan 04 complete (GitHub Actions deploy — native Pages OIDC workflow, first deploy succeeded, live site verified end-to-end)*
+*Last updated: 2026-06-18 — Phase 5 VERIFIED AND COMPLETE. All 4 plans done, all gaps resolved (README.md sidebar excluded, SC#7 deferred to Phase 6). Live site at https://gjs-opsflo.github.io/calm-academy/ with 24 chapters, 4 quizzes, search, CI/CD auto-deploy.*
