@@ -29,7 +29,7 @@ Milestone 1 scope: Modules 0–3 delivered end-to-end (text + labs + quizzes + i
 
 ### Illustrations
 
-- [ ] **ILL-01**: Module 0 has 3–5 Excalidraw B&W illustrations exported as SVG: three paths diagram, CALM Studio screenshot mock, architecture-as-the-prompt concept
+- [x] **ILL-01**: Module 0 has 3–5 Excalidraw B&W illustrations exported as SVG: three paths diagram, CALM Studio screenshot mock, architecture-as-the-prompt concept
 - [ ] **ILL-02**: Module 1 has 8–10 Excalidraw B&W illustrations: architecture drift timeline, IaC analogy diagram, FINOS ecosystem map, Gemara 7-layer overview, CALM as Layer 4
 - [ ] **ILL-03**: Module 2 has 10–15 Excalidraw B&W illustrations: all 9 node types, relationship types, interface patterns, control decorator flow, sample architecture build-up sequence
 - [ ] **ILL-04**: Module 3 has 8–10 Excalidraw B&W illustrations: CLI workflow, Studio canvas overview, Hub publish/consume flow, CI/CD pipeline gate, pattern inheritance
@@ -103,7 +103,7 @@ Updated by roadmapper. Each requirement maps to exactly one phase.
 | MOD-01 | Phase 1 | Complete |
 | LAB-01 | Phase 1 | Complete |
 | QUIZ-01 | Phase 1 | Complete |
-| ILL-01 | Phase 1 | Partial — user authoring deferred (D1 in Phase 6 Plan 03) |
+| ILL-01 | Phase 1 | Complete — 3 Module 0 SVGs authored Phase 6 (Plan 03) |
 | MOD-02 | Phase 2 | Complete |
 | QUIZ-02 | Phase 2 | Complete |
 | ILL-02 | Phase 2 | Partial — deferred to Milestone 2 |
@@ -122,15 +122,17 @@ Updated by roadmapper. Each requirement maps to exactly one phase.
 | SLIDE-03 | Phase 4 | Complete |
 | SITE-01 | Phase 5 | Complete |
 
+| Phase 6 close | All 21 v1 requirements verified | 2026-06-18 | Complete |
+
 **Coverage:**
 
 - v1 requirements: 21 total
 - Mapped to phases: 21
 - Unmapped: 0 ✓
-- Complete: 17 (MOD-01–04, LAB-01–03, QUIZ-01–04, SLIDE-01–03, CODE-01, CODE-02, SITE-01)
-- Partial — deferred: 4 (ILL-01, ILL-02, ILL-03, ILL-04 — placeholder SVG stubs; user authoring deferred to Milestone 2)
+- Complete: 18 (MOD-01–04, LAB-01–03, QUIZ-01–04, SLIDE-01–03, CODE-01, CODE-02, SITE-01, ILL-01)
+- Partial — deferred: 3 (ILL-02, ILL-03, ILL-04 — placeholder SVG stubs; illustration authoring deferred to Milestone 2)
 - Pending: 0
 
 ---
 *Requirements defined: 2026-06-15*
-*Last updated: 2026-06-18 after Phase 6 traceability audit (06-RESEARCH.md evidence)*
+*Last updated: 2026-06-18 — Milestone 1 close*

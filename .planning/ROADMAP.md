@@ -212,19 +212,19 @@ Plans:
 
 **Wave 1** *(fix broken things — highest priority, fully automated)*
 
-- [ ] 06-01-PLAN.md — CI CODE-01 gap: add `bash scripts/validate-calm.sh` step to validate-calm-examples job (covers 6 `*.architecture.json` files). Create `site/static/labs` symlink to `../../labs/`. Remove 62 broken quiz YAML links from 20 non-final MDX chapters (replace with prose redirect). Replace 10 broken lab relative links with GitHub repo URLs across 7 MDX files. Fix D9: vscode-extension.mdx quiz link + chapter-number prose refs.
+- [x] 06-01-PLAN.md — CI CODE-01 gap: add `bash scripts/validate-calm.sh` step to validate-calm-examples job (covers 6 `*.architecture.json` files). Create `site/static/labs` symlink to `../../labs/`. Remove 62 broken quiz YAML links from 20 non-final MDX chapters (replace with prose redirect). Replace 10 broken lab relative links with GitHub repo URLs across 7 MDX files. Fix D9: vscode-extension.mdx quiz link + chapter-number prose refs.
 
 **Wave 2** *(documentation completion — automated, depends on Wave 1)*
 
-- [ ] 06-02-PLAN.md — Update REQUIREMENTS.md traceability for all 21 v1 requirements (14 still show Pending despite being delivered in Phases 1–4). Create `docs-meta/GLOSSARY.md` with 20 core CALM + Gemara + FINOS ecosystem terms. Update PROPOSAL.md: add live site URL + Current Status section with Modules 0–3 delivery table.
+- [x] 06-02-PLAN.md — Update REQUIREMENTS.md traceability for all 21 v1 requirements (14 still show Pending despite being delivered in Phases 1–4). Create `docs-meta/GLOSSARY.md` with 20 core CALM + Gemara + FINOS ecosystem terms. Update PROPOSAL.md: add live site URL + Current Status section with Modules 0–3 delivery table.
 
 **Wave 3** *(quality checks + illustration authoring — mixed auto + human, depends on Wave 2)* `[autonomous: false — illustration authoring is a human checkpoint]`
 
-- [ ] 06-03-PLAN.md — Run `npx axe-cli` on two live pages; fix any Critical/Serious WCAG 2.1 AA violations (most likely: Quiz.tsx radio groups need fieldset/legend wrapping). Human checkpoint: user authors 3 Module 0 Excalidraw B&W SVGs (m00-three-paths, m00-calm-studio-mock, m00-architecture-as-prompt) using ~/.claude/skills/ Excalidraw skill — each must be > 1KB.
+- [x] 06-03-PLAN.md — Run `npx axe-cli` on two live pages; fix any Critical/Serious WCAG 2.1 AA violations (most likely: Quiz.tsx radio groups need fieldset/legend wrapping). Human checkpoint: user authors 3 Module 0 Excalidraw B&W SVGs (m00-three-paths, m00-calm-studio-mock, m00-architecture-as-prompt) using ~/.claude/skills/ Excalidraw skill — each must be > 1KB.
 
 **Wave 4** *(milestone sign-off — human-gated, depends on Wave 3)* `[autonomous: false — learner test is a blocking human checkpoint]`
 
-- [ ] 06-04-PLAN.md — Internal learner test: 1 tester completes Module 0 end-to-end on live site; fix any critical issues. Final REQUIREMENTS.md verification pass. Update STATE.md to declare Milestone 1 complete and ready for FINOS pitch.
+- [x] 06-04-PLAN.md — Internal learner test: 1 tester completes Module 0 end-to-end on live site; fix any critical issues. Final REQUIREMENTS.md verification pass. Update STATE.md to declare Milestone 1 complete and ready for FINOS pitch.
 
 **Cross-cutting constraints:**
 

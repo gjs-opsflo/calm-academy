@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: 6
-status: in_progress
-last_updated: "2026-06-18T09:00:00.000Z"
+status: complete
+last_updated: "2026-06-18T14:00:00.000Z"
 progress:
   total_phases: 6
-  completed_phases: 5
-  total_plans: 18
-  completed_plans: 19
-  percent: 86
+  completed_phases: 6
+  total_plans: 22
+  completed_plans: 22
+  percent: 100
 ---
 
 # Project State: CALM Academy
@@ -20,20 +20,28 @@ progress:
 See: `.planning/PROJECT.md` (updated 2026-06-15)
 
 **Core value:** A learner produces a validated `.calm.json` in under 15 minutes (Module 0) — before learning a single spec rule.
-**Current milestone:** Milestone 1 — First Public Draft (Modules 0–3 + Site)
-**Current phase:** 5
-**Status:** Ready to execute
+**Current milestone:** Milestone 1 — COMPLETE
+**Current phase:** 6 (complete)
+**Status:** Ready for FINOS pitch
+
+## Milestone 1 — Modules 0–3 Delivered
+
+Status: COMPLETE
+Date: 2026-06-18
+Live site: https://gjs-opsflo.github.io/calm-academy/
+Requirements: 21/21 v1 requirements verified (18 Complete, 3 Partial-deferred)
+Next: Milestone 2 — Modules 4–6, full illustration authoring, Learnforge integration
 
 ## Milestone Progress
 
 **Milestone 1 — First Public Draft**
 
-- Phase 1: Module 0 — On-Ramp → **planned (3 plans, 2 waves) — ready to execute**
-- Phase 2: Module 1 — Case for AaC → not started
-- Phase 3: Module 2 — CALM Fundamentals → not started
-- Phase 4: Module 3 — Ecosystem → not started
-- Phase 5: Site Launch Prep → **complete (4/4 plans done)**
-- Phase 6: Polish + Milestone Close → not started
+- Phase 1: Module 0 — On-Ramp → **complete (3/3 plans)**
+- Phase 2: Module 1 — Case for AaC → **complete (2/2 plans)**
+- Phase 3: Module 2 — CALM Fundamentals → **complete (4/4 plans)**
+- Phase 4: Module 3 — Ecosystem → **complete (5/5 plans)**
+- Phase 5: Site Launch Prep → **complete (4/4 plans)**
+- Phase 6: Polish + Milestone Close → **complete (4/4 plans) — 2026-06-18**
 
 ## Key Decisions
 
@@ -60,4 +68,4 @@ See: `.planning/PROJECT.md` (updated 2026-06-15)
 
 ---
 *Initialized: 2026-06-15*
-*Last updated: 2026-06-18 — Phase 5 VERIFIED AND COMPLETE. All 4 plans done, all gaps resolved (README.md sidebar excluded, SC#7 deferred to Phase 6). Live site at https://gjs-opsflo.github.io/calm-academy/ with 24 chapters, 4 quizzes, search, CI/CD auto-deploy.*
+*Last updated: 2026-06-18 — Milestone 1 COMPLETE. All 6 phases done, 21/21 v1 requirements verified. Live site at https://gjs-opsflo.github.io/calm-academy/ with 24 chapters, 4 quizzes, 3 Module 0 illustrations, search, CI/CD auto-deploy. FINOS pitch ready.*
