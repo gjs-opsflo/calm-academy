@@ -251,6 +251,7 @@ Scopes: `module-NN`, `lab-NN`, `curriculum`, `roadmap`, `site`, `scripts`, `ci`,
 | Lab format spec | `docs-meta/LAB-FORMAT.md` |
 | Quiz format spec | `docs-meta/QUIZ-FORMAT.md` |
 | Illustration standards | `docs-meta/ILLUSTRATION-STANDARDS.md` |
+| Ecosystem glossary | `docs-meta/GLOSSARY.md` |
 
 ## When in doubt
 
